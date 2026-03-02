@@ -38,6 +38,9 @@ node_modules/
 # Personal notes
 TODO.md
 
+# Temp working files
+temp/
+
 # MacOS system files
 .DS_Store
 
