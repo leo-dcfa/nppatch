@@ -4375,14 +4375,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <recordTypeVisibilities>
-        <recordType>Account.HH_Account</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <recordType>Account.Organization</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <recordType>Opportunity.%%%NAMESPACE%%%Donation</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>

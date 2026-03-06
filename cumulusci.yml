@@ -352,6 +352,10 @@ flows:
         task: deploy
         options:
           path: unpackaged/pre/account_record_types
+      2.1:
+        task: deploy
+        options:
+          path: unpackaged/pre/opportunity_record_types
       3:
         task: add_opportunity_stages
       4:
@@ -362,6 +366,16 @@ flows:
           sobject: Opportunity
       6:
         task: install_managed_beta
+        options:
+          version: "04tal000005zmo1AAA"
+      6.1:
+        task: ensure_record_types
+        options:
+          sobject: Account
+      6.2:
+        task: ensure_record_types
+        options:
+          sobject: Opportunity
       7:
         task: deploy_post
         options:
@@ -374,7 +388,9 @@ flows:
       9:
         task: assign_permission_sets
         options:
-          api_names: NPPatch_Admin
+          api_names:
+            - NPPatch_Admin
+            - PRGM_Manage
       10:
         task: update_admin_profile
       11:
