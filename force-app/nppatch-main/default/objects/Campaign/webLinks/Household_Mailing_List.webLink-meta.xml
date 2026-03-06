@@ -10,5 +10,5 @@
     <masterLabel>Household Mailing List</masterLabel>
     <openType>sidebar</openType>
     <protected>false</protected>
-    <url>/apex/%%%NAMESPACE%%%HH_CampaignDedupeBTN?id={!Campaign.Id}</url>
+    <url>/apex/HH_CampaignDedupeBTN?id={!Campaign.Id}</url>
 </WebLink>

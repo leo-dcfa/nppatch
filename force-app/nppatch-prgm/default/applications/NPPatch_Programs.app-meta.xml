@@ -108,7 +108,7 @@
         <pageOrSobjectType>ServiceSession__c</pageOrSobjectType>
     </actionOverrides>
     <brand>
-        <headerColor>#0070D2</headerColor>
+        <headerColor>#05878A</headerColor>
         <logo>Program_Management_Icon</logo>
         <logoVersion>2</logoVersion>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
@@ -127,11 +127,11 @@
     <tabs>Program__c</tabs>
     <tabs>ProgramCohort__c</tabs>
     <tabs>Service__c</tabs>
-    <tabs>standard-report</tabs>
-    <tabs>standard-Task</tabs>
-    <tabs>standard-Dashboard</tabs>
-    <tabs>ServiceDelivery__c</tabs>
-    <tabs>standard-Account</tabs>
     <tabs>ServiceSchedule__c</tabs>
+    <tabs>ServiceDelivery__c</tabs>
+    <tabs>standard-Task</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-Account</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

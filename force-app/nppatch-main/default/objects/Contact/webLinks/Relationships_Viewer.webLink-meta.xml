@@ -8,5 +8,5 @@
     <masterLabel>Relationships Viewer</masterLabel>
     <openType>replace</openType>
     <protected>false</protected>
-    <url>{!URLFOR(&apos;/apex/%%%NAMESPACE%%%REL_RelationshipsViewer?id=&apos; + Contact.Id)}</url>
+    <url>{!URLFOR(&apos;/apex/REL_RelationshipsViewer?id=&apos; + Contact.Id)}</url>
 </WebLink>
