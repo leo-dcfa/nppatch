@@ -4,8 +4,5 @@
         <label>継続支援エントリフォームのカスタム項目</label>
         <name>RD2_Entry_Form_Custom_Fields</name>
     </fieldSets>
-    <webLinks>
-        <name>Recalculate_Rollups</name>
-        <label>積み上げ集計の再計算</label>
-    </webLinks>
+
 </CustomObjectTranslation>
