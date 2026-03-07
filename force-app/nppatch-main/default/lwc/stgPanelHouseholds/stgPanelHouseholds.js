@@ -1,10 +1,9 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
 import getRecordTypeOptions from "@salesforce/apex/NppatchSettingsController.getRecordTypeOptions";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 const OTHER_VALUE = "Other";
 
@@ -35,9 +34,6 @@ const INFORMAL_GREETING_OPTIONS = [
 ];
 
 export default class StgPanelHouseholds extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settingsNaming;
     _settingsHH;
     @track _workingCopyNaming = {};
@@ -57,9 +53,6 @@ export default class StgPanelHouseholds extends LightningElement {
     labels = {
         sectionLabel: "People",
         pageLabel: "Households",
-        edit: "Edit",
-        save: "Save",
-        cancel: "Cancel",
         sectionDescription:
             "Household naming automatically generates names and greetings for Household Accounts \u2014 such as \u2018The Smith Family\u2019 or \u2018John and Jane Smith.\u2019 These settings control the format templates, connectors, and overflow rules used to build those names. You can also define which Contacts receive Household records and link a mailing list report for Campaign deduplication.",
         // Section subheaders
@@ -114,6 +107,7 @@ export default class StgPanelHouseholds extends LightningElement {
         if (result.data) {
             this._settingsNaming = { ...result.data };
             this._hasError = false;
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
@@ -128,16 +122,10 @@ export default class StgPanelHouseholds extends LightningElement {
             if (!this._hasError) {
                 this._hasError = false;
             }
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
-        }
-    }
-
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
         }
     }
 
@@ -153,18 +141,14 @@ export default class StgPanelHouseholds extends LightningElement {
         }
     }
 
-    // --- Computed: loading & permissions ---
+    // --- Computed: loading & ready ---
 
     get isLoading() {
         return (!this._settingsNaming || !this._settingsHH) && !this._hasError;
     }
 
-    get hasSettings() {
-        return this._settingsNaming && this._settingsHH;
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
+    get isReady() {
+        return this._settingsNaming && this._settingsHH && !this._hasError;
     }
 
     // --- Household Rules options ---
@@ -200,19 +184,6 @@ export default class StgPanelHouseholds extends LightningElement {
         );
     }
 
-    // Read-only mode
-    get nameFormatComboValue() {
-        const val = this._settingsNaming?.Household_Name_Format__c;
-        if (this._isOtherValue(val, NAME_FORMAT_OPTIONS)) return OTHER_VALUE;
-        return val || "";
-    }
-
-    get isNameFormatOtherReadOnly() {
-        const val = this._settingsNaming?.Household_Name_Format__c;
-        return this._isOtherValue(val, NAME_FORMAT_OPTIONS);
-    }
-
-    // Edit mode
     get nameFormatComboValueEdit() {
         if (this._nameFormatIsOther) return OTHER_VALUE;
         const val = this._workingCopyNaming?.Household_Name_Format__c;
@@ -227,17 +198,6 @@ export default class StgPanelHouseholds extends LightningElement {
     }
 
     // --- Formal Greeting: combobox + Other logic ---
-
-    get formalGreetingComboValue() {
-        const val = this._settingsNaming?.Formal_Greeting_Format__c;
-        if (this._isOtherValue(val, FORMAL_GREETING_OPTIONS)) return OTHER_VALUE;
-        return val || "";
-    }
-
-    get isFormalGreetingOtherReadOnly() {
-        const val = this._settingsNaming?.Formal_Greeting_Format__c;
-        return this._isOtherValue(val, FORMAL_GREETING_OPTIONS);
-    }
 
     get formalGreetingComboValueEdit() {
         if (this._formalGreetingIsOther) return OTHER_VALUE;
@@ -254,17 +214,6 @@ export default class StgPanelHouseholds extends LightningElement {
 
     // --- Informal Greeting: combobox + Other logic ---
 
-    get informalGreetingComboValue() {
-        const val = this._settingsNaming?.Informal_Greeting_Format__c;
-        if (this._isOtherValue(val, INFORMAL_GREETING_OPTIONS)) return OTHER_VALUE;
-        return val || "";
-    }
-
-    get isInformalGreetingOtherReadOnly() {
-        const val = this._settingsNaming?.Informal_Greeting_Format__c;
-        return this._isOtherValue(val, INFORMAL_GREETING_OPTIONS);
-    }
-
     get informalGreetingComboValueEdit() {
         if (this._informalGreetingIsOther) return OTHER_VALUE;
         const val = this._workingCopyNaming?.Informal_Greeting_Format__c;
@@ -278,18 +227,7 @@ export default class StgPanelHouseholds extends LightningElement {
         return this._isOtherValue(val, INFORMAL_GREETING_OPTIONS);
     }
 
-    // --- Excluded Record Types display ---
-
-    get excludedRecordTypesDisplay() {
-        const raw = this._settingsHH?.Household_Creation_Excluded_Recordtypes__c;
-        if (!raw) return this.labels.none;
-        const ids = raw.split(";").filter(Boolean);
-        if (!ids.length) return this.labels.none;
-        const map = new Map(
-            this._contactRecordTypeOptions.map((o) => [o.value, o.label])
-        );
-        return ids.map((id) => map.get(id) || id).join(", ");
-    }
+    // --- Excluded Record Types ---
 
     get selectedExcludedRecordTypes() {
         const raw =
@@ -298,9 +236,29 @@ export default class StgPanelHouseholds extends LightningElement {
         return raw.split(";").filter(Boolean);
     }
 
-    // --- Actions ---
+    // --- Working copy management ---
 
-    handleEdit() {
+    _tryPopulateWorkingCopies() {
+        if (this._settingsNaming && this._settingsHH) {
+            this._workingCopyNaming = { ...this._settingsNaming };
+            this._workingCopyHH = { ...this._settingsHH };
+            this._nameFormatIsOther = this._isOtherValue(
+                this._settingsNaming?.Household_Name_Format__c,
+                NAME_FORMAT_OPTIONS
+            );
+            this._formalGreetingIsOther = this._isOtherValue(
+                this._settingsNaming?.Formal_Greeting_Format__c,
+                FORMAL_GREETING_OPTIONS
+            );
+            this._informalGreetingIsOther = this._isOtherValue(
+                this._settingsNaming?.Informal_Greeting_Format__c,
+                INFORMAL_GREETING_OPTIONS
+            );
+        }
+    }
+
+    @api
+    reset() {
         this._workingCopyNaming = { ...this._settingsNaming };
         this._workingCopyHH = { ...this._settingsHH };
         this._nameFormatIsOther = this._isOtherValue(
@@ -315,16 +273,6 @@ export default class StgPanelHouseholds extends LightningElement {
             this._settingsNaming?.Informal_Greeting_Format__c,
             INFORMAL_GREETING_OPTIONS
         );
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopyNaming = {};
-        this._workingCopyHH = {};
-        this._nameFormatIsOther = false;
-        this._formalGreetingIsOther = false;
-        this._informalGreetingIsOther = false;
-        this._isEditMode = false;
     }
 
     // --- Naming field handlers ---
@@ -414,46 +362,44 @@ export default class StgPanelHouseholds extends LightningElement {
 
     // --- Save ---
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             // 1. Save Household_Naming_Settings__c
-            const namingFields = {
-                Advanced_Household_Naming__c:
-                    this._workingCopyNaming.Advanced_Household_Naming__c,
-                Household_Name_Format__c:
-                    this._workingCopyNaming.Household_Name_Format__c || null,
-                Formal_Greeting_Format__c:
-                    this._workingCopyNaming.Formal_Greeting_Format__c || null,
-                Informal_Greeting_Format__c:
-                    this._workingCopyNaming.Informal_Greeting_Format__c || null,
-                Name_Connector__c:
-                    this._workingCopyNaming.Name_Connector__c,
-                Name_Overrun__c:
-                    this._workingCopyNaming.Name_Overrun__c,
-                Contact_Overrun_Count__c:
-                    this._workingCopyNaming.Contact_Overrun_Count__c,
-                Implementing_Class__c:
-                    this._workingCopyNaming.Implementing_Class__c || null,
-            };
             await saveSettings({
                 settingsObjectName: "Household_Naming_Settings__c",
-                fieldValues: namingFields,
+                fieldValues: {
+                    Advanced_Household_Naming__c:
+                        this._workingCopyNaming.Advanced_Household_Naming__c,
+                    Household_Name_Format__c:
+                        this._workingCopyNaming.Household_Name_Format__c || null,
+                    Formal_Greeting_Format__c:
+                        this._workingCopyNaming.Formal_Greeting_Format__c || null,
+                    Informal_Greeting_Format__c:
+                        this._workingCopyNaming.Informal_Greeting_Format__c || null,
+                    Name_Connector__c:
+                        this._workingCopyNaming.Name_Connector__c,
+                    Name_Overrun__c:
+                        this._workingCopyNaming.Name_Overrun__c,
+                    Contact_Overrun_Count__c:
+                        this._workingCopyNaming.Contact_Overrun_Count__c,
+                    Implementing_Class__c:
+                        this._workingCopyNaming.Implementing_Class__c || null,
+                },
             });
 
             // 2. Save Households_Settings__c
-            const hhFields = {
-                Household_Rules__c:
-                    this._workingCopyHH.Household_Rules__c || null,
-                Household_Creation_Excluded_Recordtypes__c:
-                    this._workingCopyHH
-                        .Household_Creation_Excluded_Recordtypes__c || null,
-                Household_Mailing_List_ID__c:
-                    this._workingCopyHH.Household_Mailing_List_ID__c || null,
-            };
             await saveSettings({
                 settingsObjectName: "Households_Settings__c",
-                fieldValues: hhFields,
+                fieldValues: {
+                    Household_Rules__c:
+                        this._workingCopyHH.Household_Rules__c || null,
+                    Household_Creation_Excluded_Recordtypes__c:
+                        this._workingCopyHH
+                            .Household_Creation_Excluded_Recordtypes__c || null,
+                    Household_Mailing_List_ID__c:
+                        this._workingCopyHH.Household_Mailing_List_ID__c || null,
+                },
             });
 
             // 3. Refresh both wires
@@ -462,13 +408,6 @@ export default class StgPanelHouseholds extends LightningElement {
                 refreshApex(this._wiredHHResult),
             ]);
 
-            this._isEditMode = false;
-            this._workingCopyNaming = {};
-            this._workingCopyHH = {};
-            this._nameFormatIsOther = false;
-            this._formalGreetingIsOther = false;
-            this._informalGreetingIsOther = false;
-
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: "Success",
@@ -476,6 +415,7 @@ export default class StgPanelHouseholds extends LightningElement {
                     variant: "success",
                 })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -484,8 +424,7 @@ export default class StgPanelHouseholds extends LightningElement {
                     variant: "error",
                 })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
     }
 

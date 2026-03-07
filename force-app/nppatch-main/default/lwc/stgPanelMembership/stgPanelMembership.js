@@ -1,24 +1,17 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
 import getRecordTypeOptions from "@salesforce/apex/NppatchSettingsController.getRecordTypeOptions";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 import stgNavDonations from "@salesforce/label/c.stgNavDonations";
 import stgNavMembership from "@salesforce/label/c.stgNavMembership";
 import stgHelpMembershipRT from "@salesforce/label/c.stgHelpMembershipRT";
 import stgHelpMembershipGracePeriod from "@salesforce/label/c.stgHelpMembershipGracePeriod";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 import stgLabelNone from "@salesforce/label/c.stgLabelNone";
 
 export default class StgPanelMembership extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _recordTypeOptions = [];
@@ -34,9 +27,6 @@ export default class StgPanelMembership extends LightningElement {
         pageLabel: stgNavMembership,
         helpMembershipRT: stgHelpMembershipRT,
         helpGracePeriod: stgHelpMembershipGracePeriod,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         none: stgLabelNone,
         membershipRecordTypes: "Membership Record Types",
         gracePeriod: "Membership Grace Period",
@@ -47,6 +37,7 @@ export default class StgPanelMembership extends LightningElement {
         this._wiredHouseholdsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
@@ -59,13 +50,6 @@ export default class StgPanelMembership extends LightningElement {
         this._wiredCrlpResult = result;
         if (result.data) {
             this._crlpEnabled = !!result.data.Customizable_Rollups_Enabled__c;
-        }
-    }
-
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
         }
     }
 
@@ -83,10 +67,6 @@ export default class StgPanelMembership extends LightningElement {
 
     // --- Computed properties ---
 
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
-    }
-
     get sectionDescription() {
         if (this._crlpEnabled) {
             return "Memberships track recurring organizational relationships such as annual dues or subscriptions. The grace period defines how many days past expiration a membership is still considered current for reporting purposes.";
@@ -102,28 +82,6 @@ export default class StgPanelMembership extends LightningElement {
         return !this._crlpEnabled;
     }
 
-    get membershipRecordTypeDisplay() {
-        if (!this._settings?.Membership_Record_Types__c || !this._recordTypeOptions.length) {
-            return this.labels.none;
-        }
-        const selectedIds = this._settings.Membership_Record_Types__c.split(";").filter(Boolean);
-        if (!selectedIds.length) {
-            return this.labels.none;
-        }
-        const optionsMap = new Map(
-            this._recordTypeOptions.map((opt) => [opt.value, opt.label])
-        );
-        const names = selectedIds.map((id) => optionsMap.get(id) || id);
-        return names.join(", ");
-    }
-
-    get gracePeriodDisplay() {
-        const val = this._settings?.Membership_Grace_Period__c;
-        return val !== null && val !== undefined ? String(val) : this.labels.none;
-    }
-
-    // --- Edit-mode values ---
-
     get selectedRecordTypes() {
         const raw = this._workingCopy?.Membership_Record_Types__c;
         if (!raw) return [];
@@ -136,16 +94,6 @@ export default class StgPanelMembership extends LightningElement {
 
     // --- Actions ---
 
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
-    }
-
     handleRecordTypeChange(event) {
         this._workingCopy.Membership_Record_Types__c =
             event.detail.value.join(";");
@@ -156,8 +104,8 @@ export default class StgPanelMembership extends LightningElement {
             event.detail.value !== "" ? Number(event.detail.value) : null;
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             const fieldValues = {
                 Membership_Record_Types__c:
@@ -170,8 +118,6 @@ export default class StgPanelMembership extends LightningElement {
                 fieldValues,
             });
             await refreshApex(this._wiredHouseholdsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: "Success",
@@ -179,6 +125,7 @@ export default class StgPanelMembership extends LightningElement {
                     variant: "success",
                 })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -187,9 +134,13 @@ export default class StgPanelMembership extends LightningElement {
                     variant: "error",
                 })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {

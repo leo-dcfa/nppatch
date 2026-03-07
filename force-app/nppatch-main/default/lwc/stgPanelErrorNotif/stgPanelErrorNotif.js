@@ -1,9 +1,8 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 import stgNavSystem from "@salesforce/label/c.stgNavSystem";
 import stgNavErrorNotify from "@salesforce/label/c.stgNavErrorNotify";
@@ -11,16 +10,10 @@ import stgHelpStoreErrorsOn from "@salesforce/label/c.stgHelpStoreErrorsOn";
 import stgHelpErrorNotifyOn from "@salesforce/label/c.stgHelpErrorNotifyOn";
 import stgHelpErrorNotifyTo from "@salesforce/label/c.stgHelpErrorNotifyTo";
 import stgHelpRespectDuplicateRuleSettings from "@salesforce/label/c.stgHelpRespectDuplicateRuleSettings";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 
 const SETTINGS_OBJECT = "Error_Settings__c";
 
 export default class StgPanelErrorNotif extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _hasError = false;
@@ -34,9 +27,6 @@ export default class StgPanelErrorNotif extends LightningElement {
         helpErrorNotifications: stgHelpErrorNotifyOn,
         helpNotifyTo: stgHelpErrorNotifyTo,
         helpRespectDupeRules: stgHelpRespectDuplicateRuleSettings,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         storeErrors: "Store Errors",
         errorNotifications: "Error Notifications",
         notifyTo: "Error Notification Recipient",
@@ -52,22 +42,12 @@ export default class StgPanelErrorNotif extends LightningElement {
         this._wiredSettingsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
         }
-    }
-
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
-        }
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
     }
 
     get isLoading() {
@@ -94,16 +74,6 @@ export default class StgPanelErrorNotif extends LightningElement {
         return !this._workingCopy?.Store_Errors_On__c;
     }
 
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
-    }
-
     handleStoreErrorsChange(event) {
         this._workingCopy.Store_Errors_On__c = event.detail.checked;
         if (!event.detail.checked) {
@@ -123,8 +93,8 @@ export default class StgPanelErrorNotif extends LightningElement {
         this._workingCopy.Respect_Duplicate_Rule_Settings__c = event.detail.checked;
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             await saveSettings({
                 settingsObjectName: SETTINGS_OBJECT,
@@ -136,18 +106,21 @@ export default class StgPanelErrorNotif extends LightningElement {
                 },
             });
             await refreshApex(this._wiredSettingsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Error notification settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {

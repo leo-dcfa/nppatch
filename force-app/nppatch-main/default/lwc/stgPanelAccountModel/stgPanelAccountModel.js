@@ -1,19 +1,15 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
 import getRecordTypeOptions from "@salesforce/apex/NppatchSettingsController.getRecordTypeOptions";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 import stgNavPeople from "@salesforce/label/c.stgNavPeople";
 import stgNavAccountModel from "@salesforce/label/c.stgNavAccountModel";
 import stgHelpAccountModel from "@salesforce/label/c.stgHelpAccountModel";
 import stgHelpHHAccountRTID from "@salesforce/label/c.stgHelpHHAccountRTID";
 import stgHelpOneToOneRTID from "@salesforce/label/c.stgHelpOneToOneRTID";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 import stgLabelNone from "@salesforce/label/c.stgLabelNone";
 
 const SETTINGS_OBJECT = "Contacts_And_Orgs_Settings__c";
@@ -25,9 +21,6 @@ const ACCOUNT_MODEL_OPTIONS = [
 ];
 
 export default class StgPanelAccountModel extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _accountRecordTypes = [];
@@ -41,9 +34,6 @@ export default class StgPanelAccountModel extends LightningElement {
         helpAccountModel: stgHelpAccountModel,
         helpHHAccountRT: stgHelpHHAccountRTID,
         helpOneToOneRT: stgHelpOneToOneRTID,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         none: stgLabelNone,
         accountProcessor: "Account Model",
         hhAccountRecordType: "Household Account Record Type",
@@ -61,17 +51,11 @@ export default class StgPanelAccountModel extends LightningElement {
         this._wiredSettingsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
-        }
-    }
-
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
         }
     }
 
@@ -87,44 +71,12 @@ export default class StgPanelAccountModel extends LightningElement {
         }
     }
 
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
-    }
-
     get isLoading() {
         return !this._settings && !this._hasError;
     }
 
-    get accountProcessorDisplay() {
-        return this._settings?.Account_Processor__c || this.labels.none;
-    }
-
-    get hhAccountRTDisplay() {
-        return this._findRecordTypeLabel(this._settings?.HH_Account_RecordTypeID__c);
-    }
-
-    get oneToOneRTDisplay() {
-        return this._findRecordTypeLabel(this._settings?.One_to_One_RecordTypeID__c);
-    }
-
     get accountRecordTypeOptionsWithNone() {
         return [{ label: this.labels.none, value: "" }, ...this._accountRecordTypes];
-    }
-
-    _findRecordTypeLabel(recordTypeId) {
-        if (!recordTypeId) return this.labels.none;
-        const match = this._accountRecordTypes.find((rt) => rt.value === recordTypeId);
-        return match ? match.label : recordTypeId;
-    }
-
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
     }
 
     handleAccountModelChange(event) {
@@ -139,8 +91,8 @@ export default class StgPanelAccountModel extends LightningElement {
         this._workingCopy.One_to_One_RecordTypeID__c = event.detail.value || null;
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             await saveSettings({
                 settingsObjectName: SETTINGS_OBJECT,
@@ -151,18 +103,21 @@ export default class StgPanelAccountModel extends LightningElement {
                 },
             });
             await refreshApex(this._wiredSettingsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Account model settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {

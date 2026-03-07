@@ -1,23 +1,16 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 import stgNavRelationships from "@salesforce/label/c.stgNavRelationships";
 import stgNavAffiliations from "@salesforce/label/c.stgNavAffiliations";
 import stgHelpAutoAffil from "@salesforce/label/c.stgHelpAutoAffil";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 
 const SETTINGS_OBJECT = "Affiliations_Settings__c";
 
 export default class StgPanelAffiliations extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _hasError = false;
@@ -28,9 +21,6 @@ export default class StgPanelAffiliations extends LightningElement {
         sectionLabel: stgNavRelationships,
         pageLabel: stgNavAffiliations,
         helpAutoAffil: stgHelpAutoAffil,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         autoAffiliation: "Automatic Affiliation Creation",
     };
 
@@ -43,6 +33,7 @@ export default class StgPanelAffiliations extends LightningElement {
         this._wiredSettingsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
@@ -50,45 +41,16 @@ export default class StgPanelAffiliations extends LightningElement {
         }
     }
 
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
-        }
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
-    }
-
     get isLoading() {
         return !this._settings && !this._hasError;
-    }
-
-    get autoAffilDisplay() {
-        return this._settings?.Automatic_Affiliation_Creation_Turned_On__c ? "Enabled" : "Disabled";
-    }
-
-    get autoAffilValue() {
-        return this._workingCopy?.Automatic_Affiliation_Creation_Turned_On__c || false;
-    }
-
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
     }
 
     handleAutoAffilChange(event) {
         this._workingCopy.Automatic_Affiliation_Creation_Turned_On__c = event.detail.checked;
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             await saveSettings({
                 settingsObjectName: SETTINGS_OBJECT,
@@ -98,18 +60,21 @@ export default class StgPanelAffiliations extends LightningElement {
                 },
             });
             await refreshApex(this._wiredSettingsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Affiliation settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {
