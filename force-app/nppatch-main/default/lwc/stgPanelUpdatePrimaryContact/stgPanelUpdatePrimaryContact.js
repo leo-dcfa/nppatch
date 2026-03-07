@@ -1,6 +1,6 @@
 import { LightningElement, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import runBatch from "@salesforce/apex/NppatchSettingsController.runBatch";
+import runBatch from "@salesforce/apex/BulkProcessController.runBatch";
 import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 export default class StgPanelUpdatePrimaryContact extends LightningElement {

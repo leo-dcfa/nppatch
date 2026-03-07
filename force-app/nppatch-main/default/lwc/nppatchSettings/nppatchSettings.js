@@ -70,22 +70,11 @@ const NAV_GROUPS = [
         label: "Bulk Data Processes",
         items: [
             { label: "Batch Process Settings", name: "schedule" },
-            { label: "Rollup Batch", name: "oppBatch" },
-            { label: "Allocation Rollup Batch", name: "alloBatch" },
-            { label: "Create Default Allocations", name: "makeDefaultAllocations" },
-            { label: "Create Missing Payments", name: "createPayments" },
-            { label: "Refresh Household Data", name: "refreshHouseholdData" },
-            { label: "Opportunity Naming Refresh", name: "oppNamingBatch" },
-            { label: "Update Primary Contact", name: "updatePrimaryContact" },
-            { label: "Level Assignment Batch", name: "lvlAssignBatch" },
-            { label: "Primary Contact Role Merge", name: "primaryContactRoleMerge" },
         ],
     },
     {
         label: "System Tools",
         items: [
-            { label: "Health Check", name: "healthCheck" },
-            { label: "Error Log", name: "errorLog" },
             { label: "Error Notifications", name: "errorNotif" },
             { label: "Trigger Configuration", name: "tdtm" },
             { label: "Advanced Mapping", name: "advancedMapping" },
@@ -187,15 +176,6 @@ export default class NppatchSettings extends LightningElement {
     get isRelationshipsPanel() { return this._activePanel === "relationships"; }
     get isHouseholdsPanel() { return this._activePanel === "households"; }
     get isSchedulePanel() { return this._activePanel === "schedule"; }
-    get isOppBatchPanel() { return this._activePanel === "oppBatch"; }
-    get isAlloBatchPanel() { return this._activePanel === "alloBatch"; }
-    get isMakeDefaultAllocationsPanel() { return this._activePanel === "makeDefaultAllocations"; }
-    get isCreatePaymentsPanel() { return this._activePanel === "createPayments"; }
-    get isRefreshHouseholdDataPanel() { return this._activePanel === "refreshHouseholdData"; }
-    get isOppNamingBatchPanel() { return this._activePanel === "oppNamingBatch"; }
-    get isUpdatePrimaryContactPanel() { return this._activePanel === "updatePrimaryContact"; }
-    get isLvlAssignBatchPanel() { return this._activePanel === "lvlAssignBatch"; }
-    get isPrimaryContactRoleMergePanel() { return this._activePanel === "primaryContactRoleMerge"; }
     get isRelReciprocalPanel() { return this._activePanel === "relReciprocal"; }
     get isRelAutoCreatePanel() { return this._activePanel === "relAutoCreate"; }
     get isOppNamingPanel() { return this._activePanel === "oppNaming"; }
@@ -205,8 +185,6 @@ export default class NppatchSettings extends LightningElement {
     get isCustomizableRollupsPanel() { return this._activePanel === "customizableRollups"; }
     get isRd2StatusMappingPanel() { return this._activePanel === "rd2StatusMapping"; }
     get isRd2StatusAutomationPanel() { return this._activePanel === "rd2StatusAutomation"; }
-    get isHealthCheckPanel() { return this._activePanel === "healthCheck"; }
-    get isErrorLogPanel() { return this._activePanel === "errorLog"; }
     get isAdvancedMappingPanel() { return this._activePanel === "advancedMapping"; }
 
     get showPlaceholder() {

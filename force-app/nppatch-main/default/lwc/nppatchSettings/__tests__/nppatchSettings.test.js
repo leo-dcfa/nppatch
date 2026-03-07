@@ -54,13 +54,13 @@ describe("c-nppatch-settings", () => {
         expect(illustration).toBeTruthy();
     });
 
-    it("shows placeholder when an unimplemented nav item is selected", async () => {
+    it("hides membership panel when another nav item is selected", async () => {
         const element = createElement("c-nppatch-settings", { is: NppatchSettings });
         document.body.appendChild(element);
         await flushPromises();
 
         const nav = element.shadowRoot.querySelector("lightning-vertical-navigation");
-        nav.dispatchEvent(new CustomEvent("select", { detail: { name: "healthCheck" } }));
+        nav.dispatchEvent(new CustomEvent("select", { detail: { name: "errorNotif" } }));
         await flushPromises();
 
         const membershipPanel = element.shadowRoot.querySelector("c-stg-panel-membership");

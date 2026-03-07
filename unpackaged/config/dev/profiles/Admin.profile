@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <applicationVisibilities>
-        <application>%%%NAMESPACE%%%NPPatch_Lightning</application>
+        <application>NPPatch_Lightning</application>
         <default>true</default>
         <visible>true</visible>
     </applicationVisibilities>
     <layoutAssignments>
         <layout>Account-Household Layout</layout>
-        <recordType>Account.%%%NAMESPACE%%%HH_Account</recordType>
+        <recordType>Account.HH_Account</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Organization Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Organization Layout</layout>
-        <recordType>Account.%%%NAMESPACE%%%Organization</recordType>
+        <recordType>Account.Organization</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-NPPatch Campaign Layout</layout>
@@ -112,6 +112,18 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>%%%NAMESPACE%%%NPPatch_Resources</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>%%%NAMESPACE%%%NPPatch_Bulk_Processes</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>%%%NAMESPACE%%%NPPatch_Error_Log</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>%%%NAMESPACE%%%NPPatch_Health_Check</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

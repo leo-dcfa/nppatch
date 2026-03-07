@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
-    <description>NPPatch Health Check - Validates configuration and data integrity</description>
+    <description>Bulk Data Processes - Run batch jobs for rollups, backfill, and maintenance</description>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__Tab</target>
     </targets>
-    <masterLabel>Health Check</masterLabel>
+    <masterLabel>Bulk Data Processes</masterLabel>
 </LightningComponentBundle>
