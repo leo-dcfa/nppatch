@@ -54,7 +54,7 @@ const SETTINGS_GROUPS = [
     {
         label: "Donations",
         tiles: [
-            { name: "oppNaming", title: "Opportunity Naming",
+            { name: "oppNaming", title: "Opportunity Naming", size: "large",
                 description: "Define rules for automatically generating Opportunity Name fields using merge fields." },
             { name: "membership", title: "Membership Settings",
                 description: "Configure membership record types and the grace period for reporting." },
