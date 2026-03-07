@@ -16,6 +16,7 @@ const PANEL_SELECTORS = {
     payments: "c-stg-panel-payments",
     relationships: "c-stg-panel-relationships",
     schedule: "c-stg-panel-schedule",
+    addressVerification: "c-stg-panel-addr-verification",
 };
 
 export default class SettingsModal extends LightningModal {
