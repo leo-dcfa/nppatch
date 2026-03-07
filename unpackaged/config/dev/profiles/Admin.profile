@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <applicationVisibilities>
-        <application>%%%NAMESPACE%%%NPPatch_Lightning</application>
+        <application>NPPatch_Admin</application>
         <default>true</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>NPPatch_Fundraising</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>NPPatch_GiftProcessing</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>NPPatch_Finance</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>NPPatch_Programs</application>
+        <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
     <layoutAssignments>
         <layout>Account-Household Layout</layout>
-        <recordType>Account.%%%NAMESPACE%%%HH_Account</recordType>
+        <recordType>Account.HH_Account</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Organization Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Organization Layout</layout>
-        <recordType>Account.%%%NAMESPACE%%%Organization</recordType>
+        <recordType>Account.Organization</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-NPPatch Campaign Layout</layout>
@@ -111,11 +131,11 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>%%%NAMESPACE%%%NPPatch_Resources</tab>
+        <tab>NPPatch_Resources</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>%%%NAMESPACE%%%NPPatch_Settings</tab>
+        <tab>NPPatch_Settings</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

@@ -10,7 +10,9 @@
     </actionOverrides>
     <brand>
         <headerColor>#05878A</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <logo>heart_dollar_pointing_icon</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
     <description>Donor relationship management, pipeline tracking, and stewardship for development staff</description>
     <formFactors>Large</formFactors>
@@ -21,15 +23,11 @@
     <label>Fundraising</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
-    <tabs>standard-Contact</tabs>
     <tabs>standard-Account</tabs>
-    <tabs>standard-Opportunity</tabs>
+    <tabs>standard-Contact</tabs>
     <tabs>standard-Campaign</tabs>
+    <tabs>standard-Opportunity</tabs>
     <tabs>Recurring_Donation__c</tabs>
-    <tabs>Relationship__c</tabs>
-    <tabs>Affiliation__c</tabs>
-    <tabs>Engagement_Plan_Template__c</tabs>
-    <tabs>Level__c</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>

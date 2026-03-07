@@ -88,10 +88,10 @@
     <startsWith>Vowel</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>Importation de données NPSP</value>
+        <value>Importation de données</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Importations de données NPSP</value>
+        <value>Importations de données</value>
     </caseValues>
 </CustomObjectTranslation>

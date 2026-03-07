@@ -22,10 +22,10 @@
     <gender>Masculine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Item da lista de verificação da Introdução ao NPSP</value>
+        <value>Item da lista de verificação da Introdução</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Itens da lista de verificação da Introdução ao NPSP</value>
+        <value>Itens da lista de verificação da Introdução</value>
     </caseValues>
 </CustomObjectTranslation>

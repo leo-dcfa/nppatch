@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Batch_Status__c</name>
-    <help>De batchstatus wordt gebaseerd op de importstatus van de NPSP-gegevensimportrecords in de batch. Als één record niet wordt geïmporteerd, wordt de status van de batch Mislukt - Controle vereist.</help>
+    <help>De batchstatus wordt gebaseerd op de importstatus van de NPPatch-gegevensimportrecords in de batch. Als één record niet wordt geïmporteerd, wordt de status van de batch Mislukt - Controle vereist.</help>
     <label>Batchstatus</label>
     <picklistValues>
         <masterLabel>Open</masterLabel>

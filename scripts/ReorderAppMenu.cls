@@ -7,7 +7,7 @@ private static String FUNDRAISING = 'NPPatch_Fundraising';
 private static String GIFT_PROCESSING = 'NPPatch_GiftProcessing';
 private static String FINANCE = 'NPPatch_Finance';
 private static String PROGRAM_MANAGEMENT = 'NPPatch_Programs';
-private static String ADMIN = 'NPPatch_Lightning';
+private static String ADMIN = 'NPPatch_Admin';
 
 private static List<String> PRIORITY_APPS = new List<String>{
     FUNDRAISING,

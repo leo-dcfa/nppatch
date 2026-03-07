@@ -4,41 +4,41 @@
     <caseValues>
         <plural>false</plural>
         <caseType>Nominative</caseType>
-        <value>NPSP-Paketeinstellung</value>
+        <value>Paketeinstellung</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Accusative</caseType>
-        <value>NPSP-Paketeinstellung</value>
+        <value>Paketeinstellung</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Dative</caseType>
-        <value>NPSP-Paketeinstellung</value>
+        <value>Paketeinstellung</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Genitive</caseType>
-        <value>NPSP-Paketeinstellung</value>
+        <value>Paketeinstellung</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Nominative</caseType>
-        <value>NPSP-Paketeinstellungen</value>
+        <value>Paketeinstellungen</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Accusative</caseType>
-        <value>NPSP-Paketeinstellungen</value>
+        <value>Paketeinstellungen</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Dative</caseType>
-        <value>NPSP-Paketeinstellungen</value>
+        <value>Paketeinstellungen</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Genitive</caseType>
-        <value>NPSP-Paketeinstellungen</value>
+        <value>Paketeinstellungen</value>
     </caseValues>
 </CustomObjectTranslation>

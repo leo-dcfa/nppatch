@@ -22,10 +22,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Get Started Checklist Item</value>
+        <value>Get Started Checklist Item</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP Get Started Checklist Items</value>
+        <value>Get Started Checklist Items</value>
     </caseValues>
 </CustomObjectTranslation>

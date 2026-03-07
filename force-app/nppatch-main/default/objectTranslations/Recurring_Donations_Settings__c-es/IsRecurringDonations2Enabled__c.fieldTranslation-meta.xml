@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>IsRecurringDonations2Enabled__c</name>
-    <help>Esta opción activa Donaciones recurrentes mejoradas. IMPORTANTE: Debe activar Donaciones recurrentes mejoradas en Configuración de NPSP. La activación en Configuración personalizada puede provocar incoherencias en los datos.</help>
+    <help>Esta opción activa Donaciones recurrentes mejoradas. IMPORTANTE: Debe activar Donaciones recurrentes mejoradas en Configuración de NPPatch. La activación en Configuración personalizada puede provocar incoherencias en los datos.</help>
     <label>Donaciones recurrentes mejoradas</label>
 </CustomFieldTranslation>

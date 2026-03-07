@@ -10,10 +10,10 @@
     <gender>Feminine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Checklistsectie Aan de slag voor NPSP</value>
+        <value>Checklistsectie Aan de slag</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Checklistsecties Aan de slag voor NPSP</value>
+        <value>Checklistsecties Aan de slag</value>
     </caseValues>
 </CustomObjectTranslation>

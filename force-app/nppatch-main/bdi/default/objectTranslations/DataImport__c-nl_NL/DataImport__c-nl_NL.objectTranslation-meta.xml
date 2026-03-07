@@ -87,10 +87,10 @@
     <gender>Feminine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP-Gegevensimport</value>
+        <value>Gegevensimport</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP-Gegevensimports</value>
+        <value>Gegevensimports</value>
     </caseValues>
 </CustomObjectTranslation>

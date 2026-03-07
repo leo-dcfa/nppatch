@@ -22,10 +22,10 @@
     <gender>Masculine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Elemento de lista de comprobación de Empezar a trabajar de NPSP</value>
+        <value>Elemento de lista de comprobación de Empezar a trabajar</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Elementos de listas de comprobación de Empezar a trabajar de NPSP</value>
+        <value>Elementos de listas de comprobación de Empezar a trabajar</value>
     </caseValues>
 </CustomObjectTranslation>

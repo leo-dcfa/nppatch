@@ -10,7 +10,9 @@
     </actionOverrides>
     <brand>
         <headerColor>#05878A</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <logo>graph_presentation_icon</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
     <description>Fund accounting, payment tracking, and financial reporting for finance staff</description>
     <formFactors>Large</formFactors>
@@ -21,10 +23,10 @@
     <label>Finance &amp; Funds</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
-    <tabs>General_Accounting_Unit__c</tabs>
-    <tabs>OppPayment__c</tabs>
     <tabs>standard-Opportunity</tabs>
+    <tabs>OppPayment__c</tabs>
     <tabs>Recurring_Donation__c</tabs>
+    <tabs>General_Accounting_Unit__c</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>

@@ -11,10 +11,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>Section de la liste de contrôle Premiers pas NPSP</value>
+        <value>Section de la liste de contrôle Premiers pas</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Sections de la liste de contrôle Premiers pas NPSP</value>
+        <value>Sections de la liste de contrôle Premiers pas</value>
     </caseValues>
 </CustomObjectTranslation>

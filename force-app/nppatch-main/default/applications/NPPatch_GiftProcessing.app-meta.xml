@@ -10,7 +10,9 @@
     </actionOverrides>
     <brand>
         <headerColor>#05878A</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <logo>inbox_checkmark_icon</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
     <description>Gift entry, batch data import, and payment processing for gift processing staff</description>
     <formFactors>Large</formFactors>
@@ -22,13 +24,12 @@
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
     <tabs>GE_Gift_Entry</tabs>
-    <tabs>DataImportBatch__c</tabs>
-    <tabs>DataImport__c</tabs>
-    <tabs>standard-Opportunity</tabs>
-    <tabs>standard-Contact</tabs>
     <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Opportunity</tabs>
     <tabs>OppPayment__c</tabs>
     <tabs>General_Accounting_Unit__c</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

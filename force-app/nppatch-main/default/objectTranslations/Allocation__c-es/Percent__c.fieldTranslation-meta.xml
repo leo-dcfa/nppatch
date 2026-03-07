@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Percent__c</name>
-    <help>Importe del porcentaje de una oportunidad asignado a la Cuenta de contabilidad general de esta asignación. Si modifica más adelante el importe de la oportunidad, NPSP actualizará el importe de la asignación en la Cuenta contable general.</help>
+    <help>Importe del porcentaje de una oportunidad asignado a la Cuenta de contabilidad general de esta asignación. Si modifica más adelante el importe de la oportunidad, NPPatch actualizará el importe de la asignación en la Cuenta contable general.</help>
     <label>Porcentaje</label>
 </CustomFieldTranslation>
