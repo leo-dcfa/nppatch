@@ -1,0 +1,23 @@
+<template>
+    <template lwc:if={isLoading}>
+        <div class="slds-is-relative slds-p-around_large">
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </div>
+    </template>
+
+    <template lwc:if={hasError}>
+        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+            <span class="slds-assistive-text">error</span>
+            <p>{errorMessage}</p>
+        </div>
+    </template>
+
+    <template lwc:if={isReady}>
+        <div class="panel-body">
+            <template lwc:if={description}>
+                <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{description}</p>
+            </template>
+            <slot></slot>
+        </div>
+    </template>
+</template>

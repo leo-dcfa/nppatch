@@ -13,7 +13,7 @@ const PANEL_SETTINGS = {
     affiliations: ["Affiliations_Settings__c"],
     allocations: ["Allocations_Settings__c"],
     campaignMembers: ["Contacts_And_Orgs_Settings__c"],
-    contactRoles: ["Contacts_And_Orgs_Settings__c", "Households_Settings__c", "Customizable_Rollup_Settings__c"],
+    contactRoles: ["Contacts_And_Orgs_Settings__c", "Households_Settings__c"],
     donorStatistics: ["Households_Settings__c"],
     errorNotif: ["Error_Settings__c"],
     households: ["Household_Naming_Settings__c", "Households_Settings__c"],

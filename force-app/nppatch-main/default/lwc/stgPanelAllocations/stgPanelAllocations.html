@@ -1,66 +1,19 @@
 <template>
-    <template lwc:if={isLoading}>
-        <div class="slds-is-relative slds-p-around_large">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-    <template lwc:if={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
+        <lightning-input type="toggle" label={labels.defaultAllocEnabled}
+            field-level-help={labels.helpDefaultAllocEnabled}
+            checked={_workingCopy.Default_Allocations_Enabled__c}
+            onchange={handleDefaultAllocEnabledChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
 
-    <template lwc:if={_settings}>
-        <div class="slds-is-relative slds-p-around_medium">
-            <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{sectionDescription}</p>
+        <lightning-input type="text" label={labels.defaultGAU}
+            field-level-help={labels.helpDefaultGAU}
+            value={_workingCopy.Default__c}
+            onchange={handleDefaultGAUChange}>
+        </lightning-input>
 
-            <lightning-input type="toggle" label={labels.defaultAllocEnabled}
-                field-level-help={labels.helpDefaultAllocEnabled}
-                checked={_workingCopy.Default_Allocations_Enabled__c}
-                onchange={handleDefaultAllocEnabledChange}
-                message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-            </lightning-input>
-
-            <lightning-input type="text" label={labels.defaultGAU}
-                field-level-help={labels.helpDefaultGAU}
-                value={_workingCopy.Default__c}
-                onchange={handleDefaultGAUChange}>
-            </lightning-input>
-
-            <template lwc:if={showRollupSection}>
-                <lightning-dual-listbox
-                    label={labels.exclOppRecTypes}
-                    field-level-help={labels.helpExclOppRecTypes}
-                    source-label="Available" selected-label="Excluded"
-                    options={_oppRecordTypes}
-                    value={selectedExclOppRecTypes}
-                    onchange={handleExclOppRecTypesChange}>
-                </lightning-dual-listbox>
-
-                <lightning-dual-listbox
-                    label={labels.exclOppTypes}
-                    field-level-help={labels.helpExclOppTypes}
-                    source-label="Available" selected-label="Excluded"
-                    options={_oppTypes}
-                    value={selectedExclOppTypes}
-                    onchange={handleExclOppTypesChange}>
-                </lightning-dual-listbox>
-
-                <lightning-input type="number" label={labels.nDayValue}
-                    field-level-help={labels.helpNDayValue}
-                    value={_workingCopy.Rollup_N_Day_Value__c}
-                    onchange={handleNDayChange}>
-                </lightning-input>
-
-                <lightning-input type="toggle" label={labels.fiscalYear}
-                    field-level-help={labels.helpFiscalYear}
-                    checked={_workingCopy.Use_Fiscal_Year_for_Rollups__c}
-                    onchange={handleFiscalYearChange}
-                    message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-                </lightning-input>
-            </template>
-        </div>
-    </template>
+    </c-stg-panel-content>
 </template>

@@ -9,8 +9,6 @@ import getPicklistOptions from "@salesforce/apex/NppatchSettingsController.getPi
 import stgNavDonations from "@salesforce/label/c.stgNavDonations";
 import stgNavContactRoles from "@salesforce/label/c.stgNavContactRoles";
 import stgHelpOCR from "@salesforce/label/c.stgHelpOCR";
-import stgHelpSoftCreditRoles from "@salesforce/label/c.stgHelpSoftCreditRoles";
-import stgHelpMatchedDonorRole from "@salesforce/label/c.stgHelpMatchedDonorRole";
 import stgLabelNone from "@salesforce/label/c.stgLabelNone";
 
 const CON_SETTINGS_OBJECT = "Contacts_And_Orgs_Settings__c";
@@ -21,7 +19,6 @@ export default class StgPanelContactRoles extends LightningElement {
     _hhSettings;
     @track _workingCopyCon = {};
     @track _workingCopyHH = {};
-    _crlpEnabled = false;
     _ocrRoleOptions = [];
     _contactRecordTypes = [];
     _hasError = false;
@@ -38,10 +35,6 @@ export default class StgPanelContactRoles extends LightningElement {
         helpNotifRole: "The Contact Role assigned to the Notification Recipient Contact on tribute Opportunities.",
         helpHHOCR: "When enabled, automatically creates Opportunity Contact Roles for all Household members on household-attributed Opportunities.",
         helpHHExcludedRT: "Contact Record Types excluded from automatic Household Opportunity Contact Role creation.",
-        helpSoftCreditRollups: "When enabled, rollup fields on Contacts include soft credit Opportunities based on their Contact Roles.",
-        helpSoftCreditRoles: stgHelpSoftCreditRoles,
-        helpMatchedDonorRole: stgHelpMatchedDonorRole,
-        helpAlwaysRollupPrimary: "When enabled, the primary Contact on an Opportunity always receives hard credit rollups, even when the Opportunity is attributed to an Organization Account.",
         none: stgLabelNone,
         defaultRole: "Default Contact Role",
         orgRole: "Organizational Contact Role",
@@ -50,10 +43,6 @@ export default class StgPanelContactRoles extends LightningElement {
         hhRolesOn: "Household Contact Roles",
         hhMemberRole: "Household Member Role",
         hhExcludedRT: "Excluded Record Types",
-        alwaysRollupPrimary: "Always Rollup to Primary Contact",
-        enableSoftCredit: "Enable Soft Credit Rollups",
-        softCreditRoles: "Soft Credit Roles",
-        matchedDonorRole: "Matched Donor Role",
     };
 
     get sectionDescription() {
@@ -86,13 +75,6 @@ export default class StgPanelContactRoles extends LightningElement {
         }
     }
 
-    @wire(getSettings, { settingsObjectName: "Customizable_Rollup_Settings__c" })
-    wiredCrlpSettings({ data }) {
-        if (data) {
-            this._crlpEnabled = !!data.Customizable_Rollups_Enabled__c;
-        }
-    }
-
     @wire(getPicklistOptions, { sObjectApiName: "OpportunityContactRole", fieldApiName: "Role" })
     wiredOCRRoles({ data, error }) {
         if (data) {
@@ -121,20 +103,12 @@ export default class StgPanelContactRoles extends LightningElement {
         return this._conSettings && this._hhSettings && !this._hasError;
     }
 
-    get showSoftCreditSection() {
-        return !this._crlpEnabled;
-    }
-
     get ocrRoleOptionsWithNone() {
         return [{ label: this.labels.none, value: "" }, ...this._ocrRoleOptions];
     }
 
     get selectedHHExcludedRT() {
         return this._parseMultiSelect(this._workingCopyHH?.Household_OCR_Excluded_Recordtypes__c);
-    }
-
-    get selectedSoftCreditRoles() {
-        return this._parseMultiSelect(this._workingCopyHH?.Soft_Credit_Roles__c);
     }
 
     // --- Utility ---
@@ -191,24 +165,6 @@ export default class StgPanelContactRoles extends LightningElement {
         this._workingCopyHH.Household_OCR_Excluded_Recordtypes__c = event.detail.value.join(";");
     }
 
-    // --- Section 3 handlers (Households_Settings__c) ---
-
-    handleAlwaysRollupPrimaryChange(event) {
-        this._workingCopyHH.Always_Rollup_to_Primary_Contact__c = event.detail.checked;
-    }
-
-    handleEnableSoftCreditChange(event) {
-        this._workingCopyHH.Enable_Soft_Credit_Rollups__c = event.detail.checked;
-    }
-
-    handleSoftCreditRolesChange(event) {
-        this._workingCopyHH.Soft_Credit_Roles__c = event.detail.value.join(";");
-    }
-
-    handleMatchedDonorRoleChange(event) {
-        this._workingCopyHH.Matched_Donor_Role__c = event.detail.value || null;
-    }
-
     // --- Save ---
 
     @api
@@ -239,14 +195,6 @@ export default class StgPanelContactRoles extends LightningElement {
                         this._workingCopyHH.Household_Member_Contact_Role__c || null,
                     Household_OCR_Excluded_Recordtypes__c:
                         this._workingCopyHH.Household_OCR_Excluded_Recordtypes__c || null,
-                    Always_Rollup_to_Primary_Contact__c:
-                        this._workingCopyHH.Always_Rollup_to_Primary_Contact__c,
-                    Enable_Soft_Credit_Rollups__c:
-                        this._workingCopyHH.Enable_Soft_Credit_Rollups__c,
-                    Soft_Credit_Roles__c:
-                        this._workingCopyHH.Soft_Credit_Roles__c || null,
-                    Matched_Donor_Role__c:
-                        this._workingCopyHH.Matched_Donor_Role__c || null,
                 },
             });
 

@@ -1,27 +1,13 @@
 <template>
-    <template lwc:if={isLoading}>
-        <div class="slds-is-relative slds-p-around_large">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-    <template lwc:if={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
+        <lightning-input type="toggle" label={labels.autoAffiliation}
+            field-level-help={labels.helpAutoAffil}
+            checked={_workingCopy.Automatic_Affiliation_Creation_Turned_On__c}
+            onchange={handleAutoAffilChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
 
-    <template lwc:if={_settings}>
-        <div class="slds-is-relative slds-p-around_medium">
-            <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{sectionDescription}</p>
-
-            <lightning-input type="toggle" label={labels.autoAffiliation}
-                field-level-help={labels.helpAutoAffil}
-                checked={_workingCopy.Automatic_Affiliation_Creation_Turned_On__c}
-                onchange={handleAutoAffilChange}
-                message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-            </lightning-input>
-        </div>
-    </template>
+    </c-stg-panel-content>
 </template>

@@ -1,37 +1,12 @@
 <template>
-    <template lwc:if={isLoading}>
-        <div class="slds-is-relative slds-p-around_large">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-    <template lwc:if={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
+        <lightning-input type="number" label={labels.gracePeriod}
+            field-level-help={labels.helpGracePeriod}
+            value={gracePeriodValue}
+            onchange={handleGracePeriodChange}>
+        </lightning-input>
 
-    <template lwc:if={_settings}>
-        <div class="slds-is-relative slds-p-around_medium">
-            <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{sectionDescription}</p>
-
-            <template lwc:if={showRecordTypeField}>
-                <lightning-dual-listbox
-                    label={labels.membershipRecordTypes}
-                    field-level-help={labels.helpMembershipRT}
-                    source-label="Available" selected-label="Selected"
-                    options={_recordTypeOptions}
-                    value={selectedRecordTypes}
-                    onchange={handleRecordTypeChange}>
-                </lightning-dual-listbox>
-            </template>
-
-            <lightning-input type="number" label={labels.gracePeriod}
-                field-level-help={labels.helpGracePeriod}
-                value={gracePeriodValue}
-                onchange={handleGracePeriodChange}>
-            </lightning-input>
-        </div>
-    </template>
+    </c-stg-panel-content>
 </template>

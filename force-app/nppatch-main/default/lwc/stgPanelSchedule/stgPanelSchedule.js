@@ -139,10 +139,6 @@ export default class StgPanelSchedule extends LightningElement {
         return this._settingsCRLP && this._settingsRD && this._settingsLvl && this._settingsHH && this._settingsErr && !this._hasError;
     }
 
-    get showSkewModeSection() {
-        return this._settingsCRLP && this._settingsCRLP.Customizable_Rollups_Enabled__c;
-    }
-
     // --- Working copy management ---
 
     _tryPopulateWorkingCopies() {

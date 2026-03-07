@@ -1,111 +1,62 @@
 <template>
-    <template lwc:if={isLoading}>
-        <div class="slds-is-relative slds-p-around_large">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-    <template lwc:if={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
+        <!-- Section 1: Opportunity Contact Roles -->
+        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Opportunity Contact Roles</h3>
 
-    <template lwc:if={isReady}>
-        <div class="slds-is-relative slds-p-around_medium">
-            <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{sectionDescription}</p>
+        <lightning-combobox label={labels.defaultRole}
+            field-level-help={labels.helpOCR}
+            value={_workingCopyCon.Opportunity_Contact_Role_Default_role__c}
+            options={ocrRoleOptionsWithNone}
+            onchange={handleDefaultRoleChange}>
+        </lightning-combobox>
 
-            <!-- Section 1: Opportunity Contact Roles -->
-            <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Opportunity Contact Roles</h3>
+        <lightning-combobox label={labels.orgRole}
+            field-level-help={labels.helpOrgRole}
+            value={_workingCopyCon.Contact_Role_for_Organizational_Opps__c}
+            options={ocrRoleOptionsWithNone}
+            onchange={handleOrgRoleChange}>
+        </lightning-combobox>
 
-            <lightning-combobox label={labels.defaultRole}
-                field-level-help={labels.helpOCR}
-                value={_workingCopyCon.Opportunity_Contact_Role_Default_role__c}
-                options={ocrRoleOptionsWithNone}
-                onchange={handleDefaultRoleChange}>
-            </lightning-combobox>
+        <lightning-combobox label={labels.honoreeRole}
+            field-level-help={labels.helpHonoreeRole}
+            value={_workingCopyCon.Honoree_Opportunity_Contact_Role__c}
+            options={ocrRoleOptionsWithNone}
+            onchange={handleHonoreeRoleChange}>
+        </lightning-combobox>
 
-            <lightning-combobox label={labels.orgRole}
-                field-level-help={labels.helpOrgRole}
-                value={_workingCopyCon.Contact_Role_for_Organizational_Opps__c}
-                options={ocrRoleOptionsWithNone}
-                onchange={handleOrgRoleChange}>
-            </lightning-combobox>
+        <lightning-combobox label={labels.notifRole}
+            field-level-help={labels.helpNotifRole}
+            value={_workingCopyCon.Notification_Recipient_Opp_Contact_Role__c}
+            options={ocrRoleOptionsWithNone}
+            onchange={handleNotifRoleChange}>
+        </lightning-combobox>
 
-            <lightning-combobox label={labels.honoreeRole}
-                field-level-help={labels.helpHonoreeRole}
-                value={_workingCopyCon.Honoree_Opportunity_Contact_Role__c}
-                options={ocrRoleOptionsWithNone}
-                onchange={handleHonoreeRoleChange}>
-            </lightning-combobox>
+        <!-- Section 2: Household Contact Roles -->
+        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Household Contact Roles</h3>
 
-            <lightning-combobox label={labels.notifRole}
-                field-level-help={labels.helpNotifRole}
-                value={_workingCopyCon.Notification_Recipient_Opp_Contact_Role__c}
-                options={ocrRoleOptionsWithNone}
-                onchange={handleNotifRoleChange}>
-            </lightning-combobox>
+        <lightning-input type="toggle" label={labels.hhRolesOn}
+            field-level-help={labels.helpHHOCR}
+            checked={_workingCopyHH.Household_Contact_Roles_On__c}
+            onchange={handleHHRolesOnChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
 
-            <!-- Section 2: Household Contact Roles -->
-            <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Household Contact Roles</h3>
+        <lightning-combobox label={labels.hhMemberRole}
+            value={_workingCopyHH.Household_Member_Contact_Role__c}
+            options={ocrRoleOptionsWithNone}
+            onchange={handleHHMemberRoleChange}>
+        </lightning-combobox>
 
-            <lightning-input type="toggle" label={labels.hhRolesOn}
-                field-level-help={labels.helpHHOCR}
-                checked={_workingCopyHH.Household_Contact_Roles_On__c}
-                onchange={handleHHRolesOnChange}
-                message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-            </lightning-input>
+        <lightning-dual-listbox
+            label={labels.hhExcludedRT}
+            field-level-help={labels.helpHHExcludedRT}
+            source-label="Available" selected-label="Excluded"
+            options={_contactRecordTypes}
+            value={selectedHHExcludedRT}
+            onchange={handleHHExcludedRTChange}>
+        </lightning-dual-listbox>
 
-            <lightning-combobox label={labels.hhMemberRole}
-                value={_workingCopyHH.Household_Member_Contact_Role__c}
-                options={ocrRoleOptionsWithNone}
-                onchange={handleHHMemberRoleChange}>
-            </lightning-combobox>
-
-            <lightning-dual-listbox
-                label={labels.hhExcludedRT}
-                field-level-help={labels.helpHHExcludedRT}
-                source-label="Available" selected-label="Excluded"
-                options={_contactRecordTypes}
-                value={selectedHHExcludedRT}
-                onchange={handleHHExcludedRTChange}>
-            </lightning-dual-listbox>
-
-            <!-- Section 3: Soft Credit (only when CRLP is disabled) -->
-            <template lwc:if={showSoftCreditSection}>
-                <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Soft Credit</h3>
-
-                <lightning-input type="toggle" label={labels.alwaysRollupPrimary}
-                    field-level-help={labels.helpAlwaysRollupPrimary}
-                    checked={_workingCopyHH.Always_Rollup_to_Primary_Contact__c}
-                    onchange={handleAlwaysRollupPrimaryChange}
-                    message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-                </lightning-input>
-
-                <lightning-input type="toggle" label={labels.enableSoftCredit}
-                    field-level-help={labels.helpSoftCreditRollups}
-                    checked={_workingCopyHH.Enable_Soft_Credit_Rollups__c}
-                    onchange={handleEnableSoftCreditChange}
-                    message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-                </lightning-input>
-
-                <lightning-dual-listbox
-                    label={labels.softCreditRoles}
-                    field-level-help={labels.helpSoftCreditRoles}
-                    source-label="Available" selected-label="Selected"
-                    options={_ocrRoleOptions}
-                    value={selectedSoftCreditRoles}
-                    onchange={handleSoftCreditRolesChange}>
-                </lightning-dual-listbox>
-
-                <lightning-combobox label={labels.matchedDonorRole}
-                    field-level-help={labels.helpMatchedDonorRole}
-                    value={_workingCopyHH.Matched_Donor_Role__c}
-                    options={ocrRoleOptionsWithNone}
-                    onchange={handleMatchedDonorRoleChange}>
-                </lightning-combobox>
-            </template>
-        </div>
-    </template>
+    </c-stg-panel-content>
 </template>

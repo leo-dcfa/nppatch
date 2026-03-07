@@ -1,44 +1,30 @@
 <template>
-    <template lwc:if={isLoading}>
-        <div class="slds-is-relative slds-p-around_large">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-    <template lwc:if={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
+        <lightning-combobox
+            label={labels.accountProcessor}
+            field-level-help={labels.helpAccountModel}
+            value={_workingCopy.Account_Processor__c}
+            options={accountModelOptions}
+            onchange={handleAccountModelChange}>
+        </lightning-combobox>
 
-    <template lwc:if={_settings}>
-        <div class="slds-is-relative slds-p-around_medium">
-            <p class="slds-text-color_weak slds-text-body_medium slds-m-bottom_medium">{sectionDescription}</p>
+        <lightning-combobox
+            label={labels.hhAccountRecordType}
+            field-level-help={labels.helpHHAccountRT}
+            value={_workingCopy.HH_Account_RecordTypeID__c}
+            options={accountRecordTypeOptionsWithNone}
+            onchange={handleHHRecordTypeChange}>
+        </lightning-combobox>
 
-            <lightning-combobox
-                label={labels.accountProcessor}
-                field-level-help={labels.helpAccountModel}
-                value={_workingCopy.Account_Processor__c}
-                options={accountModelOptions}
-                onchange={handleAccountModelChange}>
-            </lightning-combobox>
+        <lightning-combobox
+            label={labels.oneToOneRecordType}
+            field-level-help={labels.helpOneToOneRT}
+            value={_workingCopy.One_to_One_RecordTypeID__c}
+            options={accountRecordTypeOptionsWithNone}
+            onchange={handleOneToOneRecordTypeChange}>
+        </lightning-combobox>
 
-            <lightning-combobox
-                label={labels.hhAccountRecordType}
-                field-level-help={labels.helpHHAccountRT}
-                value={_workingCopy.HH_Account_RecordTypeID__c}
-                options={accountRecordTypeOptionsWithNone}
-                onchange={handleHHRecordTypeChange}>
-            </lightning-combobox>
-
-            <lightning-combobox
-                label={labels.oneToOneRecordType}
-                field-level-help={labels.helpOneToOneRT}
-                value={_workingCopy.One_to_One_RecordTypeID__c}
-                options={accountRecordTypeOptionsWithNone}
-                onchange={handleOneToOneRecordTypeChange}>
-            </lightning-combobox>
-        </div>
-    </template>
+    </c-stg-panel-content>
 </template>
