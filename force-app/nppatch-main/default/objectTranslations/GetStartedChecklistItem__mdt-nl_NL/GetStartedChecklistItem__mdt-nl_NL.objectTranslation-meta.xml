@@ -22,10 +22,10 @@
     <gender>Neuter</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Checklistitem Aan de slag voor NPSP</value>
+        <value>Checklistitem Aan de slag</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Checklistitems Aan de slag voor NPSP</value>
+        <value>Checklistitems Aan de slag</value>
     </caseValues>
 </CustomObjectTranslation>

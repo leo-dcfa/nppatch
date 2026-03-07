@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Related_Opportunity_Contact_Role__c</name>
-    <help>Cuando crea una oportunidad para el contacto en esta relación, NPSP asigna esta función de contacto de oportunidad al contacto relacionado.</help>
+    <help>Cuando crea una oportunidad para el contacto en esta relación, NPPatch asigna esta función de contacto de oportunidad al contacto relacionado.</help>
     <label>Función contacto oportunidad relacionada</label>
     <picklistValues>
         <masterLabel>Soft Credit</masterLabel>

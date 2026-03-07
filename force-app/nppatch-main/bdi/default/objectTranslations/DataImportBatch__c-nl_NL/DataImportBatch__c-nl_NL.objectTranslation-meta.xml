@@ -31,10 +31,10 @@
     <gender>Feminine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP-Gegevensimportbatch</value>
+        <value>Gegevensimportbatch</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP-Gegevensimportbatches</value>
+        <value>Gegevensimportbatches</value>
     </caseValues>
 </CustomObjectTranslation>

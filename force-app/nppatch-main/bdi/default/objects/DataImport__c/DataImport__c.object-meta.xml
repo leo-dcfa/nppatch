@@ -52,13 +52,13 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>NPPatch Data Import</label>
+    <label>Data Import</label>
     <nameField>
         <displayFormat>DI-{000000}</displayFormat>
         <label>Data Import ID</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>NPPatch Data Imports</pluralLabel>
+    <pluralLabel>Data Imports</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>FailureInformation__c</customTabListAdditionalFields>

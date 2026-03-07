@@ -8047,14 +8047,14 @@ Hinweis: Die Registerkarte &quot;NPPatch-Einstellungen&quot; ist in der NPPatch-
     </customTabs>
     <customTabs>
         <name>NPPatch_Resources</name>
-        <label>Erste Schritte</label>
+        <label>NPPatch Resources</label>
     </customTabs>
     <customTabs>
         <name>NPPatch_Settings</name>
         <label>NPPatch-Einstellungen</label>
     </customTabs>
     <customApplications>
-        <name>NPPatch_Lightning</name>
+        <name>NPPatch_Admin</name>
         <label>NPPatch</label>
     </customApplications>
     <quickActions>

@@ -59,7 +59,15 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Errors</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchFilterFields>Error_Type__c</searchFilterFields>
+        <searchFilterFields>Context_Type__c</searchFilterFields>
+        <searchFilterFields>Datetime__c</searchFilterFields>
+        <searchResultsAdditionalFields>Error_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Context_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Datetime__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Full_Message__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

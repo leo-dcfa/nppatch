@@ -9,5 +9,5 @@
     <masterLabel>Copy Household Address to Contacts</masterLabel>
     <openType>sidebar</openType>
     <protected>false</protected>
-    <url>/apex/%%%NAMESPACE%%%ADDR_CopyAddrHHObjBTN?id={!Household__c.Id}</url>
+    <url>/apex/ADDR_CopyAddrHHObjBTN?id={!Household__c.Id}</url>
 </WebLink>

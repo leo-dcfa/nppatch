@@ -30,6 +30,6 @@
     </standardFields>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP データインポートバッチ</value>
+        <value>データインポートバッチ</value>
     </caseValues>
 </CustomObjectTranslation>

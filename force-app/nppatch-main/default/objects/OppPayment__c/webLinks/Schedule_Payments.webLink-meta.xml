@@ -10,5 +10,5 @@
     <openType>sidebar</openType>
     <protected>false</protected>
     <requireRowSelection>false</requireRowSelection>
-    <url>/apex/%%%NAMESPACE%%%PMT_PaymentWizard?id={!Opportunity.Id}&amp;wtype=payment</url>
+    <url>/apex/PMT_PaymentWizard?id={!Opportunity.Id}&amp;wtype=payment</url>
 </WebLink>

@@ -23,41 +23,41 @@
     <caseValues>
         <plural>false</plural>
         <caseType>Nominative</caseType>
-        <value>Element der NPSP-Erste Schritte-Checkliste</value>
+        <value>Element der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Accusative</caseType>
-        <value>Element der NPSP-Erste Schritte-Checkliste</value>
+        <value>Element der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Dative</caseType>
-        <value>Element der NPSP-Erste Schritte-Checkliste</value>
+        <value>Element der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>false</plural>
         <caseType>Genitive</caseType>
-        <value>Elements der NPSP-Erste Schritte-Checkliste</value>
+        <value>Elements der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Nominative</caseType>
-        <value>Elemente der NPSP-Erste Schritte-Checkliste</value>
+        <value>Elemente der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Accusative</caseType>
-        <value>Elemente der NPSP-Erste Schritte-Checkliste</value>
+        <value>Elemente der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Dative</caseType>
-        <value>Elementen der NPSP-Erste Schritte-Checkliste</value>
+        <value>Elementen der Erste Schritte-Checkliste</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
         <caseType>Genitive</caseType>
-        <value>Elemente der NPSP-Erste Schritte-Checkliste</value>
+        <value>Elemente der Erste Schritte-Checkliste</value>
     </caseValues>
 </CustomObjectTranslation>

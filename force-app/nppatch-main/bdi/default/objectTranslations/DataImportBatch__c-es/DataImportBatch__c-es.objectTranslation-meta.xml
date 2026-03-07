@@ -31,10 +31,10 @@
     <gender>Masculine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Lote de importación de datos de NPSP</value>
+        <value>Lote de importación de datos</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Lotes de importaciones de datos de NPSP</value>
+        <value>Lotes de importaciones de datos</value>
     </caseValues>
 </CustomObjectTranslation>

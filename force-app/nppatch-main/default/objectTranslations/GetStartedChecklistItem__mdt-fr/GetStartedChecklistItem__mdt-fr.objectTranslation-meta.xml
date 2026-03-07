@@ -23,10 +23,10 @@
     <startsWith>Vowel</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>Élément de la liste de contrôle Premiers pas NPSP</value>
+        <value>Élément de la liste de contrôle Premiers pas</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Éléments de la liste de contrôle Premiers pas NPSP</value>
+        <value>Éléments de la liste de contrôle Premiers pas</value>
     </caseValues>
 </CustomObjectTranslation>

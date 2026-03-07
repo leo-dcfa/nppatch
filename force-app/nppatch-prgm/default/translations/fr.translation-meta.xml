@@ -645,7 +645,7 @@
         <label>Livraisons de services en masse</label>
     </customTabs>
     <customApplications>
-        <name>Program_Management</name>
+        <name>NPPatch_Programs</name>
         <label>Gestion de programme</label>
     </customApplications>
     <quickActions>

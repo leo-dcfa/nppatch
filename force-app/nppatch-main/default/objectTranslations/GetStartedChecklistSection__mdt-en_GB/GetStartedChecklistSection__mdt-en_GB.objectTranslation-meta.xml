@@ -10,10 +10,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Get Started Checklist Section</value>
+        <value>Get Started Checklist Section</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP Get Started Checklist Sections</value>
+        <value>Get Started Checklist Sections</value>
     </caseValues>
 </CustomObjectTranslation>

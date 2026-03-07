@@ -10,10 +10,10 @@
     <gender>Feminine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Sección de lista de comprobación de Empezar a trabajar de NPSP</value>
+        <value>Sección de lista de comprobación de Empezar a trabajar</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Secciones de listas de comprobación de Empezar a trabajar de NPSP</value>
+        <value>Secciones de listas de comprobación de Empezar a trabajar</value>
     </caseValues>
 </CustomObjectTranslation>

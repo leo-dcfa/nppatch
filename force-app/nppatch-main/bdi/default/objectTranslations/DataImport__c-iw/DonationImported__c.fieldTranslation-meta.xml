@@ -2,5 +2,5 @@
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>התרומה יובאה</label>
     <name>DonationImported__c</name>
-    <relationshipLabel>יבוא נתוני NPSP</relationshipLabel>
+    <relationshipLabel>יבוא נתוני NPPatch</relationshipLabel>
 </CustomFieldTranslation>

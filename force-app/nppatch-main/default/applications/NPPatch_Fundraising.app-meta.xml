@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>Fundraising_Home</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+    </actionOverrides>
     <brand>
-        <headerColor>#598B41</headerColor>
-        <logo>peapatch</logo>
+        <headerColor>#05878A</headerColor>
+        <logo>heart_dollar_pointing_icon</logo>
         <logoVersion>1</logoVersion>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
-    <description>Community-Led Nonprofit Management</description>
+    <description>Donor relationship management, pipeline tracking, and stewardship for development staff</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
-    <label>NPPatch</label>
+    <label>Fundraising</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>
-    <tabs>standard-Lead</tabs>
-    <tabs>standard-Opportunity</tabs>
     <tabs>standard-Campaign</tabs>
-    <tabs>standard-report</tabs>
+    <tabs>standard-Opportunity</tabs>
     <tabs>Recurring_Donation__c</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
     <tabs>Engagement_Plan_Template__c</tabs>
     <tabs>Level__c</tabs>
     <tabs>Contact_Merge</tabs>

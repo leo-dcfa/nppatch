@@ -63,6 +63,20 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Payments</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Opportunity__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Payment_Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Paid__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Opportunity__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Payment_Amount__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Paid__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Opportunity__c</searchFilterFields>
+        <searchFilterFields>Payment_Amount__c</searchFilterFields>
+        <searchFilterFields>Paid__c</searchFilterFields>
+        <searchResultsAdditionalFields>Opportunity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Payment_Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Payment_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Paid__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

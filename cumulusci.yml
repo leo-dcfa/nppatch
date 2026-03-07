@@ -293,7 +293,7 @@ tasks:
     group: "NPPatch Config"
     options:
       path: scripts/ReorderAppMenu.cls
-      apex: setPPatchAppToFirst();
+      apex: applyOrgAppOrder();
 
 flows:
   # =========================================

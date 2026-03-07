@@ -3,6 +3,6 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Package Settings</value>
+        <value>Package Settings</value>
     </caseValues>
 </CustomObjectTranslation>

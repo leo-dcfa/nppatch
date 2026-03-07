@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Minimum_Amount__c</name>
-    <help>Der Mindestbetrag, der benötigt wird, damit NPSP diese Ebene zuweist. Wenn das Feld leer gelassen wird, weist NPSP diese Ebene einem beliebigen Betrag zu, der kleiner als der Höchstbetrag dieser Ebene ist.</help>
+    <help>Der Mindestbetrag, der benötigt wird, damit NPPatch diese Ebene zuweist. Wenn das Feld leer gelassen wird, weist NPPatch diese Ebene einem beliebigen Betrag zu, der kleiner als der Höchstbetrag dieser Ebene ist.</help>
     <label>Mindestbetrag (&gt;=)</label>
 </CustomFieldTranslation>

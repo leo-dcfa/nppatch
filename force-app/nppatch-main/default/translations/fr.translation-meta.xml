@@ -8048,14 +8048,14 @@ Remarque : l’onglet de paramètres NPPatch est visible dans l’application N
     </customTabs>
     <customTabs>
         <name>NPPatch_Resources</name>
-        <label>Premiers pas</label>
+        <label>NPPatch Resources</label>
     </customTabs>
     <customTabs>
         <name>NPPatch_Settings</name>
         <label>Paramètres NPPatch</label>
     </customTabs>
     <customApplications>
-        <name>NPPatch_Lightning</name>
+        <name>NPPatch_Admin</name>
         <label>NPPatch</label>
     </customApplications>
     <quickActions>

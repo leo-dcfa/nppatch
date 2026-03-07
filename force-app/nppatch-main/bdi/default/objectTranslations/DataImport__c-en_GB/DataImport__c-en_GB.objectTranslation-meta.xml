@@ -87,10 +87,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Data Import</value>
+        <value>Data Import</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP Data Imports</value>
+        <value>Data Imports</value>
     </caseValues>
 </CustomObjectTranslation>

@@ -3,10 +3,10 @@
     <gender>Feminine</gender>
     <caseValues>
         <plural>false</plural>
-        <value>Configuração do pacote do NPSP</value>
+        <value>Configuração do pacote</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Configurações do pacote do NPSP</value>
+        <value>Configurações do pacote</value>
     </caseValues>
 </CustomObjectTranslation>

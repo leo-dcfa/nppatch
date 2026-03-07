@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Donation_Matching_Behavior__c</name>
-    <help>Definieert hoe NPSP moet omgaan met overeenkomende Donaties.</help>
+    <help>Definieert hoe NPPatch moet omgaan met overeenkomende Donaties.</help>
     <label>Overeenkomstenpatroon voor donatie</label>
     <picklistValues>
         <masterLabel>Do Not Match</masterLabel>
