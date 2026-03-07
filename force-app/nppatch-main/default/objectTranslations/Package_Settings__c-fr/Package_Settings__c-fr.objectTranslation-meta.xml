@@ -4,10 +4,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>Paramètre du package NPSP</value>
+        <value>Paramètre du package</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Paramètres du package NPSP</value>
+        <value>Paramètres du package</value>
     </caseValues>
 </CustomObjectTranslation>

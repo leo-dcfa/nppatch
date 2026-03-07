@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>Required__c</name>
-    <help>Geeft aan of het veld voor het object NPSP-gegevensimport een waarde moet bevatten. Wanneer dit verplicht is, zal de testuitvoering mislukken als dat veld geen waarde bevat.</help>
+    <help>Geeft aan of het veld voor het object NPPatch-gegevensimport een waarde moet bevatten. Wanneer dit verplicht is, zal de testuitvoering mislukken als dat veld geen waarde bevat.</help>
     <label>Vereist?</label>
     <picklistValues>
         <masterLabel>Yes</masterLabel>

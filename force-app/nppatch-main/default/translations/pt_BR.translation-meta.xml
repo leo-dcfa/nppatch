@@ -8047,14 +8047,14 @@ Nota: a guia Configurações do NPPatch está visível no aplicativo Pacote de s
     </customTabs>
     <customTabs>
         <name>NPPatch_Resources</name>
-        <label>Conceitos básicos</label>
+        <label>NPPatch Resources</label>
     </customTabs>
     <customTabs>
         <name>NPPatch_Settings</name>
         <label>Configurações do NPPatch</label>
     </customTabs>
     <customApplications>
-        <name>NPPatch_Lightning</name>
+        <name>NPPatch_Admin</name>
         <label>Pacote de sucesso para organizações sem fins lucrativos</label>
     </customApplications>
     <quickActions>

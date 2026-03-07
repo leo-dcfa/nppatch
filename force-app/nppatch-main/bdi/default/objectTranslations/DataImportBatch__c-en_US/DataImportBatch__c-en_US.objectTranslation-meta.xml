@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Data Import Batch</value>
+        <value>Data Import Batch</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP Data Import Batches</value>
+        <value>Data Import Batches</value>
     </caseValues>
     <layouts>
         <layout>NPPatch Data Import Batch Layout</layout>

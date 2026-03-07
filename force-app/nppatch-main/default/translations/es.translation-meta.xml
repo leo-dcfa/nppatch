@@ -8037,14 +8037,14 @@ Nota: La ficha Configuración de NPPatch es visible en la aplicación NPPatch. S
     </customTabs>
     <customTabs>
         <name>NPPatch_Resources</name>
-        <label>Primeros pasos</label>
+        <label>NPPatch Resources</label>
     </customTabs>
     <customTabs>
         <name>NPPatch_Settings</name>
         <label>Configuración de NPPatch</label>
     </customTabs>
     <customApplications>
-        <name>NPPatch_Lightning</name>
+        <name>NPPatch_Admin</name>
         <label>NPPatch</label>
     </customApplications>
     <quickActions>

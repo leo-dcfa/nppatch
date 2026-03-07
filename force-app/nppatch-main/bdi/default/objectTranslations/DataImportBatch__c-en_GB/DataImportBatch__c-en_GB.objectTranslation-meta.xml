@@ -31,10 +31,10 @@
     <startsWith>Consonant</startsWith>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP Data Import Batch</value>
+        <value>Data Import Batch</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>NPSP Data Import Batches</value>
+        <value>Data Import Batches</value>
     </caseValues>
 </CustomObjectTranslation>

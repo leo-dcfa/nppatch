@@ -645,7 +645,7 @@
         <label>Entregas de servicio masivas</label>
     </customTabs>
     <customApplications>
-        <name>Program_Management</name>
+        <name>NPPatch_Programs</name>
         <label>Gestión de programas</label>
     </customApplications>
     <quickActions>

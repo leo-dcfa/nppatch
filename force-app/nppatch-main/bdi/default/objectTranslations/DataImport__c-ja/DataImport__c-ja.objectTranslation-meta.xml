@@ -86,6 +86,6 @@
     </standardFields>
     <caseValues>
         <plural>false</plural>
-        <value>NPSP データインポート</value>
+        <value>データインポート</value>
     </caseValues>
 </CustomObjectTranslation>

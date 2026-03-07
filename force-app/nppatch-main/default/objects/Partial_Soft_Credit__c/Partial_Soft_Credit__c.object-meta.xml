@@ -64,6 +64,10 @@
         <searchFilterFields>Role_Name__c</searchFilterFields>
         <searchFilterFields>Amount__c</searchFilterFields>
         <searchFilterFields>NAME</searchFilterFields>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Opportunity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Role_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

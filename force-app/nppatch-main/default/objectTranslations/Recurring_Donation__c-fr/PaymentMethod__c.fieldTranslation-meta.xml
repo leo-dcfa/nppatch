@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <name>PaymentMethod__c</name>
-    <help>Le mode de paiement pour ce don récurrent. NPSP copie automatiquement la valeur sélectionnée dans chaque enregistrement de Paiement.</help>
+    <help>Le mode de paiement pour ce don récurrent. NPPatch copie automatiquement la valeur sélectionnée dans chaque enregistrement de Paiement.</help>
     <label>Mode de paiement</label>
     <picklistValues>
         <masterLabel>Credit Card</masterLabel>

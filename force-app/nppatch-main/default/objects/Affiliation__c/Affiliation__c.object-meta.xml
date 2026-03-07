@@ -63,6 +63,21 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Affiliations</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Organization__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Role__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Contact__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Organization__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Role__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Contact__c</searchFilterFields>
+        <searchFilterFields>Organization__c</searchFilterFields>
+        <searchFilterFields>Role__c</searchFilterFields>
+        <searchFilterFields>Status__c</searchFilterFields>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Organization__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Role__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

@@ -2,7 +2,7 @@
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customApplications>
         <label><!-- NPPatch --></label>
-        <name>NPPatch_Lightning</name>
+        <name>NPPatch_Admin</name>
     </customApplications>
     <customLabels>
         <label>מזהה האימות לא יכול להיות ריק.</label>
@@ -7194,7 +7194,7 @@
         <name>Households_Settings</name>
     </customTabs>
     <customTabs>
-        <label>תחילת העבודה</label>
+        <label>NPPatch Resources</label>
         <name>NPPatch_Resources</name>
     </customTabs>
     <customTabs>
