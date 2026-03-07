@@ -15,15 +15,6 @@
     <template if:true={_settings}>
         <div class="panel-container">
             <div class="panel-header">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="slds-text-heading_small">
-                            <span class="slds-text-color_weak">{labels.sectionLabel}</span>
-                            <span class="slds-text-color_weak"> &bull; </span>
-                            {labels.pageLabel}
-                        </h2>
-                    </div>
-                </div>
                 <p class="section-description">{labels.description}</p>
             </div>
 
@@ -38,14 +29,30 @@
                     <div class="create-form">
                         <h3 class="section-subheader">New Reciprocal Relationship</h3>
                         <div class="form-grid">
-                            <lightning-input label="Name" value={_newRecord.Name} onchange={handleNewNameChange} class="text-input" required></lightning-input>
-                            <lightning-input label="Male" value={_newRecord.Male__c} onchange={handleNewMaleChange} class="text-input"></lightning-input>
-                            <lightning-input label="Female" value={_newRecord.Female__c} onchange={handleNewFemaleChange} class="text-input"></lightning-input>
-                            <lightning-input label="Neutral" value={_newRecord.Neutral__c} onchange={handleNewNeutralChange} class="text-input"></lightning-input>
+                            <lightning-input label="Name" value={_newRecord.Name} placeholder="Child" field-level-help="The relationship type on the initiating Contact (e.g. Child)." onchange={handleNewNameChange} onblur={handleNewNameBlur} class="text-input" required></lightning-input>
+                            <lightning-input label="Female" value={_newRecord.Female__c} placeholder="Mother" field-level-help="Reciprocal created on the related Contact when their gender is Female (e.g. Mother)." onchange={handleNewFemaleChange} class="text-input"></lightning-input>
+                            <lightning-input label="Male" value={_newRecord.Male__c} placeholder="Father" field-level-help="Reciprocal created on the related Contact when their gender is Male (e.g. Father)." onchange={handleNewMaleChange} class="text-input"></lightning-input>
+                            <lightning-input label="Neutral" value={_newRecord.Neutral__c} placeholder="Parent" field-level-help="Reciprocal created on the related Contact when gender is unspecified (e.g. Parent)." onchange={handleNewNeutralChange} class="text-input"></lightning-input>
                         </div>
                         <div class="form-actions">
                             <lightning-button label="Save" onclick={handleSaveNew} variant="brand" disabled={_isSaving}></lightning-button>
                             <lightning-button label="Cancel" onclick={handleCancelNew} variant="neutral" disabled={_isSaving}></lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={_isEditing}>
+                    <div class="create-form">
+                        <h3 class="section-subheader">Edit Reciprocal Relationship</h3>
+                        <div class="form-grid">
+                            <lightning-input label="Name" value={_editRecord.Name} field-level-help="The relationship type on the initiating Contact (e.g. Child)." onchange={handleEditNameChange} class="text-input" required></lightning-input>
+                            <lightning-input label="Female" value={_editRecord.Female__c} field-level-help="Reciprocal created on the related Contact when their gender is Female (e.g. Mother)." onchange={handleEditFemaleChange} class="text-input"></lightning-input>
+                            <lightning-input label="Male" value={_editRecord.Male__c} field-level-help="Reciprocal created on the related Contact when their gender is Male (e.g. Father)." onchange={handleEditMaleChange} class="text-input"></lightning-input>
+                            <lightning-input label="Neutral" value={_editRecord.Neutral__c} field-level-help="Reciprocal created on the related Contact when gender is unspecified (e.g. Parent)." onchange={handleEditNeutralChange} class="text-input"></lightning-input>
+                        </div>
+                        <div class="form-actions">
+                            <lightning-button label="Save" onclick={handleSaveEdit} variant="brand" disabled={_isSaving}></lightning-button>
+                            <lightning-button label="Cancel" onclick={handleCancelEdit} variant="neutral" disabled={_isSaving}></lightning-button>
                         </div>
                     </div>
                 </template>

@@ -9,7 +9,7 @@ import accessDeniedMessage from "@salesforce/label/c.addrCopyConAddBtnFls";
 
 const PANEL_SETTINGS = {
     accountModel: ["Contacts_And_Orgs_Settings__c"],
-    addressVerification: ["Contacts_And_Orgs_Settings__c"],
+    addressVerification: ["Addr_Verification_Settings__c"],
     affiliations: ["Affiliations_Settings__c"],
     allocations: ["Allocations_Settings__c"],
     campaignMembers: ["Contacts_And_Orgs_Settings__c"],
@@ -45,7 +45,7 @@ const SETTINGS_GROUPS = [
                 description: "Automatically track organizational connections when a Contact's Account changes." },
             { name: "relationships", title: "Relationship Settings",
                 description: "Configure how reciprocal relationships are created between Contacts." },
-            { name: "relReciprocal", title: "Reciprocal Relationships",
+            { name: "relReciprocal", title: "Reciprocal Relationships", size: "large",
                 description: "Define how each relationship type maps to its reciprocal based on gender." },
             { name: "relAutoCreate", title: "Auto-Create Relationships",
                 description: "Automatically create Relationships when specific lookup fields are populated." },
@@ -155,19 +155,15 @@ export default class NppatchSettings extends LightningElement {
 
     async handleOpenPanel(event) {
         const name = event.currentTarget.dataset.name;
-        let title = "";
+        let tile;
         for (const group of SETTINGS_GROUPS) {
-            for (const tile of group.tiles) {
-                if (tile.name === name) {
-                    title = tile.title;
-                    break;
-                }
-            }
+            tile = group.tiles.find((t) => t.name === name);
+            if (tile) break;
         }
         await SettingsModal.open({
-            size: "medium",
+            size: tile?.size || "medium",
             panelName: name,
-            panelTitle: title,
+            panelTitle: tile?.title || "",
         });
     }
 

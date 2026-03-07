@@ -155,6 +155,9 @@ public with sharing class NppatchSettingsController {
                 when 'Levels_Settings__c' {
                     UTIL_CustomSettingsFacade.getOrgLevelsSettings();
                 }
+                when 'Addr_Verification_Settings__c' {
+                    UTIL_CustomSettingsFacade.getOrgAddressVerificationSettings();
+                }
             }
         }
     }
@@ -222,6 +225,33 @@ public with sharing class NppatchSettingsController {
         }
         insert record;
         return record.Id;
+    }
+
+    /**
+     * @description Updates an existing list custom setting record. Admin only.
+     * @param settingsObjectName API name of the list custom setting
+     * @param recordId The Id of the record to update
+     * @param fieldValues Map of field API names to new values
+     */
+    @AuraEnabled
+    public static void updateListSetting(String settingsObjectName, Id recordId, Map<String, Object> fieldValues) {
+        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
+        validateListSettingsName(settingsObjectName);
+
+        Schema.SObjectType sot = Schema.getGlobalDescribe().get(settingsObjectName);
+        if (sot == null) {
+            sot = Schema.getGlobalDescribe().get(
+                UTIL_Namespace.prefixNamespace(settingsObjectName)
+            );
+        }
+        SObject record = sot.newSObject(recordId);
+        for (String fieldName : fieldValues.keySet()) {
+            if (fieldName.equalsIgnoreCase('Id') || fieldName.equalsIgnoreCase('attributes')) {
+                continue;
+            }
+            record.put(fieldName, fieldValues.get(fieldName));
+        }
+        update record;
     }
 
     /**
@@ -318,6 +348,59 @@ public with sharing class NppatchSettingsController {
         return fields;
     }
 
+    // ─── Address Verification ──────────────────────────────────────────
+
+    private static final Set<String> VALIDATOR_EXCLUSIONS = new Set<String>{
+        'ADDR_IValidator', 'ADDR_Validator', 'ADDR_Validator_REST'
+    };
+
+    /**
+     * @description Discovers available address verification service classes
+     * by querying ApexClass metadata and checking for ADDR_IValidator implementations.
+     * Returns a list of maps with className, serviceName, and defaultUrl keys.
+     * @return List of maps describing each available validator
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<Map<String, String>> getAddressValidators() {
+        List<Map<String, String>> validators = new List<Map<String, String>>();
+
+        String addrLikeClause = 'ADDR%';
+        ApexClass[] classes = [
+            SELECT Name, NamespacePrefix
+            FROM ApexClass
+            WHERE Name LIKE :addrLikeClause
+        ];
+
+        for (ApexClass c : classes) {
+            String upperName = c.Name.toUpperCase();
+            if (VALIDATOR_EXCLUSIONS.contains(c.Name)
+                || upperName.endsWith('TEST')
+                || upperName.endsWith('CTRL')
+                || upperName.endsWith('TDTM')
+                || upperName.endsWith('BATCH')
+                || upperName.endsWith('SCHED')) {
+                continue;
+            }
+            Type classType = Type.forName(c.NamespacePrefix, c.Name);
+            if (classType != null) {
+                try {
+                    Object classInstance = classType.newInstance();
+                    if (classInstance instanceof ADDR_IValidator) {
+                        ADDR_IValidator validator = (ADDR_IValidator) classInstance;
+                        validators.add(new Map<String, String>{
+                            'className' => c.Name,
+                            'serviceName' => validator.getServiceName(),
+                            'defaultUrl' => validator.getDefaultURL()
+                        });
+                    }
+                } catch (Exception ex) {
+                    // Skip classes that fail to instantiate
+                }
+            }
+        }
+        return validators;
+    }
+
     // ─── Private Helpers ────────────────────────────────────────────────
 
     private static void validateListSettingsName(String settingsObjectName) {
@@ -365,6 +448,9 @@ public with sharing class NppatchSettingsController {
             }
             when 'Levels_Settings__c' {
                 return UTIL_CustomSettingsFacade.getOrgLevelsSettings();
+            }
+            when 'Addr_Verification_Settings__c' {
+                return UTIL_CustomSettingsFacade.getOrgAddressVerificationSettings();
             }
             when else {
                 AuraHandledException e = new AuraHandledException(
