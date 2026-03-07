@@ -15,27 +15,16 @@
     <template if:true={isReady}>
         <div class="panel-container">
             <div class="panel-header">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="slds-text-heading_small">
-                            <span class="slds-text-color_weak">{labels.sectionLabel}</span>
-                            <span class="slds-text-color_weak"> &bull; </span>
-                            {labels.pageLabel}
-                        </h2>
-                    </div>
-                    <div class="slds-col_bump-left">
-                        <template if:true={_isAdmin}>
-                            <template if:false={_isCreating}>
-                                <lightning-button
-                                    label="New"
-                                    onclick={handleNewClick}
-                                    variant="neutral"
-                                    icon-name="utility:add"
-                                ></lightning-button>
-                            </template>
-                        </template>
-                    </div>
-                </div>
+                <template if:true={_isAdmin}>
+                    <template if:false={_isCreating}>
+                        <lightning-button
+                            label="New"
+                            onclick={handleNewClick}
+                            variant="neutral"
+                            icon-name="utility:add"
+                        ></lightning-button>
+                    </template>
+                </template>
                 <p class="section-description">{labels.description}</p>
             </div>
 
