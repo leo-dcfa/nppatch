@@ -553,7 +553,9 @@ public with sharing class CRLP_RollupUI_SVC {
     */
     public static Map<String, String> getAppLabels() {
 
-        PageReference settingsPage = Page.CRLP_RollupSetup;
+        String ns = UTIL_Namespace.getNamespace();
+        String tabName = String.isNotBlank(ns) ? ns + '__NPPatch_Settings' : 'NPPatch_Settings';
+        PageReference settingsPage = new PageReference('/lightning/n/' + tabName);
 
             Map<String, String> labels = new Map<String,String>
             {
