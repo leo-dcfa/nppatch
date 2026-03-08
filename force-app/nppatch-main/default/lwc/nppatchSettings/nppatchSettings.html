@@ -13,8 +13,12 @@
         </c-util-illustration>
     </template>
     <template lwc:if={isReady}>
-        <lightning-card title={labels.title} icon-name="custom:custom108">
-            <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+        <article class="slds-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <lightning-icon icon-name="custom:custom108" size="small"></lightning-icon>
+                    <h2 class="slds-card__header-title">{labels.title}</h2>
+                </div>
                 <template for:each={settingsGroups} for:item="group">
                     <div key={group.label} class="settings-group">
                         <h2 class="group-heading">{group.label}</h2>
@@ -39,6 +43,6 @@
                     </div>
                 </template>
             </div>
-        </lightning-card>
+        </article>
     </template>
 </template>

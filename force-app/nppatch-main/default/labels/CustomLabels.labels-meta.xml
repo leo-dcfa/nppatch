@@ -9842,12 +9842,28 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <value>There are {0} One-to-One Accounts that have no Contacts.</value>
     </labels>
     <labels>
+        <fullName>healthDetailsAccountDataValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsAccountDataValid</shortDescription>
+        <value>No orphaned One-to-One Account records found. All One-to-One Accounts have an associated Contact.</value>
+    </labels>
+    <labels>
         <fullName>healthDetailsAccountDefaultRTInvalid</fullName>
         <categories>Health Check</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>healthDetailsAccountDefaultRTInvalid</shortDescription>
-        <value>The Account Model record type isn&apos;t valid.</value>
+        <value>The Account record type configured for the Account Model does not exist or is inactive. This can prevent new Accounts from being created correctly.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsAccountDefaultRTValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsAccountDefaultRTValid</shortDescription>
+        <value>The Account record type for the Account Model is valid and active. New Accounts will be created with the correct record type.</value>
     </labels>
     <labels>
         <fullName>healthDetailsAccountDefaultRTIssue</fullName>
@@ -9863,7 +9879,15 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsAccountModel</shortDescription>
-        <value>There is no valid Account Model specified.</value>
+        <value>No Account Model is configured. NPPatch requires an Account Model (Household Account, One-to-One, or Individual Bucket) to correctly associate Contacts with Accounts.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsAccountModelValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsAccountModelValid</shortDescription>
+        <value>Your Account Model is correctly configured and set to</value>
     </labels>
     <labels>
         <fullName>healthDetailsAccountProcessor</fullName>
@@ -9918,7 +9942,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsBadReportId</shortDescription>
-        <value>Invalid Report {0} specified.</value>
+        <value>The Report ID {0} specified in NPPatch Settings does not match a valid report. The associated feature (e.g., Household Mailing List) will not work until a valid report is configured.</value>
     </labels>
     <labels>
         <fullName>healthDetailsContactData</fullName>
@@ -9927,6 +9951,14 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <protected>false</protected>
         <shortDescription>healthDetailsContactData</shortDescription>
         <value>There are {0} Contacts that have no Account. Contacts with no Account are private to the User who created them and can&apos;t be seen by other Users.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsContactDataValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsContactDataValid</shortDescription>
+        <value>All Contacts have an associated Account. No orphaned Contact records were found.</value>
     </labels>
     <labels>
         <fullName>healthDetailsDuplicateAcctRT</fullName>
@@ -9943,6 +9975,22 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <protected>false</protected>
         <shortDescription>healthDetailsGenderField</shortDescription>
         <value>Gender field {0} does not exist on Contact.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsGenderFieldNone</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsGenderFieldNone</shortDescription>
+        <value>No gender field is configured. This is optional — if set, NPPatch uses it to determine gendered greetings and reciprocal relationship labels.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsGenderFieldValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsGenderFieldValid</shortDescription>
+        <value>The gender field is set to {0}. NPPatch will use this field for gendered greetings and reciprocal relationship labels.</value>
     </labels>
     <labels>
         <fullName>healthDetailsHHAccountModel</fullName>
@@ -9969,6 +10017,14 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <value>There are {0} Household object records that have no Contacts.</value>
     </labels>
     <labels>
+        <fullName>healthDetailsHHDataValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsHHDataValid</shortDescription>
+        <value>No orphaned Household records found. All Household Accounts and Household objects have at least one associated Contact.</value>
+    </labels>
+    <labels>
         <fullName>healthDetailsInvalidCMField</fullName>
         <categories>Health Check</categories>
         <language>en_US</language>
@@ -9990,7 +10046,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsInvalidErrorChatterGroup</shortDescription>
-        <value>Invalid Chatter Group {0}.</value>
+        <value>The Chatter Group &quot;{0}&quot; configured for error notifications does not exist or is inactive. Error notifications will not be posted until a valid Chatter Group is selected in NPPatch Settings.</value>
     </labels>
     <labels>
         <fullName>healthDetailsInvalidErrorRecipient</fullName>
@@ -9998,7 +10054,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsInvalidErrorRecipient</shortDescription>
-        <value>Invalid Error Notification recipient.</value>
+        <value>The Error Notification recipient configured in NPPatch Settings is not valid. Error notifications will not be delivered until a valid recipient (user, Chatter group, or &quot;All Sys Admins&quot;) is selected.</value>
     </labels>
     <labels>
         <fullName>healthDetailsInvalidErrorUser</fullName>
@@ -10006,7 +10062,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsInvalidErrorUser</shortDescription>
-        <value>Invalid User {0}.</value>
+        <value>The User &quot;{0}&quot; configured for error notifications is not a valid active user. Error notifications will not be delivered to this user.</value>
     </labels>
     <labels>
         <fullName>healthDetailsInvalidFieldNumeric</fullName>
@@ -10113,12 +10169,28 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <value>Recordtype Name {0} is invalid.</value>
     </labels>
     <labels>
+        <fullName>healthDetailsRecordTypeNone</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsRecordTypeNone</shortDescription>
+        <value>No record type is configured for {0}. This is fine for most organizations — a record type is only needed if you use multiple record types and want to restrict which ones NPPatch processes.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsRecordTypeValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsRecordTypeValid</shortDescription>
+        <value>{0} is set to the {1} record type, which is valid and active.</value>
+    </labels>
+    <labels>
         <fullName>healthDetailsInvalidScheduledJob</fullName>
         <categories>Health Check</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsInvalidScheduledJob</shortDescription>
-        <value>The record {0} in the Schedulable__c object is not valid.</value>
+        <value>The scheduled job record &quot;{0}&quot; in the Schedulable__c object references a class that does not implement the required interface. This job will not run correctly.</value>
     </labels>
     <labels>
         <fullName>healthDetailsMailingListReportMissing</fullName>
@@ -10127,6 +10199,14 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <protected>false</protected>
         <shortDescription>healthDetailsMailingListReportMissing</shortDescription>
         <value>The NPPatch Campaign Household Mailing List Report is missing. This report is run when you click the Household Mailing List button from a Campaign record.</value>
+    </labels>
+    <labels>
+        <fullName>healthDetailsMailingListReportValid</fullName>
+        <categories>Health Check</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>healthDetailsMailingListReportValid</shortDescription>
+        <value>The Household Mailing List Report is configured and valid. The Household Mailing List button on Campaign records will work correctly.</value>
     </labels>
     <labels>
         <fullName>healthDetailsMissingOppPayments</fullName>
@@ -10174,7 +10254,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsOCRDupPrimaryValid</shortDescription>
-        <value>No Opportunities were found with multiple Primary Opportunity Contact Roles.</value>
+        <value>No Opportunities have duplicate Primary Contact Roles. Each Opportunity has at most one Primary Contact Role, ensuring accurate rollup calculations.</value>
     </labels>
     <labels>
         <fullName>healthDetailsOCRSettingsResolution</fullName>
@@ -10190,7 +10270,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>healthDetailsOCRSettingsValid</shortDescription>
-        <value>NPPatch Opportunity Contact Roles settings are valid.</value>
+        <value>Contact Role settings for Opportunities are valid. The Donor role and Soft Credit role are configured with distinct values.</value>
     </labels>
     <labels>
         <fullName>healthDetailsPaymentMappingBadDataTypes</fullName>
@@ -10222,7 +10302,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsSaveAcctFailed</shortDescription>
-        <value>Unable to create a new Account.</value>
+        <value>Health Check was unable to create a test Account. This usually indicates a Validation Rule, required field, or workflow that is blocking Account creation. This may also affect normal NPPatch operations.</value>
     </labels>
     <labels>
         <fullName>healthDetailsSaveOppsFailed</fullName>
@@ -10230,7 +10310,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthDetailsSaveOppsFailed</shortDescription>
-        <value>Unable to create new Opportunities.</value>
+        <value>Health Check was unable to create test Opportunities. This usually indicates a Validation Rule, required field, or workflow that is blocking Opportunity creation. This may also affect Recurring Donation installment creation and other NPPatch automation.</value>
     </labels>
     <labels>
         <fullName>healthDetailsScheduleJobs</fullName>
@@ -10278,7 +10358,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>healthDetailsValidRDCustomPeriod</shortDescription>
-        <value>Recurring Donation Custom Installment Periods are valid.</value>
+        <value>All custom installment period definitions for Recurring Donations are valid and can be used to generate donation schedules.</value>
     </labels>
     <labels>
         <fullName>healthLabelAccountData</fullName>
@@ -10326,7 +10406,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelAutoRelValid</shortDescription>
-        <value>Automatic Relationships are valid.</value>
+        <value>All Automatic Relationship creation settings reference valid fields and have required values configured.</value>
     </labels>
     <labels>
         <fullName>healthLabelContactData</fullName>
@@ -10342,7 +10422,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Error message when Data Health Check does not run</shortDescription>
-        <value>Record data health checks were not run.</value>
+        <value>Record data health checks were not run. This can happen if you have the &quot;Disable Record Data Health Checks&quot; setting enabled, or if the batch job timed out due to a large volume of records.</value>
     </labels>
     <labels>
         <fullName>healthLabelDisableRecordBatch</fullName>
@@ -10366,7 +10446,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelErrorRecipientValid</shortDescription>
-        <value>The Error Notification recipient is valid.</value>
+        <value>Error notifications are configured with a valid recipient. Errors will be sent to the specified user, Chatter group, or all System Administrators.</value>
     </labels>
     <labels>
         <fullName>healthLabelFailed</fullName>
@@ -10382,7 +10462,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelFiscalYearsValid</shortDescription>
-        <value>Your organization is not using Custom Fiscal Years.</value>
+        <value>Your organization uses standard fiscal years, which are fully supported for rollup calculations.</value>
     </labels>
     <labels>
         <fullName>healthLabelHHAccData</fullName>
@@ -10430,7 +10510,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelNoMissingOppPayments</shortDescription>
-        <value>All Opportunities with Payments have expected Payments.</value>
+        <value>All Opportunities that should have Payment records do. No missing Payments were detected.</value>
     </labels>
     <labels>
         <fullName>healthLabelNone</fullName>
@@ -10478,7 +10558,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelPaymentMappingsValid</shortDescription>
-        <value>Payment Mappings are valid.</value>
+        <value>All Payment Field Mappings reference valid fields with compatible data types. Values will copy correctly from Opportunities to Payments.</value>
     </labels>
     <labels>
         <fullName>healthLabelRDOppsValid</fullName>
@@ -10486,7 +10566,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelRDOppsValid</shortDescription>
-        <value>New Opportunities can be saved.</value>
+        <value>Recurring Donation settings allow Opportunities to be created successfully. Required fields and stage mappings are correctly configured.</value>
     </labels>
     <labels>
         <fullName>healthLabelRDValid</fullName>
@@ -10494,7 +10574,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelRDValid</shortDescription>
-        <value>Recurring Donation Field Mappings are valid.</value>
+        <value>All Recurring Donation field mappings are valid. Custom field values will be correctly copied to generated Opportunities.</value>
     </labels>
     <labels>
         <fullName>healthLabelRelReciprocalValid</fullName>
@@ -10502,7 +10582,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelRelReciprocalValid</shortDescription>
-        <value>Reciprocal Relationships are valid.</value>
+        <value>All Reciprocal Relationship settings have at least one gendered or neutral value defined, ensuring reciprocal records are created correctly.</value>
     </labels>
     <labels>
         <fullName>healthLabelScheduler</fullName>
@@ -10518,7 +10598,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelSchedulerValid</shortDescription>
-        <value>NPPatch Recurring Jobs are scheduled.</value>
+        <value>All default NPPatch scheduled jobs are active, including nightly rollups, recurring donation processing, and error handling.</value>
     </labels>
     <labels>
         <fullName>healthLabelShowPassedTests</fullName>
@@ -10550,7 +10630,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelTriggerHandlersValid</shortDescription>
-        <value>Triggers are configured for NPPatch default triggers.</value>
+        <value>All default NPPatch trigger handlers are present and correctly configured. Trigger handlers control automation for Contacts, Accounts, Opportunities, Payments, and other objects.</value>
     </labels>
     <labels>
         <fullName>healthLabelUDFValid</fullName>
@@ -10558,7 +10638,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthLabelUDFValid</shortDescription>
-        <value>User Defined Rollups are valid.</value>
+        <value>All user-defined Customizable Rollup definitions reference valid fields and have correct filter group configurations.</value>
     </labels>
     <labels>
         <fullName>healthLabelVerifyLevels</fullName>
@@ -10574,7 +10654,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Health Check message when all Levels verify ok</shortDescription>
-        <value>All field references on all Levels are valid.</value>
+        <value>All Level definitions reference valid fields and lookup relationships. Level assignments will process correctly.</value>
     </labels>
     <labels>
         <fullName>healthLabelWarning</fullName>
@@ -10590,7 +10670,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>healthPaymentAutoCloseStageInvalid</shortDescription>
-        <value>Select an active Closed/Won stage in the Opportunity stage to be transitioned to when all Payments are Paid setting.</value>
+        <value>The Opportunity stage configured for automatic closure when all Payments are paid is either missing or not an active Closed/Won stage. Opportunities will not automatically update when Payments are fully received.</value>
     </labels>
     <labels>
         <fullName>healthPaymentAutoCloseStageMustBeActiveClosedWonOrBlank</fullName>
@@ -10749,7 +10829,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthSolutionInvalidOppStage</shortDescription>
-        <value>Add this Opportunity Stage value in Salesforce Setup.</value>
+        <value>Add this Opportunity Stage value in Salesforce Setup under Object Manager &gt; Opportunity &gt; Fields &gt; Stage, or update your NPPatch Settings to use an existing active stage.</value>
     </labels>
     <labels>
         <fullName>healthSolutionInvalidPaymentField</fullName>
@@ -10781,7 +10861,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthSolutionInvalidScheduledJob</shortDescription>
-        <value>You must update the record to have a valid Class the implements the UTIL_MasterSchedulableHelper.UTIL_IRecurring interface.</value>
+        <value>Update the Schedulable__c record to reference a valid Apex class, or go to the Bulk Processes tab and run Reschedule Default Jobs to restore the default configuration.</value>
     </labels>
     <labels>
         <fullName>healthSolutionInvalidUDFObjectField</fullName>
@@ -10884,7 +10964,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthSolutionScheduleJobs</shortDescription>
-        <value>All NPPatch scheduled classes should have records in Schedulable__c in order for these features to work correctly.</value>
+        <value>Go to the Bulk Processes tab and run Reschedule Default Jobs to restore the missing Schedulable__c records. These records control the nightly rollup, recurring donation, and seasonal address jobs.</value>
     </labels>
     <labels>
         <fullName>healthSolutionTriggerHandlerMismatch</fullName>
@@ -10892,7 +10972,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthSolutionTriggerHandlerMismatch</shortDescription>
-        <value>Changes to triggers can affect core NPPatch functionality in unexpected ways, and should be thoroughly tested before deployment to production. If these changes were unintentional, you should reset your Trigger Handlers to match the default NPPatch configuration.</value>
+        <value>Changes to triggers can affect core NPPatch functionality in unexpected ways, and should be thoroughly tested before deployment to production. If these changes were unintentional, go to the Bulk Processes tab and run Reset Trigger Handlers to restore the default NPPatch configuration.</value>
     </labels>
     <labels>
         <fullName>healthSolutionUnsupportedPicklistValue</fullName>

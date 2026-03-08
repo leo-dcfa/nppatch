@@ -132,6 +132,9 @@ private static void setHouseholdSettings() {
     }
 
     settings.%%%NAMESPACE%%%Membership_Record_Types__c = getOppRecordType('Membership');
+    if (settings.%%%NAMESPACE%%%Household_Mailing_List_ID__c == null) {
+        settings.%%%NAMESPACE%%%Household_Mailing_List_ID__c = getCampaignMailingListReportId();
+    }
     upsert settings;
 }
 
@@ -214,6 +217,21 @@ private static String getClosedWonStage() {
     OpportunityStage closedWonStage = [SELECT MasterLabel FROM OpportunityStage
         WHERE IsActive = true AND IsWon = true LIMIT 1];
     return closedWonStage.MasterLabel;
+}
+
+/**
+ * @description Retrieve the specified record type, or the first active RT if that fails
+ */
+/**
+ * @description Retrieve the Campaign Household Mailing List report Id, or null if not found
+ */
+private static String getCampaignMailingListReportId() {
+    try {
+        Report r = [SELECT Id FROM Report WHERE DeveloperName = 'Campaign_Household_Mailing_List' LIMIT 1];
+        return r.Id;
+    } catch (QueryException e) {
+        return null;
+    }
 }
 
 /**
