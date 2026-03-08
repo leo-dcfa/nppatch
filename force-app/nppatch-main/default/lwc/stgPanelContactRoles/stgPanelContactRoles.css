@@ -1,1 +1,17 @@
-/* No custom styles — uses standard Lightning components and SLDS utility classes */
+.guidance-toggle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.guidance-toggle:hover span {
+    text-decoration: underline;
+}
+
+.guidance-box {
+    border-radius: 0.25rem;
+}
+
+.guidance-box ul {
+    padding-left: 1.5rem;
+}

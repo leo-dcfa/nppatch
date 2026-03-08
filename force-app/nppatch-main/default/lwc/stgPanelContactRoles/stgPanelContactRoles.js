@@ -25,6 +25,8 @@ export default class StgPanelContactRoles extends LightningElement {
     _errorMessage;
     _wiredConSettingsResult;
     _wiredHHSettingsResult;
+    _showOppGuidance = false;
+    _showHHGuidance = false;
 
     labels = {
         sectionLabel: stgNavDonations,
@@ -44,6 +46,22 @@ export default class StgPanelContactRoles extends LightningElement {
         hhMemberRole: "Household Member Role",
         hhExcludedRT: "Excluded Record Types",
     };
+
+    get oppGuidanceIcon() {
+        return this._showOppGuidance ? "utility:chevrondown" : "utility:chevronright";
+    }
+
+    get hhGuidanceIcon() {
+        return this._showHHGuidance ? "utility:chevrondown" : "utility:chevronright";
+    }
+
+    toggleOppGuidance() {
+        this._showOppGuidance = !this._showOppGuidance;
+    }
+
+    toggleHHGuidance() {
+        this._showHHGuidance = !this._showHHGuidance;
+    }
 
     get sectionDescription() {
         return "Contact Roles define how Contacts are associated with Opportunities. These settings control which roles are automatically assigned during donation processing, household member management, and soft credit attribution.";

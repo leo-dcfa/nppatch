@@ -13730,7 +13730,7 @@ IMPORTANT: Both of these fields must have the same data type.</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>stgHelpOCR</shortDescription>
-        <value>Soft Credits, Contact Roles, and Matching Gifts relate to each other in important ways. If you&apos;re not familiar with these concepts and how they interact, you should read through the NPPatch Documentation before making any adjustments to these settings.</value>
+        <value>The default Contact Role assigned to the Primary Contact on Opportunities linked to Household, One-to-One, or Individual Accounts. This role is also used when calculating Soft Credits.</value>
     </labels>
     <labels>
         <fullName>stgHelpOCRDefaultRole</fullName>

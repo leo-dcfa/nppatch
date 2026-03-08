@@ -3,7 +3,34 @@
         error-message={_errorMessage} description={sectionDescription}>
 
         <!-- Section 1: Opportunity Contact Roles -->
-        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Opportunity Contact Roles</h3>
+        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_x-small">Opportunity Contact Roles</h3>
+
+        <div class="guidance-toggle slds-m-bottom_small" onclick={toggleOppGuidance}>
+            <lightning-icon icon-name={oppGuidanceIcon} size="xx-small"
+                class="slds-m-right_xx-small"></lightning-icon>
+            <span class="slds-text-body_small slds-text-color_weak">How do these roles work?</span>
+        </div>
+
+        <template lwc:if={_showOppGuidance}>
+            <div class="guidance-box slds-box slds-box_x-small slds-theme_shade slds-m-bottom_medium">
+                <p class="slds-text-body_small slds-m-bottom_x-small">
+                    When a donation is created, NPPatch automatically adds the Primary Contact
+                    as an Opportunity Contact Role. The role assigned depends on the Account type:
+                </p>
+                <ul class="slds-list_dotted slds-text-body_small slds-m-bottom_x-small">
+                    <li><strong>Default Contact Role</strong> is used for Household, One-to-One, and Individual Accounts (most common for individual donors).</li>
+                    <li><strong>Organizational Contact Role</strong> is used for all other Account types (e.g., corporate or foundation gifts).</li>
+                </ul>
+                <p class="slds-text-body_small slds-m-bottom_x-small">
+                    <strong>Honoree</strong> and <strong>Notification Recipient</strong> roles apply to tribute gifts,
+                    where a donation is made in honor of or on behalf of someone.
+                </p>
+                <p class="slds-text-body_small">
+                    These roles also drive <strong>Soft Credit</strong> rollups. Contacts with matching Contact Roles
+                    on an Opportunity will receive soft credit for the donation amount.
+                </p>
+            </div>
+        </template>
 
         <lightning-combobox label={labels.defaultRole}
             field-level-help={labels.helpOCR}
@@ -34,7 +61,31 @@
         </lightning-combobox>
 
         <!-- Section 2: Household Contact Roles -->
-        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Household Contact Roles</h3>
+        <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_x-small">Household Contact Roles</h3>
+
+        <div class="guidance-toggle slds-m-bottom_small" onclick={toggleHHGuidance}>
+            <lightning-icon icon-name={hhGuidanceIcon} size="xx-small"
+                class="slds-m-right_xx-small"></lightning-icon>
+            <span class="slds-text-body_small slds-text-color_weak">How do these roles work?</span>
+        </div>
+
+        <template lwc:if={_showHHGuidance}>
+            <div class="guidance-box slds-box slds-box_x-small slds-theme_shade slds-m-bottom_medium">
+                <p class="slds-text-body_small slds-m-bottom_x-small">
+                    When enabled, NPPatch automatically creates Opportunity Contact Roles for
+                    <strong>every member</strong> of the donor's Household — not just the Primary Contact.
+                    This provides visibility into which Household members are associated with each donation.
+                </p>
+                <p class="slds-text-body_small slds-m-bottom_x-small">
+                    <strong>Household Member Role</strong> is assigned to all other Household members
+                    (the Primary Contact gets the Default Contact Role above).
+                </p>
+                <p class="slds-text-body_small">
+                    Use <strong>Excluded Record Types</strong> to skip Contacts with certain Record Types
+                    (e.g., a "Deceased" Record Type) so they don't receive automatic Contact Roles.
+                </p>
+            </div>
+        </template>
 
         <lightning-input type="toggle" label={labels.hhRolesOn}
             field-level-help={labels.helpHHOCR}
