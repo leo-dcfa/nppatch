@@ -387,6 +387,115 @@ public with sharing class NppatchSettingsController {
     }
 
     /**
+     * @description Searches active users by name for error notification recipient selection.
+     * @param searchTerm Partial name to search for (minimum 2 characters)
+     * @return List of maps with 'label' (Name + Profile), 'value' (User Id), 'sublabel' (Username)
+     */
+    @AuraEnabled
+    public static List<Map<String, String>> searchUsers(String searchTerm) {
+        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
+        List<Map<String, String>> results = new List<Map<String, String>>();
+        if (String.isBlank(searchTerm) || searchTerm.length() < 2) {
+            return results;
+        }
+        String liketerm = '%' + String.escapeSingleQuotes(searchTerm) + '%';
+        for (User u : [
+            SELECT Id, Name, Username, Profile.Name
+            FROM User
+            WHERE IsActive = true AND Name LIKE :liketerm
+            ORDER BY Name
+            LIMIT 20
+        ]) {
+            results.add(new Map<String, String>{
+                'label' => u.Name,
+                'value' => u.Id,
+                'sublabel' => u.Profile.Name + ' \u2022 ' + u.Username
+            });
+        }
+        return results;
+    }
+
+    /**
+     * @description Searches Chatter groups by name for error notification recipient selection.
+     * @param searchTerm Partial name to search for (minimum 2 characters)
+     * @return List of maps with 'label' (Name), 'value' (Group Id), 'sublabel' (Description)
+     */
+    @AuraEnabled
+    public static List<Map<String, String>> searchChatterGroups(String searchTerm) {
+        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
+        List<Map<String, String>> results = new List<Map<String, String>>();
+        if (String.isBlank(searchTerm) || searchTerm.length() < 2) {
+            return results;
+        }
+        String liketerm = '%' + String.escapeSingleQuotes(searchTerm) + '%';
+        for (CollaborationGroup g : [
+            SELECT Id, Name, Description, MemberCount
+            FROM CollaborationGroup
+            WHERE Name LIKE :liketerm AND IsArchived = false
+            ORDER BY Name
+            LIMIT 20
+        ]) {
+            String groupDesc = g.Description != null ? g.Description.abbreviate(60) : '';
+            String sublabel = String.valueOf(g.MemberCount) + ' members';
+            if (String.isNotBlank(groupDesc)) {
+                sublabel += ' \u2022 ' + groupDesc;
+            }
+            results.add(new Map<String, String>{
+                'label' => g.Name,
+                'value' => g.Id,
+                'sublabel' => sublabel
+            });
+        }
+        return results;
+    }
+
+    /**
+     * @description Resolves an error notification recipient value to a display label.
+     * @param recipientValue The stored value (User Id, Chatter Group Id, or 'All Sys Admins')
+     * @return Map with 'label' and 'type' keys
+     */
+    @AuraEnabled(cacheable=true)
+    public static Map<String, String> resolveErrorRecipient(String recipientValue) {
+        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
+        Map<String, String> result = new Map<String, String>();
+
+        if (String.isBlank(recipientValue) || recipientValue == 'All Sys Admins') {
+            result.put('type', 'allSysAdmins');
+            result.put('label', 'All System Administrators');
+            return result;
+        }
+
+        // Check if it's a User ID (005 prefix)
+        if (recipientValue instanceof Id && recipientValue.startsWith('005')) {
+            result.put('type', 'user');
+            List<User> users = [SELECT Name, Username FROM User WHERE Id = :recipientValue LIMIT 1];
+            if (!users.isEmpty()) {
+                result.put('label', users[0].Name);
+                result.put('sublabel', users[0].Username);
+            } else {
+                result.put('label', '(Unknown User)');
+            }
+            return result;
+        }
+
+        // Check if it's a Chatter Group ID (0F9 prefix)
+        if (recipientValue instanceof Id) {
+            result.put('type', 'chatterGroup');
+            List<CollaborationGroup> groups = [SELECT Name FROM CollaborationGroup WHERE Id = :recipientValue LIMIT 1];
+            if (!groups.isEmpty()) {
+                result.put('label', groups[0].Name);
+            } else {
+                result.put('label', '(Unknown Chatter Group)');
+            }
+            return result;
+        }
+
+        result.put('type', 'allSysAdmins');
+        result.put('label', 'All System Administrators');
+        return result;
+    }
+
+    /**
      * @description Returns field describes for multiple SObjects in a single call.
      * @param sObjectApiNames List of SObject API names
      * @return Map of SObject name → field describe list
