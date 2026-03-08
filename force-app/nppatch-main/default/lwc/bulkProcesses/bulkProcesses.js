@@ -1,6 +1,7 @@
-import { LightningElement } from "lwc";
+import { LightningElement, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import runBatch from "@salesforce/apex/BulkProcessController.runBatch";
+import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 
 const PROCESSES = [
     {
@@ -76,24 +77,47 @@ const PROCESSES = [
         iconName: "utility:merge",
     },
     {
-        name: "reinitialize",
-        title: "Reinitialize TDTM & Scheduled Jobs",
+        name: "resetTriggerHandlers",
+        title: "Reset Trigger Handlers",
         description:
-            "Resets trigger dispatch (TDTM) defaults and re-schedules all standard scheduled jobs. Use this after deployment or when triggers or scheduled jobs appear to be missing.",
-        buttonLabel: "Reinitialize",
+            "Resets trigger dispatch (TDTM) handler records to their defaults. Use this after deployment or when trigger handlers appear to be missing or misconfigured.",
+        buttonLabel: "Reset Trigger Handlers",
         iconName: "utility:settings",
+    },
+    {
+        name: "rescheduleJobs",
+        title: "Reschedule Default Jobs",
+        description:
+            "Aborts deprecated scheduled jobs and re-schedules all standard NPPatch scheduled jobs. Use this when scheduled jobs are missing or were aborted due to user deactivation.",
+        buttonLabel: "Reschedule Jobs",
+        iconName: "utility:clock",
     },
 ];
 
+const RESCHEDULE_DISABLED_DESC =
+    "Automatic scheduling is disabled. To enable, uncheck \u201cDon\u2019t Enable Auto Schedule Default NPPatch Jobs\u201d in NPPatch Settings > System > Error Settings.";
+
 export default class BulkProcesses extends LightningElement {
     _runningProcess = null;
+    _autoScheduleDisabled = false;
+
+    @wire(getSettings, { objectName: "Error_Settings__c" })
+    wiredErrorSettings({ data }) {
+        if (data) {
+            this._autoScheduleDisabled = !!data.Don_t_Auto_Schedule_Default_NPPatch_Jobs__c;
+        }
+    }
 
     get processes() {
-        return PROCESSES.map((p) => ({
-            ...p,
-            isRunning: this._runningProcess === p.name,
-            isDisabled: this._runningProcess !== null,
-        }));
+        return PROCESSES.map((p) => {
+            const isReschedule = p.name === "rescheduleJobs";
+            return {
+                ...p,
+                description: isReschedule && this._autoScheduleDisabled ? RESCHEDULE_DISABLED_DESC : p.description,
+                isRunning: this._runningProcess === p.name,
+                isDisabled: this._runningProcess !== null || (isReschedule && this._autoScheduleDisabled),
+            };
+        });
     }
 
     async handleRun(event) {

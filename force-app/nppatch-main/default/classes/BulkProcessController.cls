@@ -53,8 +53,11 @@ public with sharing class BulkProcessController {
             when 'primaryContactRoleMerge' {
                 return Database.executeBatch(new OPP_PrimaryContactRoleMerge_BATCH(), 2000);
             }
-            when 'reinitialize' {
+            when 'resetTriggerHandlers' {
                 new STG_InstallScript().runNewOrgScript();
+                return null;
+            }
+            when 'rescheduleJobs' {
                 UTIL_MasterSchedulableHelper.abortOldScheduledJobs();
                 UTIL_MasterSchedulableHelper.setScheduledJobs();
                 return null;

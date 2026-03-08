@@ -10821,7 +10821,7 @@ If preferred, you can disable Gift Entry and instead use older Batch Gift Entry 
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>healthSolutionNothingScheduled</shortDescription>
-        <value>To reschedule the default NPPatch jobs, go to the Bulk Processes tab | Process Scheduler. Click Edit. Make sure Don&apos;t Enable Auto Schedule Default NPPatch Job is not selected. Click Save.</value>
+        <value>Go to the Bulk Processes tab and run Reschedule Default Jobs. Make sure Don&apos;t Enable Auto Schedule Default NPPatch Jobs is not checked in NPPatch Settings.</value>
     </labels>
     <labels>
         <fullName>healthSolutionOCRDupPrimary</fullName>
