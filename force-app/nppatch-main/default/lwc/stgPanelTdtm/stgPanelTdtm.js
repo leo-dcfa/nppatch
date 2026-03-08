@@ -13,11 +13,11 @@ import validateTriggerHandlerClass from "@salesforce/apex/NppatchSettingsControl
 const DATA_COLUMNS = [
     { label: "Object", fieldName: "Object__c", type: "text" },
     { label: "Class", fieldName: "Class__c", type: "text" },
-    { label: "Load Order", fieldName: "Load_Order__c", type: "number" },
+    { label: "Load Order", fieldName: "Load_Order__c", type: "number", initialWidth: 110 },
     { label: "Trigger Action", fieldName: "Trigger_Action__c", type: "text" },
-    { label: "Active", fieldName: "Active__c", type: "boolean" },
-    { label: "Async", fieldName: "Asynchronous__c", type: "boolean" },
-    { label: "User Managed", fieldName: "User_Managed__c", type: "boolean" },
+    { label: "Active", fieldName: "Active__c", type: "boolean", initialWidth: 80 },
+    { label: "Async", fieldName: "Asynchronous__c", type: "boolean", initialWidth: 80 },
+    { label: "User Managed", fieldName: "User_Managed__c", type: "boolean", initialWidth: 130 },
 ];
 
 const BEFORE_ACTION_OPTIONS = [
