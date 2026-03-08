@@ -20,8 +20,5 @@
         <label>עדכון מהיר</label>
         <name>Quick_Update</name>
     </quickActions>
-    <webLinks>
-        <label/>
-        <name>Recalculate_Rollups</name>
-    </webLinks>
+
 </CustomObjectTranslation>

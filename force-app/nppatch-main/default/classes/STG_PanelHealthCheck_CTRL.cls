@@ -285,7 +285,8 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                 String.format(label.healthSolutionEditSetting, new String[]{strAccModel, Label.stgNavPeople, Label.stgNavAccountModel} ));
             return;
         }
-        createDR(strAccModel, statusSuccess, null, STG_Panel.stgService.stgCon.Account_Processor__c);
+        createDR(strAccModel, statusSuccess, null,
+            Label.healthDetailsAccountModelValid + ' ' + STG_Panel.stgService.stgCon.Account_Processor__c + '.');
     }
 
     /*********************************************************************************************************
@@ -409,7 +410,7 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
             }
 
             //Create a success test
-            createDR(System.Label.healthLabelAccountDefaultRT, statusSuccess, null, null);
+            createDR(System.Label.healthLabelAccountDefaultRT, statusSuccess, null, Label.healthDetailsAccountDefaultRTValid);
         }
         catch(Exception ex) {
             createDR(System.Label.healthLabelAccountDefaultRT, statusError,  ex.getMessage(), null);
@@ -426,7 +427,7 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                 createDR(Label.healthLabelContactData, statusError,
                    String.format(Label.healthDetailsContactData, new String[]{String.valueOf(cContact)}), label.healthSolutionContactData);
             } else {
-                createDR(Label.healthLabelContactData, statusSuccess, null, null);
+                createDR(Label.healthLabelContactData, statusSuccess, null, Label.healthDetailsContactDataValid);
             }
         } catch (Exception ex) {
             createDR(Label.healthLabelContactData, statusError,  ex.getMessage(), null);
@@ -464,7 +465,7 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                     Label.healthSolutionHHAccNoContacts);
             }
             if (cHHObj == 0 && cHHAcc == 0) {
-                createDR(Label.healthLabelHHData, statusSuccess, null, null);
+                createDR(Label.healthLabelHHData, statusSuccess, null, Label.healthDetailsHHDataValid);
             }
         } catch (Exception ex) {
             createDR(Label.healthLabelHHAccData, statusError,  ex.getMessage(), null);
@@ -489,7 +490,7 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                     String.format(Label.healthDetailsAccOne2OneNoContacts, new String[]{String.valueOf(cAcc)}),
                     Label.healthSolutionAccOne2OneNoContacts);
             } else {
-                createDR(Label.healthLabelAccountData, statusSuccess, null, null);
+                createDR(Label.healthLabelAccountData, statusSuccess, null, Label.healthDetailsAccountDataValid);
             }
         } catch (Exception ex) {
             createDR(Label.healthLabelAccountData, statusError,  ex.getMessage(), null);
@@ -521,7 +522,7 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                return;
             }
         }
-        createDR(strField, statusSuccess, null, rptId);
+        createDR(strField, statusSuccess, null, Label.healthDetailsMailingListReportValid);
 
     }
 
@@ -537,7 +538,8 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                 String.format(Label.healthDetailsGenderField, new String[]{strField}),
                 String.format(label.healthSolutionEditSetting, new String[]{strSetting, Label.stgNavRelationships, Label.stgNavRelationships}));
         } else {
-            createDR(strSetting, statusSuccess, null, strField == null ? label.healthLabelNone : strField);
+            createDR(strSetting, statusSuccess, null,
+                strField == null ? Label.healthDetailsGenderFieldNone : String.format(Label.healthDetailsGenderFieldValid, new String[]{strField}));
         }
     }
 
@@ -604,7 +606,8 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
         } else {
             String fieldLabel = UTIL_Describe.getFieldLabel(settingsObject, settingsField);
 
-        	createDR(fieldLabel, statusSuccess, null, Label.healthLabelNone);
+        	createDR(fieldLabel, statusSuccess, null,
+                String.format(Label.healthDetailsRecordTypeNone, new String[]{fieldLabel}));
         }
     }
 
@@ -631,9 +634,12 @@ public without sharing class STG_PanelHealthCheck_CTRL extends STG_Panel {
                 String.format(label.healthSolutionEditSetting, new String[]{ fieldLabel, parentTab, settingsTab }));
         } else {
             if (String.isBlank(recordType)) {
-                recordTypeName = Label.healthLabelNone;
+                createDR(fieldLabel, statusSuccess, null,
+                    String.format(Label.healthDetailsRecordTypeNone, new String[]{fieldLabel}));
+            } else {
+                createDR(fieldLabel, statusSuccess, null,
+                    String.format(Label.healthDetailsRecordTypeValid, new String[]{fieldLabel, recordTypeName.escapeEcmaScript()}));
             }
-            createDR(fieldLabel, statusSuccess, null, recordTypeName.escapeEcmaScript());
         }
     }
 

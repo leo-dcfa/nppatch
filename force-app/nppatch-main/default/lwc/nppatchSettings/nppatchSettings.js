@@ -1,20 +1,19 @@
 import { LightningElement, wire } from "lwc";
 import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 import ensureSettingsExist from "@salesforce/apex/NppatchSettingsController.ensureSettingsExist";
+import SettingsModal from "c/settingsModal";
 
 import stgNPPatchSettingsTitle from "@salesforce/label/c.stgNPPatchSettingsTitle";
 import insufficientPermissions from "@salesforce/label/c.commonInsufficientPermissions";
 import accessDeniedMessage from "@salesforce/label/c.addrCopyConAddBtnFls";
 
-// Maps panel names to the Custom Settings objects they require.
-// Panels not listed here don't use getSettings and need no ensure call.
 const PANEL_SETTINGS = {
     accountModel: ["Contacts_And_Orgs_Settings__c"],
-    addressVerification: ["Contacts_And_Orgs_Settings__c"],
+    addressVerification: ["Addr_Verification_Settings__c"],
     affiliations: ["Affiliations_Settings__c"],
     allocations: ["Allocations_Settings__c"],
     campaignMembers: ["Contacts_And_Orgs_Settings__c"],
-    contactRoles: ["Contacts_And_Orgs_Settings__c", "Households_Settings__c", "Customizable_Rollup_Settings__c"],
+    contactRoles: ["Contacts_And_Orgs_Settings__c", "Households_Settings__c"],
     donorStatistics: ["Households_Settings__c"],
     errorNotif: ["Error_Settings__c"],
     households: ["Household_Naming_Settings__c", "Households_Settings__c"],
@@ -25,70 +24,76 @@ const PANEL_SETTINGS = {
     schedule: ["Customizable_Rollup_Settings__c", "Recurring_Donations_Settings__c", "Levels_Settings__c", "Households_Settings__c", "Error_Settings__c"],
 };
 
-// TODO Phase 2: Replace hardcoded nav labels with @salesforce/label imports
-const NAV_GROUPS = [
+const SETTINGS_GROUPS = [
     {
         label: "People",
-        items: [
-            { label: "Account Model", name: "accountModel" },
-            { label: "Households", name: "households" },
-            { label: "Address Verification", name: "addressVerification" },
-            { label: "Leads", name: "leads" },
+        tiles: [
+            { name: "accountModel", title: "Account Model Settings",
+                description: "Configure how Contacts relate to Accounts — Household, One-to-One, or Individual bucket model." },
+            { name: "households", title: "Household Settings",
+                description: "Control naming formats, greetings, and rules for Household Accounts." },
+            { name: "addressVerification", title: "Address Verification Settings",
+                description: "Validate and standardize mailing addresses using an external verification service." },
+            { name: "leads", title: "Lead Settings",
+                description: "Control whether Opportunities are created during Lead conversion." },
         ],
     },
     {
         label: "Relationships",
-        items: [
-            { label: "Affiliations", name: "affiliations" },
-            { label: "Relationships", name: "relationships" },
-            { label: "Reciprocal", name: "relReciprocal" },
-            { label: "Auto-Create", name: "relAutoCreate" },
+        tiles: [
+            { name: "affiliations", title: "Affiliation Settings",
+                description: "Automatically track organizational connections when a Contact's Account changes." },
+            { name: "relationships", title: "Relationship Settings",
+                description: "Configure how reciprocal relationships are created between Contacts." },
+            { name: "relReciprocal", title: "Reciprocal Relationships", size: "large",
+                description: "Define how each relationship type maps to its reciprocal based on gender." },
+            { name: "relAutoCreate", title: "Auto-Create Relationships",
+                description: "Automatically create Relationships when specific lookup fields are populated." },
         ],
     },
     {
         label: "Donations",
-        items: [
-            { label: "Opportunity Naming", name: "oppNaming" },
-            { label: "Membership", name: "membership" },
-            { label: "Payments", name: "payments" },
-            { label: "Payment Mappings", name: "paymentMapping" },
-            { label: "Allocations", name: "allocations" },
-            { label: "Donor Statistics", name: "donorStatistics" },
-            { label: "Contact Roles", name: "contactRoles" },
-            { label: "Campaign Members", name: "campaignMembers" },
-            { label: "Customizable Rollups", name: "customizableRollups" },
+        tiles: [
+            { name: "oppNaming", title: "Opportunity Naming", size: "large",
+                description: "Define rules for automatically generating Opportunity Name fields using merge fields." },
+            { name: "membership", title: "Membership Settings",
+                description: "Configure membership record types and the grace period for reporting." },
+            { name: "payments", title: "Payment Settings",
+                description: "Control automatic Payment creation and which record types to exclude." },
+            { name: "paymentMapping", title: "Payment Mappings",
+                description: "Map Opportunity fields to Payment fields during automatic Payment creation." },
+            { name: "allocations", title: "Allocation Settings",
+                description: "Configure default GAU Allocations and fund tracking behavior." },
+            { name: "donorStatistics", title: "Donor Statistics Settings",
+                description: "Configure the rolling window and rules for donor giving summary calculations." },
+            { name: "contactRoles", title: "Contact Role Settings",
+                description: "Control automatic Contact Role assignment during donation processing." },
+            { name: "campaignMembers", title: "Campaign Member Settings",
+                description: "Automate Campaign Member status updates when Opportunities are linked to Campaigns." },
+            { name: "customizableRollups", title: "Customizable Rollups",
+                description: "Configure rollup definitions for summary totals on Accounts, Contacts, and GAUs." },
         ],
     },
     {
         label: "Recurring Donations",
-        items: [
-            { label: "Status Mapping", name: "rd2StatusMapping" },
-            { label: "Status Automation", name: "rd2StatusAutomation" },
+        tiles: [
+            { name: "rd2StatusMapping", title: "Status Mapping",
+                description: "Map Recurring Donation statuses to Opportunity stages and outcomes." },
+            { name: "rd2StatusAutomation", title: "Status Automation",
+                description: "Configure rules for automatically changing Recurring Donation status based on payment history." },
         ],
     },
     {
-        label: "Bulk Data Processes",
-        items: [
-            { label: "Batch Process Settings", name: "schedule" },
-            { label: "Rollup Batch", name: "oppBatch" },
-            { label: "Allocation Rollup Batch", name: "alloBatch" },
-            { label: "Create Default Allocations", name: "makeDefaultAllocations" },
-            { label: "Create Missing Payments", name: "createPayments" },
-            { label: "Refresh Household Data", name: "refreshHouseholdData" },
-            { label: "Opportunity Naming Refresh", name: "oppNamingBatch" },
-            { label: "Update Primary Contact", name: "updatePrimaryContact" },
-            { label: "Level Assignment Batch", name: "lvlAssignBatch" },
-            { label: "Primary Contact Role Merge", name: "primaryContactRoleMerge" },
-        ],
-    },
-    {
-        label: "System Tools",
-        items: [
-            { label: "Health Check", name: "healthCheck" },
-            { label: "Error Log", name: "errorLog" },
-            { label: "Error Notifications", name: "errorNotif" },
-            { label: "Trigger Configuration", name: "tdtm" },
-            { label: "Advanced Mapping", name: "advancedMapping" },
+        label: "System",
+        tiles: [
+            { name: "schedule", title: "Batch Process Settings",
+                description: "Configure batch sizes for scheduled Apex jobs that calculate rollups and process data." },
+            { name: "errorNotif", title: "Error Notification Settings",
+                description: "Configure error logging and notification recipients for processing errors." },
+            { name: "tdtm", title: "Trigger Configuration",
+                description: "Manage which Apex trigger handlers execute and in what order." },
+            { name: "advancedMapping", title: "Advanced Mapping",
+                description: "Customize field mappings for Data Import batch processing." },
         ],
     },
 ];
@@ -98,7 +103,6 @@ export default class NppatchSettings extends LightningElement {
     _isAccessDenied = false;
     _settingsReady = false;
     _adminChecked = false;
-    _activePanel = "accountModel";
     _ensuredSettings = new Set();
 
     labels = {
@@ -107,10 +111,10 @@ export default class NppatchSettings extends LightningElement {
         accessDeniedMessage,
     };
 
-    navGroups = NAV_GROUPS;
+    settingsGroups = SETTINGS_GROUPS;
 
     connectedCallback() {
-        this._ensureSettingsForPanel(this._activePanel);
+        this._ensureAllSettings();
     }
 
     @wire(isAdmin)
@@ -131,24 +135,12 @@ export default class NppatchSettings extends LightningElement {
     _checkReady() {
         if (this._settingsReady && this._adminChecked) {
             this._isLoading = false;
-            this._preloadRemainingSettings();
         }
     }
 
-    _preloadRemainingSettings() {
+    async _ensureAllSettings() {
         const allSettings = new Set(Object.values(PANEL_SETTINGS).flat());
-        const remaining = [...allSettings].filter((s) => !this._ensuredSettings.has(s));
-        if (remaining.length > 0) {
-            ensureSettingsExist({ settingsObjectNames: remaining })
-                .then(() => remaining.forEach((s) => this._ensuredSettings.add(s)))
-                .catch(() => {});
-        }
-    }
-
-    async _ensureSettingsForPanel(panelName) {
-        const needed = (PANEL_SETTINGS[panelName] || [])
-            .filter((s) => !this._ensuredSettings.has(s));
-
+        const needed = [...allSettings].filter((s) => !this._ensuredSettings.has(s));
         if (needed.length > 0) {
             try {
                 await ensureSettingsExist({ settingsObjectNames: needed });
@@ -157,59 +149,25 @@ export default class NppatchSettings extends LightningElement {
                 // Settings may already exist; proceed anyway
             }
         }
-
-        if (!this._settingsReady) {
-            this._settingsReady = true;
-            this._checkReady();
-        }
+        this._settingsReady = true;
+        this._checkReady();
     }
 
-    async handleNavSelect(event) {
-        const panelName = event.detail.name;
-        await this._ensureSettingsForPanel(panelName);
-        this._activePanel = panelName;
+    async handleOpenPanel(event) {
+        const name = event.currentTarget.dataset.name;
+        let tile;
+        for (const group of SETTINGS_GROUPS) {
+            tile = group.tiles.find((t) => t.name === name);
+            if (tile) break;
+        }
+        await SettingsModal.open({
+            size: tile?.size || "medium",
+            panelName: name,
+            panelTitle: tile?.title || "",
+        });
     }
 
     get isReady() {
         return !this._isLoading && !this._isAccessDenied;
-    }
-
-    get isAccountModelPanel() { return this._activePanel === "accountModel"; }
-    get isLeadsPanel() { return this._activePanel === "leads"; }
-    get isAffiliationsPanel() { return this._activePanel === "affiliations"; }
-    get isMembershipPanel() { return this._activePanel === "membership"; }
-    get isPaymentsPanel() { return this._activePanel === "payments"; }
-    get isDonorStatisticsPanel() { return this._activePanel === "donorStatistics"; }
-    get isCampaignMembersPanel() { return this._activePanel === "campaignMembers"; }
-    get isContactRolesPanel() { return this._activePanel === "contactRoles"; }
-    get isAllocationsPanel() { return this._activePanel === "allocations"; }
-    get isErrorNotifPanel() { return this._activePanel === "errorNotif"; }
-    get isRelationshipsPanel() { return this._activePanel === "relationships"; }
-    get isHouseholdsPanel() { return this._activePanel === "households"; }
-    get isSchedulePanel() { return this._activePanel === "schedule"; }
-    get isOppBatchPanel() { return this._activePanel === "oppBatch"; }
-    get isAlloBatchPanel() { return this._activePanel === "alloBatch"; }
-    get isMakeDefaultAllocationsPanel() { return this._activePanel === "makeDefaultAllocations"; }
-    get isCreatePaymentsPanel() { return this._activePanel === "createPayments"; }
-    get isRefreshHouseholdDataPanel() { return this._activePanel === "refreshHouseholdData"; }
-    get isOppNamingBatchPanel() { return this._activePanel === "oppNamingBatch"; }
-    get isUpdatePrimaryContactPanel() { return this._activePanel === "updatePrimaryContact"; }
-    get isLvlAssignBatchPanel() { return this._activePanel === "lvlAssignBatch"; }
-    get isPrimaryContactRoleMergePanel() { return this._activePanel === "primaryContactRoleMerge"; }
-    get isRelReciprocalPanel() { return this._activePanel === "relReciprocal"; }
-    get isRelAutoCreatePanel() { return this._activePanel === "relAutoCreate"; }
-    get isOppNamingPanel() { return this._activePanel === "oppNaming"; }
-    get isPaymentMappingPanel() { return this._activePanel === "paymentMapping"; }
-    get isTdtmPanel() { return this._activePanel === "tdtm"; }
-    get isAddressVerificationPanel() { return this._activePanel === "addressVerification"; }
-    get isCustomizableRollupsPanel() { return this._activePanel === "customizableRollups"; }
-    get isRd2StatusMappingPanel() { return this._activePanel === "rd2StatusMapping"; }
-    get isRd2StatusAutomationPanel() { return this._activePanel === "rd2StatusAutomation"; }
-    get isHealthCheckPanel() { return this._activePanel === "healthCheck"; }
-    get isErrorLogPanel() { return this._activePanel === "errorLog"; }
-    get isAdvancedMappingPanel() { return this._activePanel === "advancedMapping"; }
-
-    get showPlaceholder() {
-        return false; // All panels are now implemented
     }
 }

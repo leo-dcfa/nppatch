@@ -15,15 +15,6 @@
     <template if:true={_settings}>
         <div class="panel-container">
             <div class="panel-header">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="slds-text-heading_small">
-                            <span class="slds-text-color_weak">{labels.sectionLabel}</span>
-                            <span class="slds-text-color_weak"> &bull; </span>
-                            {labels.pageLabel}
-                        </h2>
-                    </div>
-                </div>
                 <p class="section-description">{labels.description}</p>
             </div>
 
@@ -34,12 +25,32 @@
                     </div>
                 </template>
 
+                <template if:true={hasFieldLoadError}>
+                    <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_small" role="alert">
+                        <p>{_fieldLoadError}</p>
+                    </div>
+                </template>
+
                 <template if:true={_isCreating}>
                     <div class="create-form">
                         <h3 class="section-subheader">New Payment Field Mapping</h3>
                         <div class="form-grid">
-                            <lightning-input label="Opportunity Field" value={_newRecord.Opportunity_Field__c} onchange={handleNewOpportunityFieldChange} class="text-input" required></lightning-input>
-                            <lightning-input label="Payment Field" value={_newRecord.Payment_Field__c} onchange={handleNewPaymentFieldChange} class="text-input" required></lightning-input>
+                            <lightning-combobox
+                                label="Opportunity Field"
+                                value={_newRecord.Opportunity_Field__c}
+                                options={oppFieldOptions}
+                                onchange={handleNewOpportunityFieldChange}
+                                placeholder="Select a field..."
+                                required
+                            ></lightning-combobox>
+                            <lightning-combobox
+                                label="Payment Field"
+                                value={_newRecord.Payment_Field__c}
+                                options={pmtFieldOptions}
+                                onchange={handleNewPaymentFieldChange}
+                                placeholder="Select a field..."
+                                required
+                            ></lightning-combobox>
                         </div>
                         <div class="form-actions">
                             <lightning-button label="Save" onclick={handleSaveNew} variant="brand" disabled={_isSaving}></lightning-button>
@@ -48,16 +59,42 @@
                     </div>
                 </template>
 
+                <template if:true={_isEditing}>
+                    <div class="create-form">
+                        <h3 class="section-subheader">Edit Payment Field Mapping</h3>
+                        <div class="form-grid">
+                            <lightning-combobox
+                                label="Opportunity Field"
+                                value={_editRecord.Opportunity_Field__c}
+                                options={oppFieldOptions}
+                                onchange={handleEditOpportunityFieldChange}
+                                required
+                            ></lightning-combobox>
+                            <lightning-combobox
+                                label="Payment Field"
+                                value={_editRecord.Payment_Field__c}
+                                options={pmtFieldOptions}
+                                onchange={handleEditPaymentFieldChange}
+                                required
+                            ></lightning-combobox>
+                        </div>
+                        <div class="form-actions">
+                            <lightning-button label="Save" onclick={handleSaveEdit} variant="brand" disabled={_isSaving}></lightning-button>
+                            <lightning-button label="Cancel" onclick={handleCancelEdit} variant="neutral" disabled={_isSaving}></lightning-button>
+                        </div>
+                    </div>
+                </template>
+
                 <template if:true={hasRecords}>
                     <lightning-datatable
                         key-field="Id"
-                        data={_settings}
+                        data={displayRecords}
                         columns={columns}
                         hide-checkbox-column
                         onrowaction={handleRowAction}>
                     </lightning-datatable>
                 </template>
-                <template if:false={hasRecords}>
+                <template lwc:if={showEmptyMessage}>
                     <p class="empty-message">No payment field mappings defined.</p>
                 </template>
             </div>

@@ -36,8 +36,7 @@
     <columns>
         <field>Account.%%%NAMESPACE%%%Informal_Greeting__c</field>
     </columns>
-    <description>Lists addresses for a mailing campaign, avoiding household duplicates.
-Runs from a custom button on the Campaign record. Supports both the Classic and Lightning User Interface.</description>
+    <description>Lists addresses for a mailing campaign, avoiding household duplicates. Runs from a custom button on the Campaign record.</description>
     <filter>
         <criteriaItems>
             <column>CAMPAIGN_ID</column>
@@ -53,7 +52,7 @@ Runs from a custom button on the Campaign record. Supports both the Classic and 
         <language>en_US</language>
     </filter>
     <format>Tabular</format>
-    <name>NPP Campaign HH Mailing List V2</name>
+    <name>NPPatch Campaign Household Mailing List</name>
     <params>
         <name>scopeid</name>
         <value/>

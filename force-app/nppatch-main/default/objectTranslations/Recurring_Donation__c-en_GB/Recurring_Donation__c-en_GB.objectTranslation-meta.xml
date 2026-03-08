@@ -4,8 +4,5 @@
         <label>Recurring Donations Entry Form Custom Fields</label>
         <name>RD2_Entry_Form_Custom_Fields</name>
     </fieldSets>
-    <webLinks>
-        <name>Recalculate_Rollups</name>
-        <label>Recalculate Rollups</label>
-    </webLinks>
+
 </CustomObjectTranslation>

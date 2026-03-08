@@ -1,37 +1,32 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
+import getPicklistOptions from "@salesforce/apex/NppatchSettingsController.getPicklistOptions";
 
 import stgNavDonations from "@salesforce/label/c.stgNavDonations";
 import stgLabelOppCampMembers from "@salesforce/label/c.stgLabelOppCampMembers";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 
 const SETTINGS_OBJECT = "Contacts_And_Orgs_Settings__c";
 
 export default class StgPanelCampaignMembers extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _hasError = false;
     _errorMessage;
     _wiredSettingsResult;
+    _statusOptions = [];
 
     labels = {
         sectionLabel: stgNavDonations,
         pageLabel: stgLabelOppCampMembers,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         autoCampaignMember: "Automatic Campaign Member Management",
         respondedStatus: "Campaign Member Responded Status",
         nonRespondedStatus: "Campaign Member Non-Responded Status",
+        helpAuto: "When enabled, NPPatch automatically creates or updates a Campaign Member record when an Opportunity is linked to a Campaign. The Campaign Member\u2019s status is set based on whether the Opportunity is Closed/Won or still open.",
+        helpResponded: "The status assigned to the Campaign Member when the associated Opportunity is Closed/Won.",
+        helpNonResponded: "The status assigned to the Campaign Member when the associated Opportunity is still open (not yet Closed/Won).",
     };
 
     get sectionDescription() {
@@ -43,6 +38,7 @@ export default class StgPanelCampaignMembers extends LightningElement {
         this._wiredSettingsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
@@ -50,57 +46,50 @@ export default class StgPanelCampaignMembers extends LightningElement {
         }
     }
 
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
+    @wire(getPicklistOptions, { sObjectApiName: "CampaignMember", fieldApiName: "Status" })
+    wiredStatusOptions({ data, error }) {
+        if (data) {
+            this._statusOptions = data.map((opt) => ({ label: opt.label, value: opt.value }));
+        } else if (error) {
+            this._statusOptions = [];
         }
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
     }
 
     get isLoading() {
         return !this._settings && !this._hasError;
     }
 
-    get autoCampaignMemberDisplay() {
-        return this._settings?.Automatic_Campaign_Member_Management__c ? "Enabled" : "Disabled";
+    get statusDropdownOptions() {
+        return [{ label: "-- None --", value: "" }, ...this._statusOptions];
     }
 
-    get respondedStatusDisplay() {
-        return this._settings?.Campaign_Member_Responded_Status__c || "—";
-    }
-
-    get nonRespondedStatusDisplay() {
-        return this._settings?.Campaign_Member_Non_Responded_Status__c || "—";
-    }
-
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
+    get isAutoManagementDisabled() {
+        return !this._workingCopy?.Automatic_Campaign_Member_Management__c;
     }
 
     handleAutoChange(event) {
-        this._workingCopy.Automatic_Campaign_Member_Management__c = event.detail.checked;
+        this._workingCopy = {
+            ...this._workingCopy,
+            Automatic_Campaign_Member_Management__c: event.detail.checked,
+        };
     }
 
     handleRespondedChange(event) {
-        this._workingCopy.Campaign_Member_Responded_Status__c = event.detail.value;
+        this._workingCopy = {
+            ...this._workingCopy,
+            Campaign_Member_Responded_Status__c: event.detail.value || null,
+        };
     }
 
     handleNonRespondedChange(event) {
-        this._workingCopy.Campaign_Member_Non_Responded_Status__c = event.detail.value;
+        this._workingCopy = {
+            ...this._workingCopy,
+            Campaign_Member_Non_Responded_Status__c: event.detail.value || null,
+        };
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             await saveSettings({
                 settingsObjectName: SETTINGS_OBJECT,
@@ -114,18 +103,21 @@ export default class StgPanelCampaignMembers extends LightningElement {
                 },
             });
             await refreshApex(this._wiredSettingsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Campaign Member settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {

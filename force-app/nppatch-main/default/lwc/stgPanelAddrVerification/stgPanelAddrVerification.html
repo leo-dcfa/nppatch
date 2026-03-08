@@ -1,66 +1,75 @@
 <template>
-    <template if:true={isLoading}>
-        <div class="loading-container">
-            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-        </div>
-    </template>
-    <template if:true={_hasError}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <span class="slds-assistive-text">error</span>
-            <p>{_errorMessage}</p>
-        </div>
-    </template>
-    <template if:true={_settings}>
-        <div class="panel-container">
-            <div class="panel-header">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="slds-text-heading_small">
-                            <span class="slds-text-color_weak">People</span>
-                            <span class="slds-text-color_weak"> &bull; </span>
-                            Address Verification
-                        </h2>
-                    </div>
-                </div>
-                <p class="section-description">Address Verification uses an external service to validate and standardize mailing addresses on Contact and Account records. When enabled, addresses are verified as they are entered, helping ensure accurate data for mailings and reporting. Configuration of the verification service and API credentials is managed here.</p>
-            </div>
-            <div class="panel-body">
-                <div class="info-card">
-                    <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
-                    <p class="info-text">Address Verification settings are complex and involve external service configuration. For now, please configure these settings from the classic NPPatch Settings page. Full LWC support is coming in a future update.</p>
-                </div>
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
 
-                <h3 class="section-subheader">Current Configuration</h3>
+        <!-- Enable Automatic Verification (toggle) -->
+        <lightning-input type="toggle" label={labels.enableAutoVerification}
+            field-level-help="When enabled, addresses are automatically verified when records are saved."
+            checked={_workingCopy.Enable_Automatic_Verification__c}
+            onchange={handleEnableAutoChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
 
-                <div class="setting-row">
-                    <label class="setting-label">Verification Service</label>
-                    <p class="setting-help">The external address verification service provider.</p>
-                    <lightning-input type="text" label="Verification Service"
-                        value={_settings.Class__c} disabled
-                        variant="label-hidden" class="text-input">
-                    </lightning-input>
-                </div>
+        <!-- Verification Service (combobox) -->
+        <lightning-combobox label={labels.verificationClass}
+            field-level-help="The address verification service to use. Select a built-in service or choose Other to specify a custom Apex class that implements the ADDR_IValidator interface."
+            value={validatorComboValue}
+            options={validatorOptions}
+            onchange={handleValidatorChange}
+            disabled={isVerificationDisabled}>
+        </lightning-combobox>
 
-                <div class="setting-row">
-                    <label class="setting-label">Enable Address Verification</label>
-                    <p class="setting-help">When enabled, addresses are automatically verified when records are saved.</p>
-                    <lightning-input type="toggle" label="Enable Address Verification"
-                        checked={_settings.Enable_Automatic_Verification__c} disabled
-                        variant="label-hidden"
-                        message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-                    </lightning-input>
-                </div>
+        <!-- Custom class name (shown only when "Other" is selected) -->
+        <template lwc:if={isCustomClass}>
+            <lightning-input type="text" label={labels.customClass}
+                field-level-help="The API name of a custom Apex class that implements the ADDR_IValidator interface."
+                value={_workingCopy.Class__c}
+                onchange={handleCustomClassChange}
+                disabled={isVerificationDisabled}>
+            </lightning-input>
+        </template>
 
-                <div class="setting-row">
-                    <label class="setting-label">Reject Ambiguous Addresses</label>
-                    <p class="setting-help">When enabled, addresses that cannot be definitively verified are rejected.</p>
-                    <lightning-input type="toggle" label="Reject Ambiguous Addresses"
-                        checked={_settings.Reject_Ambiguous_Addresses__c} disabled
-                        variant="label-hidden"
-                        message-toggle-active="Enabled" message-toggle-inactive="Disabled">
-                    </lightning-input>
-                </div>
-            </div>
-        </div>
-    </template>
+        <!-- Auth Token (text) -->
+        <lightning-input type="text" label={labels.authToken}
+            field-level-help="The authentication token or API key for the verification service."
+            value={_workingCopy.Auth_Token__c}
+            onchange={handleAuthTokenChange}
+            disabled={isVerificationDisabled}>
+        </lightning-input>
+
+        <!-- Address Verification Endpoint (url) -->
+        <lightning-input type="url" label={labels.endpoint}
+            field-level-help="The URL endpoint for the address verification service API. Auto-populated when selecting a built-in service."
+            value={_workingCopy.Address_Verification_Endpoint__c}
+            onchange={handleEndpointChange}
+            disabled={isVerificationDisabled}>
+        </lightning-input>
+
+        <!-- Reject Ambiguous Addresses (toggle) -->
+        <lightning-input type="toggle" label={labels.rejectAmbiguous}
+            field-level-help="When enabled, addresses that cannot be definitively verified are rejected."
+            checked={_workingCopy.Reject_Ambiguous_Addresses__c}
+            onchange={handleRejectAmbiguousChange}
+            disabled={isVerificationDisabled}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
+
+        <!-- Prevent Address Overwrite (toggle) -->
+        <lightning-input type="toggle" label={labels.preventOverwrite}
+            field-level-help="When enabled, verified addresses will not be overwritten with unverified data."
+            checked={_workingCopy.Prevent_Address_Overwrite__c}
+            onchange={handlePreventOverwriteChange}
+            disabled={isVerificationDisabled}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        </lightning-input>
+
+        <!-- Timeout (number) -->
+        <lightning-input type="number" label={labels.timeout}
+            field-level-help="The number of seconds to wait for a response from the verification service before timing out."
+            value={_workingCopy.Timeout__c}
+            onchange={handleTimeoutChange}
+            disabled={isVerificationDisabled}>
+        </lightning-input>
+
+    </c-stg-panel-content>
 </template>

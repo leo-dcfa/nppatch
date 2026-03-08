@@ -1,14 +1,10 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 import stgNavRelationships from "@salesforce/label/c.stgNavRelationships";
-import stgBtnEdit from "@salesforce/label/c.stgBtnEdit";
-import stgBtnSave from "@salesforce/label/c.stgBtnSave";
-import stgBtnCancel from "@salesforce/label/c.stgBtnCancel";
 
 const SETTINGS_OBJECT = "Relationship_Settings__c";
 
@@ -18,9 +14,6 @@ const RECIPROCAL_METHOD_OPTIONS = [
 ];
 
 export default class StgPanelRelationships extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _settings;
     @track _workingCopy = {};
     _hasError = false;
@@ -29,9 +22,6 @@ export default class StgPanelRelationships extends LightningElement {
 
     labels = {
         sectionLabel: stgNavRelationships,
-        edit: stgBtnEdit,
-        save: stgBtnSave,
-        cancel: stgBtnCancel,
         reciprocalMethod: "Reciprocal Method",
         helpReciprocalMethod: "Select the method used to generate the reciprocal relationship. List Setting uses the Relationship Lookup custom setting to determine the reciprocal. Value Inversion attempts to invert the type, e.g. Parent-Child to Child-Parent.",
         genderField: "Gender Field",
@@ -51,6 +41,7 @@ export default class StgPanelRelationships extends LightningElement {
         this._wiredSettingsResult = result;
         if (result.data) {
             this._settings = { ...result.data };
+            this._workingCopy = { ...result.data };
             this._hasError = false;
         } else if (result.error) {
             this._hasError = true;
@@ -58,41 +49,8 @@ export default class StgPanelRelationships extends LightningElement {
         }
     }
 
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
-        }
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
-    }
-
     get isLoading() {
         return !this._settings && !this._hasError;
-    }
-
-    get genderFieldDisplay() {
-        return this._settings?.Gender_Field__c || "";
-    }
-
-    get genderFieldValue() {
-        return this._workingCopy?.Gender_Field__c || "";
-    }
-
-    get allowDuplicatesValue() {
-        return this._workingCopy?.Allow_AutoCreated_Duplicates__c || false;
-    }
-
-    handleEdit() {
-        this._workingCopy = { ...this._settings };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopy = {};
-        this._isEditMode = false;
     }
 
     handleReciprocalMethodChange(event) {
@@ -107,8 +65,8 @@ export default class StgPanelRelationships extends LightningElement {
         this._workingCopy.Allow_AutoCreated_Duplicates__c = event.detail.checked;
     }
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             await saveSettings({
                 settingsObjectName: SETTINGS_OBJECT,
@@ -119,18 +77,21 @@ export default class StgPanelRelationships extends LightningElement {
                 },
             });
             await refreshApex(this._wiredSettingsResult);
-            this._isEditMode = false;
-            this._workingCopy = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Relationship settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
+    }
+
+    @api
+    reset() {
+        this._workingCopy = { ...this._settings };
     }
 
     _extractError(error) {

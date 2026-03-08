@@ -15,35 +15,26 @@
     <template if:true={isReady}>
         <div class="panel-container">
             <div class="panel-header">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="slds-text-heading_small">
-                            <span class="slds-text-color_weak">{labels.sectionLabel}</span>
-                            <span class="slds-text-color_weak"> &bull; </span>
-                            {labels.pageLabel}
-                        </h2>
-                    </div>
-                    <div class="slds-col_bump-left">
-                        <template if:true={_isAdmin}>
-                            <template if:false={_isCreating}>
-                                <lightning-button
-                                    label="New"
-                                    onclick={handleNewClick}
-                                    variant="neutral"
-                                    icon-name="utility:add"
-                                ></lightning-button>
-                            </template>
-                        </template>
-                    </div>
-                </div>
                 <p class="section-description">{labels.description}</p>
             </div>
 
             <div class="panel-body">
+                <template if:true={_isAdmin}>
+                    <template if:false={_isCreating}>
+                        <div class={actionBarClass}>
+                            <lightning-button
+                                label="New"
+                                onclick={handleNewClick}
+                                variant="neutral"
+                                icon-name="utility:add"
+                            ></lightning-button>
+                        </div>
+                    </template>
+                </template>
                 <template if:true={_isCreating}>
                     <div class="create-form">
                         <h3 class="section-subheader">New Opportunity Naming Rule</h3>
-                        <div class="form-grid">
+                        <div class="form-row">
                             <lightning-combobox
                                 label="Attribution"
                                 value={_newAttribution}
@@ -51,23 +42,59 @@
                                 onchange={handleAttributionChange}
                                 placeholder="Select attribution..."
                                 required
-                                class="picklist-input"
                             ></lightning-combobox>
-                            <lightning-input
-                                type="text"
+                            <lightning-combobox
                                 label="Name Format"
-                                value={_newNameFormat}
-                                onchange={handleNameFormatChange}
-                                class="text-input"
-                            ></lightning-input>
+                                value={newFormatComboValue}
+                                options={nameFormatOptions}
+                                onchange={handleFormatComboChange}
+                                field-level-help="The merge-field template used to generate Opportunity names. Select a preset or choose Other to enter a custom format."
+                            ></lightning-combobox>
+                            <lightning-combobox
+                                label="Date Format"
+                                value={newDateComboValue}
+                                options={dateFormatOptions}
+                                onchange={handleDateComboChange}
+                                field-level-help="Controls how dates appear in the generated name. Leave as Default to use the org locale format."
+                            ></lightning-combobox>
+                        </div>
+                        <template lwc:if={isNewCustomDate}>
                             <lightning-input
                                 type="text"
-                                label="Date Format"
+                                label="Custom Date Pattern"
                                 value={_newDateFormat}
-                                onchange={handleDateFormatChange}
-                                class="text-input"
+                                onchange={handleCustomDateChange}
+                                placeholder="yyyy-MM-dd"
+                                field-level-help="Java SimpleDateFormat pattern, e.g. yyyy-MM-dd or MM/dd/yyyy."
+                                class="slds-m-top_small"
                             ></lightning-input>
-                        </div>
+                        </template>
+                        <template lwc:if={isNewCustomFormat}>
+                            <lightning-input
+                                type="text"
+                                label="Custom Name Format"
+                                value={_newNameFormat}
+                                onchange={handleCustomFormatChange}
+                                placeholder={customFormatPlaceholder}
+                                class="slds-m-top_small"
+                            ></lightning-input>
+                            <template lwc:if={newFormatWarnings}>
+                                <div class="warning-box">
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" variant="warning" class="slds-m-right_xx-small"></lightning-icon>
+                                    {newFormatWarnings}
+                                </div>
+                            </template>
+                        </template>
+                        <template lwc:if={newFormatPreview}>
+                            <div class="preview-box">
+                                <span class="preview-label">Preview:</span> {newFormatPreview}
+                            </div>
+                        </template>
+                        <template lwc:if={isNewPreviewUnavailable}>
+                            <div class="preview-box preview-unavailable">
+                                <span class="preview-label">Preview:</span> Unavailable for custom formats
+                            </div>
+                        </template>
                         <div class="form-actions">
                             <lightning-button
                                 label="Save"
@@ -78,6 +105,86 @@
                             <lightning-button
                                 label="Cancel"
                                 onclick={handleCancelCreate}
+                                variant="neutral"
+                                disabled={_isSaving}
+                            ></lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={_isEditing}>
+                    <div class="create-form">
+                        <h3 class="section-subheader">Edit Opportunity Naming Rule</h3>
+                        <div class="form-row">
+                            <lightning-combobox
+                                label="Attribution"
+                                value={_editRecord.Attribution__c}
+                                options={attributionOptions}
+                                onchange={handleEditAttributionChange}
+                                required
+                            ></lightning-combobox>
+                            <lightning-combobox
+                                label="Name Format"
+                                value={editFormatComboValue}
+                                options={nameFormatOptions}
+                                onchange={handleEditFormatComboChange}
+                                field-level-help="The merge-field template used to generate Opportunity names. Select a preset or choose Other to enter a custom format."
+                            ></lightning-combobox>
+                            <lightning-combobox
+                                label="Date Format"
+                                value={editDateComboValue}
+                                options={dateFormatOptions}
+                                onchange={handleEditDateComboChange}
+                                field-level-help="Controls how dates appear in the generated name. Leave as Default to use the org locale format."
+                            ></lightning-combobox>
+                        </div>
+                        <template lwc:if={isEditCustomDate}>
+                            <lightning-input
+                                type="text"
+                                label="Custom Date Pattern"
+                                value={_editRecord.Date_Format__c}
+                                onchange={handleEditCustomDateChange}
+                                placeholder="yyyy-MM-dd"
+                                field-level-help="Java SimpleDateFormat pattern, e.g. yyyy-MM-dd or MM/dd/yyyy."
+                                class="slds-m-top_small"
+                            ></lightning-input>
+                        </template>
+                        <template lwc:if={isEditCustomFormat}>
+                            <lightning-input
+                                type="text"
+                                label="Custom Name Format"
+                                value={_editRecord.Opportunity_Name_Format__c}
+                                onchange={handleEditCustomFormatChange}
+                                placeholder={customFormatPlaceholder}
+                                class="slds-m-top_small"
+                            ></lightning-input>
+                            <template lwc:if={editFormatWarnings}>
+                                <div class="warning-box">
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" variant="warning" class="slds-m-right_xx-small"></lightning-icon>
+                                    {editFormatWarnings}
+                                </div>
+                            </template>
+                        </template>
+                        <template lwc:if={editFormatPreview}>
+                            <div class="preview-box">
+                                <span class="preview-label">Preview:</span> {editFormatPreview}
+                            </div>
+                        </template>
+                        <template lwc:if={isEditPreviewUnavailable}>
+                            <div class="preview-box preview-unavailable">
+                                <span class="preview-label">Preview:</span> Unavailable for custom formats
+                            </div>
+                        </template>
+                        <div class="form-actions">
+                            <lightning-button
+                                label="Save"
+                                onclick={handleSaveEdit}
+                                variant="brand"
+                                disabled={isEditSaveDisabled}
+                            ></lightning-button>
+                            <lightning-button
+                                label="Cancel"
+                                onclick={handleCancelEdit}
                                 variant="neutral"
                                 disabled={_isSaving}
                             ></lightning-button>

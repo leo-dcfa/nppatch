@@ -4,8 +4,5 @@
         <label>Benutzerdefinierte Felder des Eintragsformulars für wiederkehrende Spenden</label>
         <name>RD2_Entry_Form_Custom_Fields</name>
     </fieldSets>
-    <webLinks>
-        <name>Recalculate_Rollups</name>
-        <label>Rollups neu berechnen</label>
-    </webLinks>
+
 </CustomObjectTranslation>

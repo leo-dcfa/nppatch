@@ -1,20 +1,29 @@
 <template>
-    <div class="panel-container">
-        <div class="panel-header">
-            <h2 class="slds-text-heading_small">
-                <span class="slds-text-color_weak">System Tools</span>
-                <span class="slds-text-color_weak"> &bull; </span>
-                Health Check
-            </h2>
-            <p class="section-description">Health Check validates your NPPatch configuration and data integrity. It checks for common issues like missing required settings, invalid record type references, broken trigger handlers, and data inconsistencies. Run this after major configuration changes or when troubleshooting issues.</p>
-        </div>
-        <div class="panel-body">
-            <div class="action-row">
-                <template if:false={_isRunning}>
-                    <lightning-button label="Run Health Check" onclick={handleRunHealthCheck} variant="brand"></lightning-button>
-                    <lightning-button label="Reinitialize TDTM &amp; Scheduled Jobs" onclick={handleReinitialize} variant="neutral" class="slds-m-left_small"></lightning-button>
+    <article class="slds-card">
+        <div class="card-content">
+            <div class="card-header">
+                <lightning-icon icon-name="utility:heart" size="small"></lightning-icon>
+                <h2 class="slds-card__header-title">Health Check</h2>
+                <template lwc:if={_hasResults}>
+                    <lightning-button-icon
+                        icon-name="utility:refresh"
+                        alternative-text="Refresh"
+                        title="Re-run health check"
+                        onclick={handleRefresh}
+                        disabled={_isRunning}
+                        class="refresh-btn"
+                    ></lightning-button-icon>
                 </template>
-                <template if:true={_isRunning}>
+            </div>
+
+            <p class="section-description">
+                Health Check validates your NPPatch configuration and data integrity.
+                It checks for common issues like missing required settings, invalid record type references,
+                broken trigger handlers, and data inconsistencies.
+            </p>
+
+            <template lwc:if={_isRunning}>
+                <div class="action-row">
                     <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
                         <div class="slds-col">
                             <lightning-spinner alternative-text="Running" size="small" class="inline-spinner"></lightning-spinner>
@@ -23,31 +32,44 @@
                             <p class="running-message">{_runningMessage}</p>
                         </div>
                     </div>
-                </template>
-            </div>
+                </div>
+            </template>
 
-            <template if:true={_hasResults}>
-                <div class="results-summary">
-                    <div class="summary-badges">
-                        <span class="badge badge-pass">{_passCount} Passed</span>
-                        <span class="badge badge-fail">{_failCount} Failed</span>
-                        <span class="badge badge-warn">{_warnCount} Warnings</span>
-                    </div>
+            <template lwc:if={_hasResults}>
+                <div class="tab-bar">
+                    <button class={tabAllClass} onclick={handleTabAll}>
+                        All Results
+                    </button>
+                    <button class={tabErrorsClass} onclick={handleTabErrors}>
+                        Errors <span class="tab-badge tab-badge-fail">{_failCount}</span>
+                    </button>
+                    <button class={tabWarningsClass} onclick={handleTabWarnings}>
+                        Warnings <span class="tab-badge tab-badge-warn">{_warnCount}</span>
+                    </button>
+                    <button class={tabPassClass} onclick={handleTabPass}>
+                        Pass <span class="tab-badge tab-badge-pass">{_passCount}</span>
+                    </button>
+                    <span class="tab-spacer"></span>
+                    <span class="badge badge-time">{_elapsedTime}</span>
                 </div>
 
-                <template for:each={_results} for:item="result">
-                    <div key={result.id} class={result.rowClass}>
-                        <div class="result-header">
-                            <lightning-icon icon-name={result.iconName} size="x-small" class="result-icon"></lightning-icon>
-                            <span class="result-setting">{result.setting}</span>
+                <div class="results-list">
+                    <template for:each={filteredResults} for:item="result">
+                        <div key={result.id} class={result.rowClass}>
+                            <div class="result-header">
+                                <lightning-icon icon-name={result.iconName} variant={result.iconVariant} size="x-small" class="result-icon"></lightning-icon>
+                                <span class="result-setting">{result.setting}</span>
+                            </div>
+                            <template lwc:if={result.description}>
+                                <lightning-formatted-rich-text value={result.description} class="result-description"></lightning-formatted-rich-text>
+                            </template>
+                            <template lwc:if={result.solution}>
+                                <lightning-formatted-rich-text value={result.solution} class="result-solution"></lightning-formatted-rich-text>
+                            </template>
                         </div>
-                        <p class="result-description">{result.description}</p>
-                        <template if:true={result.solution}>
-                            <p class="result-solution"><strong>Solution:</strong> {result.solution}</p>
-                        </template>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </template>
         </div>
-    </div>
+    </article>
 </template>

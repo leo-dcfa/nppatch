@@ -3,20 +3,26 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getListSettings from "@salesforce/apex/NppatchSettingsController.getListSettings";
 import createListSetting from "@salesforce/apex/NppatchSettingsController.createListSetting";
+import updateListSetting from "@salesforce/apex/NppatchSettingsController.updateListSetting";
 import deleteListSetting from "@salesforce/apex/NppatchSettingsController.deleteListSetting";
+import getMultiObjectFieldDescribes from "@salesforce/apex/NppatchSettingsController.getMultiObjectFieldDescribes";
 import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 const SETTINGS_OBJECT = "Payment_Field_Mapping_Settings__c";
+const FIELD_OBJECTS = ["Opportunity", "OppPayment__c"];
 
 const DATA_COLUMNS = [
-    { label: "Opportunity Field", fieldName: "Opportunity_Field__c", type: "text" },
-    { label: "Payment Field", fieldName: "Payment_Field__c", type: "text" },
+    { label: "Opportunity Field", fieldName: "oppFieldDisplay", type: "text" },
+    { label: "Payment Field", fieldName: "pmtFieldDisplay", type: "text" },
 ];
 
 const ACTION_COLUMN = {
     type: "action",
     typeAttributes: {
-        rowActions: [{ label: "Delete", name: "delete" }],
+        rowActions: [
+            { label: "Edit", name: "edit" },
+            { label: "Delete", name: "delete" },
+        ],
     },
 };
 
@@ -25,10 +31,18 @@ export default class StgPanelPaymentMapping extends LightningElement {
     _wiredResult;
     _canEdit = false;
     _isCreating = false;
+    _isEditing = false;
     _isSaving = false;
     _hasError = false;
     _errorMessage = "";
     @track _newRecord = { Opportunity_Field__c: "", Payment_Field__c: "" };
+    @track _editRecord = { Id: "", Opportunity_Field__c: "", Payment_Field__c: "" };
+
+    @track _oppFields = [];
+    @track _pmtFields = [];
+    _oppLabelMap = {};
+    _pmtLabelMap = {};
+    _fieldLoadError = "";
 
     labels = {
         sectionLabel: "Donations",
@@ -37,6 +51,37 @@ export default class StgPanelPaymentMapping extends LightningElement {
             "Payment Field Mappings automatically copy values from Opportunity fields to Payment fields when Payments are created. " +
             "For example, you can map the Opportunity\u2019s custom \u2018Fund\u2019 field to a \u2018Fund\u2019 field on the Payment record.",
     };
+
+    @wire(getMultiObjectFieldDescribes, { sObjectApiNames: FIELD_OBJECTS })
+    wiredFieldDescribes({ data, error }) {
+        if (data) {
+            this._oppLabelMap = {};
+            this._pmtLabelMap = {};
+            const oppData = data["Opportunity"] || [];
+            const pmtData = data["OppPayment__c"] || [];
+            this._oppFields = oppData
+                .map((f) => {
+                    this._oppLabelMap[f.value] = f.label;
+                    return { label: `${f.label} (${f.value})`, value: f.value };
+                })
+                .sort((a, b) => a.label.localeCompare(b.label));
+            this._pmtFields = pmtData
+                .map((f) => {
+                    this._pmtLabelMap[f.value] = f.label;
+                    return { label: `${f.label} (${f.value})`, value: f.value };
+                })
+                .sort((a, b) => a.label.localeCompare(b.label));
+            this._fieldLoadError = "";
+            /* eslint-disable-next-line no-console */
+            console.log(
+                `PaymentMapping: loaded ${this._oppFields.length} Opp fields, ${this._pmtFields.length} Pmt fields`
+            );
+        } else if (error) {
+            this._fieldLoadError = "Unable to load field options.";
+            /* eslint-disable-next-line no-console */
+            console.error("PaymentMapping field load error:", JSON.stringify(error));
+        }
+    }
 
     @wire(isAdmin)
     wiredIsAdmin({ data }) {
@@ -69,6 +114,23 @@ export default class StgPanelPaymentMapping extends LightningElement {
         return this._canEdit;
     }
 
+    get hasFieldLoadError() {
+        return !!this._fieldLoadError;
+    }
+
+    get showEmptyMessage() {
+        return !this.hasRecords && !this._isCreating && !this._isEditing;
+    }
+
+    get displayRecords() {
+        if (!this._settings) return [];
+        return this._settings.map((r) => ({
+            ...r,
+            oppFieldDisplay: this._formatFieldDisplay(r.Opportunity_Field__c, this._oppLabelMap),
+            pmtFieldDisplay: this._formatFieldDisplay(r.Payment_Field__c, this._pmtLabelMap),
+        }));
+    }
+
     get columns() {
         if (this._canEdit) {
             return [...DATA_COLUMNS, ACTION_COLUMN];
@@ -76,8 +138,19 @@ export default class StgPanelPaymentMapping extends LightningElement {
         return DATA_COLUMNS;
     }
 
+    get oppFieldOptions() {
+        return this._oppFields;
+    }
+
+    get pmtFieldOptions() {
+        return this._pmtFields;
+    }
+
+    // ─── Create ─────────────────────────────────────────────────────────
+
     handleNew() {
         this._isCreating = true;
+        this._isEditing = false;
         this._newRecord = { Opportunity_Field__c: "", Payment_Field__c: "" };
     }
 
@@ -106,9 +179,13 @@ export default class StgPanelPaymentMapping extends LightningElement {
         }
         this._isSaving = true;
         try {
+            const fieldValues = {
+                ...this._newRecord,
+                Name: this._newRecord.Opportunity_Field__c,
+            };
             await createListSetting({
                 settingsObjectName: SETTINGS_OBJECT,
-                fieldValues: this._newRecord,
+                fieldValues,
             });
             await refreshApex(this._wiredResult);
             this._isCreating = false;
@@ -132,12 +209,83 @@ export default class StgPanelPaymentMapping extends LightningElement {
         }
     }
 
+    // ─── Edit ───────────────────────────────────────────────────────────
+
+    handleEdit(row) {
+        this._isEditing = true;
+        this._isCreating = false;
+        this._editRecord = {
+            Id: row.Id,
+            Opportunity_Field__c: row.Opportunity_Field__c || "",
+            Payment_Field__c: row.Payment_Field__c || "",
+        };
+    }
+
+    handleCancelEdit() {
+        this._isEditing = false;
+    }
+
+    handleEditOpportunityFieldChange(event) {
+        this._editRecord = { ...this._editRecord, Opportunity_Field__c: event.detail.value };
+    }
+
+    handleEditPaymentFieldChange(event) {
+        this._editRecord = { ...this._editRecord, Payment_Field__c: event.detail.value };
+    }
+
+    async handleSaveEdit() {
+        if (!this._editRecord.Opportunity_Field__c || !this._editRecord.Payment_Field__c) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: "Error",
+                    message: "Both Opportunity Field and Payment Field are required.",
+                    variant: "error",
+                })
+            );
+            return;
+        }
+        this._isSaving = true;
+        try {
+            const { Id, ...fieldValues } = this._editRecord;
+            await updateListSetting({
+                settingsObjectName: SETTINGS_OBJECT,
+                recordId: Id,
+                fieldValues,
+            });
+            await refreshApex(this._wiredResult);
+            this._isEditing = false;
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: "Success",
+                    message: "Payment field mapping updated.",
+                    variant: "success",
+                })
+            );
+        } catch (error) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: "Error",
+                    message: this._extractError(error),
+                    variant: "error",
+                })
+            );
+        } finally {
+            this._isSaving = false;
+        }
+    }
+
+    // ─── Row Actions ────────────────────────────────────────────────────
+
     async handleRowAction(event) {
-        if (event.detail.action.name === "delete") {
+        const action = event.detail.action.name;
+        const row = event.detail.row;
+        if (action === "edit") {
+            this.handleEdit(row);
+        } else if (action === "delete") {
             try {
                 await deleteListSetting({
                     settingsObjectName: SETTINGS_OBJECT,
-                    recordId: event.detail.row.Id,
+                    recordId: row.Id,
                 });
                 await refreshApex(this._wiredResult);
                 this.dispatchEvent(
@@ -153,6 +301,14 @@ export default class StgPanelPaymentMapping extends LightningElement {
                 );
             }
         }
+    }
+
+    // ─── Helpers ────────────────────────────────────────────────────────
+
+    _formatFieldDisplay(apiName, labelMap) {
+        if (!apiName) return "";
+        const label = labelMap[apiName];
+        return label ? `${label} (${apiName})` : apiName;
     }
 
     _extractError(error) {

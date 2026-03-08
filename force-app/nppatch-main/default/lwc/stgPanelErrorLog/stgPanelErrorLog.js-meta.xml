@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
+    <description>Error Log - View and manage NPPatch processing errors</description>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__AppPage</target>
+        <target>lightning__Tab</target>
     </targets>
+    <masterLabel>Error Log</masterLabel>
 </LightningComponentBundle>

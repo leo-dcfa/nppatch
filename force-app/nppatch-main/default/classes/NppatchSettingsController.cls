@@ -32,7 +32,13 @@ public with sharing class NppatchSettingsController {
             }
             existing.put(fieldName, fieldValues.get(fieldName));
         }
-        upsert existing;
+        try {
+            upsert existing;
+        } catch (Exception ex) {
+            AuraHandledException ahe = new AuraHandledException(ex.getMessage());
+            ahe.setMessage(ex.getMessage());
+            throw ahe;
+        }
     }
 
     /**
@@ -155,84 +161,9 @@ public with sharing class NppatchSettingsController {
                 when 'Levels_Settings__c' {
                     UTIL_CustomSettingsFacade.getOrgLevelsSettings();
                 }
-            }
-        }
-    }
-
-    /**
-     * @description Runs TDTM initialization, aborts stale scheduled jobs, and
-     * re-schedules default jobs. Previously triggered on every VF settings page
-     * load; now available as an explicit admin action.
-     */
-    @AuraEnabled
-    public static void runInitialization() {
-        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
-        new STG_InstallScript().runNewOrgScript();
-        UTIL_MasterSchedulableHelper.abortOldScheduledJobs();
-        UTIL_MasterSchedulableHelper.setScheduledJobs();
-    }
-
-    // ─── Batch Execution ────────────────────────────────────────────────
-
-    /**
-     * @description Executes a named batch job. Admin only.
-     * @param batchName Identifier for the batch to run
-     * @return The AsyncApexJob Id, or null for internally-managed jobs
-     */
-    @AuraEnabled
-    public static Id runBatch(String batchName) {
-        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
-
-        switch on batchName {
-            when 'rollupBatch' {
-                for (CRLP_RollupProcessingOptions.RollupType jobType : new List<CRLP_RollupProcessingOptions.RollupType>{
-                    CRLP_RollupProcessingOptions.RollupType.AccountHardCredit,
-                    CRLP_RollupProcessingOptions.RollupType.ContactHardCredit,
-                    CRLP_RollupProcessingOptions.RollupType.AccountContactSoftCredit,
-                    CRLP_RollupProcessingOptions.RollupType.ContactSoftCredit,
-                    CRLP_RollupProcessingOptions.RollupType.AccountSoftCredit,
-                    CRLP_RollupProcessingOptions.RollupType.RecurringDonations
-                }) {
-                    CRLP_RollupBatch_SVC.executeBatchRollupJob(
-                        jobType, CRLP_RollupProcessingOptions.BatchJobMode.NonSkewMode);
+                when 'Addr_Verification_Settings__c' {
+                    UTIL_CustomSettingsFacade.getOrgAddressVerificationSettings();
                 }
-                return null;
-            }
-            when 'alloBatch' {
-                CRLP_RollupBatch_SVC.executeBatchRollupJob(
-                    CRLP_RollupProcessingOptions.RollupType.GAU,
-                    CRLP_RollupProcessingOptions.BatchJobMode.NonSkewMode);
-                return null;
-            }
-            when 'makeDefaultAllocations' {
-                return Database.executeBatch(new ALLO_MakeDefaultAllocations_BATCH());
-            }
-            when 'createPayments' {
-                return Database.executeBatch(new PMT_PaymentCreator_BATCH(), 200);
-            }
-            when 'refreshHouseholdData' {
-                HouseholdNamingService.refreshAllHouseholdNaming(false);
-                return null;
-            }
-            when 'oppNamingBatch' {
-                return Database.executeBatch(new OPP_OpportunityNaming_BATCH(), 200);
-            }
-            when 'updatePrimaryContact' {
-                return Database.executeBatch(new OPP_PrimaryContact_BATCH(), 200);
-            }
-            when 'lvlAssignBatch' {
-                new LVL_LevelAssign_SCHED().runBatch();
-                return null;
-            }
-            when 'primaryContactRoleMerge' {
-                return Database.executeBatch(new OPP_PrimaryContactRoleMerge_BATCH(), 2000);
-            }
-            when else {
-                AuraHandledException e = new AuraHandledException(
-                    'Invalid batch name: ' + batchName
-                );
-                e.setMessage('Invalid batch name: ' + batchName);
-                throw e;
             }
         }
     }
@@ -298,8 +229,47 @@ public with sharing class NppatchSettingsController {
             }
             record.put(fieldName, fieldValues.get(fieldName));
         }
-        insert record;
+        try {
+            insert record;
+        } catch (Exception ex) {
+            AuraHandledException ahe = new AuraHandledException(ex.getMessage());
+            ahe.setMessage(ex.getMessage());
+            throw ahe;
+        }
         return record.Id;
+    }
+
+    /**
+     * @description Updates an existing list custom setting record. Admin only.
+     * @param settingsObjectName API name of the list custom setting
+     * @param recordId The Id of the record to update
+     * @param fieldValues Map of field API names to new values
+     */
+    @AuraEnabled
+    public static void updateListSetting(String settingsObjectName, Id recordId, Map<String, Object> fieldValues) {
+        STG_Panel.throwAuraExceptionIfRunningUserNotAdmin();
+        validateListSettingsName(settingsObjectName);
+
+        Schema.SObjectType sot = Schema.getGlobalDescribe().get(settingsObjectName);
+        if (sot == null) {
+            sot = Schema.getGlobalDescribe().get(
+                UTIL_Namespace.prefixNamespace(settingsObjectName)
+            );
+        }
+        SObject record = sot.newSObject(recordId);
+        for (String fieldName : fieldValues.keySet()) {
+            if (fieldName.equalsIgnoreCase('Id') || fieldName.equalsIgnoreCase('attributes')) {
+                continue;
+            }
+            record.put(fieldName, fieldValues.get(fieldName));
+        }
+        try {
+            update record;
+        } catch (Exception ex) {
+            AuraHandledException ahe = new AuraHandledException(ex.getMessage());
+            ahe.setMessage(ex.getMessage());
+            throw ahe;
+        }
     }
 
     /**
@@ -392,8 +362,99 @@ public with sharing class NppatchSettingsController {
                 'type' => String.valueOf(dfr.getType())
             });
         }
-        fields.sort();
         return fields;
+    }
+
+    /**
+     * @description Returns active General Accounting Unit records for picklist selection.
+     * @return List of maps with 'label' (Name) and 'value' (Id) keys
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<Map<String, String>> getGAUOptions() {
+        List<Map<String, String>> options = new List<Map<String, String>>();
+        for (General_Accounting_Unit__c gau : [
+            SELECT Id, Name FROM General_Accounting_Unit__c
+            WHERE Active__c = true
+            ORDER BY Name
+            LIMIT 1000
+        ]) {
+            options.add(new Map<String, String>{
+                'label' => gau.Name,
+                'value' => gau.Id
+            });
+        }
+        return options;
+    }
+
+    /**
+     * @description Returns field describes for multiple SObjects in a single call.
+     * @param sObjectApiNames List of SObject API names
+     * @return Map of SObject name → field describe list
+     */
+    @AuraEnabled(cacheable=true)
+    public static Map<String, List<Map<String, String>>> getMultiObjectFieldDescribes(List<String> sObjectApiNames) {
+        Map<String, List<Map<String, String>>> result = new Map<String, List<Map<String, String>>>();
+        for (String apiName : sObjectApiNames) {
+            try {
+                result.put(apiName, getFieldDescribes(apiName));
+            } catch (Exception ex) {
+                result.put(apiName, new List<Map<String, String>>());
+            }
+        }
+        return result;
+    }
+
+    // ─── Address Verification ──────────────────────────────────────────
+
+    private static final Set<String> VALIDATOR_EXCLUSIONS = new Set<String>{
+        'ADDR_IValidator', 'ADDR_Validator', 'ADDR_Validator_REST'
+    };
+
+    /**
+     * @description Discovers available address verification service classes
+     * by querying ApexClass metadata and checking for ADDR_IValidator implementations.
+     * Returns a list of maps with className, serviceName, and defaultUrl keys.
+     * @return List of maps describing each available validator
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<Map<String, String>> getAddressValidators() {
+        List<Map<String, String>> validators = new List<Map<String, String>>();
+
+        String addrLikeClause = 'ADDR%';
+        ApexClass[] classes = [
+            SELECT Name, NamespacePrefix
+            FROM ApexClass
+            WHERE Name LIKE :addrLikeClause
+        ];
+
+        for (ApexClass c : classes) {
+            String upperName = c.Name.toUpperCase();
+            if (VALIDATOR_EXCLUSIONS.contains(c.Name)
+                || upperName.endsWith('TEST')
+                || upperName.endsWith('CTRL')
+                || upperName.endsWith('TDTM')
+                || upperName.endsWith('BATCH')
+                || upperName.endsWith('SCHED')) {
+                continue;
+            }
+            Type classType = Type.forName(c.NamespacePrefix, c.Name);
+            if (classType != null) {
+                try {
+                    Object classInstance = classType.newInstance();
+                    if (classInstance instanceof ADDR_IValidator) {
+                        ADDR_IValidator validator = (ADDR_IValidator) classInstance;
+                        validators.add(new Map<String, String>{
+                            'className' => c.Name,
+                            'serviceName' => validator.getServiceName(),
+                            'defaultUrl' => validator.getDefaultURL()
+                        });
+                    }
+                } catch (Exception ex) {
+                    // Skip classes that fail to instantiate
+                }
+            }
+        }
+        return validators;
     }
 
     // ─── Private Helpers ────────────────────────────────────────────────
@@ -443,6 +504,9 @@ public with sharing class NppatchSettingsController {
             }
             when 'Levels_Settings__c' {
                 return UTIL_CustomSettingsFacade.getOrgLevelsSettings();
+            }
+            when 'Addr_Verification_Settings__c' {
+                return UTIL_CustomSettingsFacade.getOrgAddressVerificationSettings();
             }
             when else {
                 AuraHandledException e = new AuraHandledException(

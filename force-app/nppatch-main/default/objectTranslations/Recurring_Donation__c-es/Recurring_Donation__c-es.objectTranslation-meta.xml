@@ -4,8 +4,5 @@
         <label>Campos personalizados de formulario de entrada de donaciones recurrentes</label>
         <name>RD2_Entry_Form_Custom_Fields</name>
     </fieldSets>
-    <webLinks>
-        <name>Recalculate_Rollups</name>
-        <label>Volver a calcular totales</label>
-    </webLinks>
+
 </CustomObjectTranslation>

@@ -1,14 +1,14 @@
-import { LightningElement } from "lwc";
+import { LightningElement, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-
-// TODO: Add getErrorLog to NppatchSettingsController
-// import getErrorLog from "@salesforce/apex/NppatchSettingsController.getErrorLog";
+import { refreshApex } from "lightning/uiRecordApi";
+import getErrors from "@salesforce/apex/ErrorLogController.getErrors";
+import clearErrors from "@salesforce/apex/ErrorLogController.clearErrors";
 
 const COLUMNS = [
-    { label: "Date/Time", fieldName: "CreatedDate", type: "date",
+    { label: "Date/Time", fieldName: "Datetime__c", type: "date",
         typeAttributes: { year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" },
         sortable: true, initialWidth: 180 },
-    { label: "Context", fieldName: "Context_Type__c", type: "text", sortable: true, initialWidth: 200 },
+    { label: "Context", fieldName: "Context_Type__c", type: "text", sortable: true, initialWidth: 180 },
     { label: "Object Type", fieldName: "Object_Type__c", type: "text", sortable: true, initialWidth: 150 },
     { label: "Error Type", fieldName: "Error_Type__c", type: "text", sortable: true, initialWidth: 150 },
     { label: "Message", fieldName: "Full_Message__c", type: "text", wrapText: true },
@@ -16,35 +16,64 @@ const COLUMNS = [
 
 export default class StgPanelErrorLog extends LightningElement {
     _errors = [];
-    _hasError = false;
-    _errorMessage = "";
-    _isLoaded = false;
-    _sortedBy = "CreatedDate";
+    _wiredResult;
+    _isClearing = false;
+    _sortedBy = "Datetime__c";
     _sortedDirection = "desc";
+    _lastRefreshed = null;
 
     columns = COLUMNS;
 
-    connectedCallback() {
-        this._isLoaded = true;
-        // TODO: Load errors when Apex method is ready
-        // this.loadErrors();
+    @wire(getErrors)
+    wiredErrors(result) {
+        this._wiredResult = result;
+        if (result.data) {
+            this._errors = [...result.data];
+            this._sortData();
+            this._lastRefreshed = new Date().toLocaleString();
+        }
     }
 
     get isLoading() {
-        return !this._isLoaded;
+        return !this._wiredResult;
     }
 
     get hasRecords() {
         return this._errors && this._errors.length > 0;
     }
 
-    handleRefresh() {
-        // TODO: Refresh errors
+    get errorCount() {
+        return this._errors ? this._errors.length : 0;
+    }
+
+    async handleRefresh() {
+        await refreshApex(this._wiredResult);
         this.dispatchEvent(new ShowToastEvent({
-            title: "Info",
-            message: "Error Log API is being migrated. For now, view errors from the classic NPPatch Settings page.",
+            title: "Refreshed",
+            message: `${this.errorCount} error${this.errorCount === 1 ? "" : "s"} found.`,
             variant: "info",
         }));
+    }
+
+    async handleClear() {
+        this._isClearing = true;
+        try {
+            await clearErrors();
+            await refreshApex(this._wiredResult);
+            this.dispatchEvent(new ShowToastEvent({
+                title: "Success",
+                message: "Error log has been cleared.",
+                variant: "success",
+            }));
+        } catch (error) {
+            this.dispatchEvent(new ShowToastEvent({
+                title: "Error",
+                message: error?.body?.message || "Failed to clear errors.",
+                variant: "error",
+            }));
+        } finally {
+            this._isClearing = false;
+        }
     }
 
     handleSort(event) {

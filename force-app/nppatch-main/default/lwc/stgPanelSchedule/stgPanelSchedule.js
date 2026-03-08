@@ -1,14 +1,10 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import getSettings from "@salesforce/apex/NppatchSettingsController.getSettings";
 import saveSettings from "@salesforce/apex/NppatchSettingsController.saveSettings";
-import isAdmin from "@salesforce/apex/NppatchSettingsController.isAdmin";
 
 export default class StgPanelSchedule extends LightningElement {
-    _isAdmin = false;
-    _isEditMode = false;
-    _isSaving = false;
     _hasError = false;
     _errorMessage;
 
@@ -33,9 +29,6 @@ export default class StgPanelSchedule extends LightningElement {
     labels = {
         sectionLabel: "Bulk Data Processes",
         pageLabel: "Batch Process Settings",
-        edit: "Edit",
-        save: "Save",
-        cancel: "Cancel",
         // Section subheaders
         batchSizesSection: "Rollup Batch Job Sizes",
         skewModeSection: "Skew Mode Batch Sizes",
@@ -83,6 +76,7 @@ export default class StgPanelSchedule extends LightningElement {
         if (result.data) {
             this._settingsCRLP = { ...result.data };
             this._hasError = false;
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
@@ -94,6 +88,7 @@ export default class StgPanelSchedule extends LightningElement {
         this._wiredRDResult = result;
         if (result.data) {
             this._settingsRD = { ...result.data };
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
@@ -105,6 +100,7 @@ export default class StgPanelSchedule extends LightningElement {
         this._wiredLvlResult = result;
         if (result.data) {
             this._settingsLvl = { ...result.data };
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
@@ -116,6 +112,7 @@ export default class StgPanelSchedule extends LightningElement {
         this._wiredHHResult = result;
         if (result.data) {
             this._settingsHH = { ...result.data };
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
@@ -127,53 +124,40 @@ export default class StgPanelSchedule extends LightningElement {
         this._wiredErrResult = result;
         if (result.data) {
             this._settingsErr = { ...result.data };
+            this._tryPopulateWorkingCopies();
         } else if (result.error) {
             this._hasError = true;
             this._errorMessage = this._extractError(result.error);
         }
     }
 
-    @wire(isAdmin)
-    wiredIsAdmin({ data }) {
-        if (data !== undefined) {
-            this._isAdmin = data;
-        }
-    }
-
-    get canEdit() {
-        return this._isAdmin && !this._isEditMode;
-    }
-
     get isLoading() {
-        return !this._settingsCRLP || !this._settingsRD || !this._settingsLvl || !this._settingsHH || !this._settingsErr;
+        return (!this._settingsCRLP || !this._settingsRD || !this._settingsLvl || !this._settingsHH || !this._settingsErr) && !this._hasError;
     }
 
     get isReady() {
-        return this._settingsCRLP && this._settingsRD && this._settingsLvl && this._settingsHH && this._settingsErr;
+        return this._settingsCRLP && this._settingsRD && this._settingsLvl && this._settingsHH && this._settingsErr && !this._hasError;
     }
 
-    get showSkewModeSection() {
-        return this._settingsCRLP && this._settingsCRLP.Customizable_Rollups_Enabled__c;
+    // --- Working copy management ---
+
+    _tryPopulateWorkingCopies() {
+        if (this._settingsCRLP && this._settingsRD && this._settingsLvl && this._settingsHH && this._settingsErr) {
+            this._workingCopyCRLP = { ...this._settingsCRLP };
+            this._workingCopyRD = { ...this._settingsRD };
+            this._workingCopyLvl = { ...this._settingsLvl };
+            this._workingCopyHH = { ...this._settingsHH };
+            this._workingCopyErr = { ...this._settingsErr };
+        }
     }
 
-    // --- Edit / Cancel ---
-
-    handleEdit() {
+    @api
+    reset() {
         this._workingCopyCRLP = { ...this._settingsCRLP };
         this._workingCopyRD = { ...this._settingsRD };
         this._workingCopyLvl = { ...this._settingsLvl };
         this._workingCopyHH = { ...this._settingsHH };
         this._workingCopyErr = { ...this._settingsErr };
-        this._isEditMode = true;
-    }
-
-    handleCancel() {
-        this._workingCopyCRLP = {};
-        this._workingCopyRD = {};
-        this._workingCopyLvl = {};
-        this._workingCopyHH = {};
-        this._workingCopyErr = {};
-        this._isEditMode = false;
     }
 
     // --- Individual change handlers (CRLP fields) ---
@@ -257,8 +241,8 @@ export default class StgPanelSchedule extends LightningElement {
 
     // --- Save ---
 
-    async handleSave() {
-        this._isSaving = true;
+    @api
+    async save() {
         try {
             // Save Customizable_Rollup_Settings__c
             await saveSettings({
@@ -319,21 +303,15 @@ export default class StgPanelSchedule extends LightningElement {
                 refreshApex(this._wiredErrResult),
             ]);
 
-            this._isEditMode = false;
-            this._workingCopyCRLP = {};
-            this._workingCopyRD = {};
-            this._workingCopyLvl = {};
-            this._workingCopyHH = {};
-            this._workingCopyErr = {};
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Success", message: "Batch settings saved.", variant: "success" })
             );
+            return true;
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({ title: "Error", message: this._extractError(error), variant: "error" })
             );
-        } finally {
-            this._isSaving = false;
+            return false;
         }
     }
 
