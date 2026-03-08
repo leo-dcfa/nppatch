@@ -1,10 +1,17 @@
 <template>
-    <lightning-card title="Error Log" icon-name="utility:error">
-        <div slot="actions">
-            <lightning-button label="Refresh" onclick={handleRefresh} variant="neutral" icon-name="utility:refresh" class="slds-m-right_x-small"></lightning-button>
-            <lightning-button label="Clear All" onclick={handleClear} variant="destructive-text" icon-name="utility:delete" disabled={_isClearing}></lightning-button>
-        </div>
-        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+    <article class="slds-card">
+        <div class="card-content">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <lightning-icon icon-name="utility:error" size="small"></lightning-icon>
+                    <h2 class="slds-text-heading_small">Error Log</h2>
+                </div>
+                <div class="card-header-right">
+                    <lightning-button label="Refresh" onclick={handleRefresh} variant="neutral" icon-name="utility:refresh" class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Clear All" onclick={handleClear} variant="destructive-text" icon-name="utility:delete" disabled={_isClearing}></lightning-button>
+                </div>
+            </div>
+
             <p class="section-description">
                 Errors that occur during NPPatch processing — including trigger handler failures,
                 batch job errors, and scheduled job issues. Errors are logged automatically when
@@ -43,5 +50,5 @@
                 </div>
             </template>
         </div>
-    </lightning-card>
+    </article>
 </template>
