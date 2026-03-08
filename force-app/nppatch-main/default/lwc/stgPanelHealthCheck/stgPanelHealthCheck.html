@@ -1,14 +1,29 @@
 <template>
-    <lightning-card title="Health Check" icon-name="utility:heart">
-        <div class="slds-p-around_xx-large">
+    <article class="slds-card">
+        <div class="card-content">
+            <div class="card-header">
+                <lightning-icon icon-name="utility:heart" size="small"></lightning-icon>
+                <h2 class="slds-text-heading_small">Health Check</h2>
+                <template lwc:if={_hasResults}>
+                    <lightning-button-icon
+                        icon-name="utility:refresh"
+                        alternative-text="Refresh"
+                        title="Re-run health check"
+                        onclick={handleRefresh}
+                        disabled={_isRunning}
+                        class="refresh-btn"
+                    ></lightning-button-icon>
+                </template>
+            </div>
+
             <p class="section-description">
                 Health Check validates your NPPatch configuration and data integrity.
                 It checks for common issues like missing required settings, invalid record type references,
                 broken trigger handlers, and data inconsistencies.
             </p>
 
-            <div class="action-row slds-m-top_medium">
-                <template lwc:if={_isRunning}>
+            <template lwc:if={_isRunning}>
+                <div class="action-row">
                     <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
                         <div class="slds-col">
                             <lightning-spinner alternative-text="Running" size="small" class="inline-spinner"></lightning-spinner>
@@ -17,39 +32,44 @@
                             <p class="running-message">{_runningMessage}</p>
                         </div>
                     </div>
-                </template>
-                <template lwc:else>
-                    <lightning-button label="Run Health Check" onclick={handleRunHealthCheck} variant="brand"></lightning-button>
-                </template>
-            </div>
+                </div>
+            </template>
 
             <template lwc:if={_hasResults}>
-                <div class="results-summary slds-m-top_medium">
-                    <div class="summary-badges">
-                        <span class="badge badge-pass">{_passCount} Passed</span>
-                        <span class="badge badge-fail">{_failCount} Failed</span>
-                        <span class="badge badge-warn">{_warnCount} Warnings</span>
-                        <span class="badge badge-time">{_elapsedTime}</span>
-                    </div>
+                <div class="tab-bar">
+                    <button class={tabAllClass} onclick={handleTabAll}>
+                        All Results
+                    </button>
+                    <button class={tabErrorsClass} onclick={handleTabErrors}>
+                        Errors <span class="tab-badge tab-badge-fail">{_failCount}</span>
+                    </button>
+                    <button class={tabWarningsClass} onclick={handleTabWarnings}>
+                        Warnings <span class="tab-badge tab-badge-warn">{_warnCount}</span>
+                    </button>
+                    <button class={tabPassClass} onclick={handleTabPass}>
+                        Pass <span class="tab-badge tab-badge-pass">{_passCount}</span>
+                    </button>
+                    <span class="tab-spacer"></span>
+                    <span class="badge badge-time">{_elapsedTime}</span>
                 </div>
 
-                <div class="results-list slds-m-top_small">
-                    <template for:each={_results} for:item="result">
+                <div class="results-list">
+                    <template for:each={filteredResults} for:item="result">
                         <div key={result.id} class={result.rowClass}>
                             <div class="result-header">
-                                <lightning-icon icon-name={result.iconName} size="x-small" class="result-icon"></lightning-icon>
+                                <lightning-icon icon-name={result.iconName} variant={result.iconVariant} size="x-small" class="result-icon"></lightning-icon>
                                 <span class="result-setting">{result.setting}</span>
                             </div>
                             <template lwc:if={result.description}>
-                                <p class="result-description">{result.description}</p>
+                                <lightning-formatted-rich-text value={result.description} class="result-description"></lightning-formatted-rich-text>
                             </template>
                             <template lwc:if={result.solution}>
-                                <p class="result-solution"><strong>Solution:</strong> {result.solution}</p>
+                                <lightning-formatted-rich-text value={result.solution} class="result-solution"></lightning-formatted-rich-text>
                             </template>
                         </div>
                     </template>
                 </div>
             </template>
         </div>
-    </lightning-card>
+    </article>
 </template>

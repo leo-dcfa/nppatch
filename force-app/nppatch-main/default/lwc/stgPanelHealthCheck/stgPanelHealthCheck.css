@@ -1,14 +1,95 @@
+.card-content {
+    padding: 2rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.refresh-btn {
+    margin-left: 0.25rem;
+}
+
 .section-description { font-size: 0.8125rem; color: #706e6b; }
-.action-row { display: flex; align-items: center; gap: 0.75rem; }
+
+.action-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 0;
+}
+
 .running-message { font-size: 0.8125rem; color: #706e6b; }
 .inline-spinner { position: relative; height: 1.5rem; width: 1.5rem; }
-.results-summary { padding: 0.75rem; background: #f7f9fb; border-radius: 0.25rem; }
+
+.tab-spacer {
+    flex: 1;
+}
+
 .summary-badges { display: flex; gap: 0.75rem; }
-.badge { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
-.badge-pass { background: #d4edda; color: #155724; }
-.badge-fail { background: #f8d7da; color: #721c24; }
-.badge-warn { background: #fff3cd; color: #856404; }
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
 .badge-time { background: #e8eaf6; color: #3c4043; }
+
+/* Tabs */
+.tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-bottom: 2px solid #e5e5e5;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #706e6b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab:hover {
+    color: #0176d3;
+}
+
+.tab-active {
+    color: #0176d3;
+    border-bottom-color: #0176d3;
+}
+
+.tab-badge {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.125rem 0.4rem;
+    border-radius: 0.75rem;
+    min-width: 1.25rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.tab-badge-fail { background: #f8d7da; color: #721c24; }
+.tab-badge-warn { background: #fff3cd; color: #856404; }
+.tab-badge-pass { background: #d4edda; color: #155724; }
+
+/* Results */
 .results-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .result-row { padding: 0.75rem; border: 1px solid #e5e5e5; border-radius: 0.25rem; }
 .result-pass { border-left: 3px solid #2e844a; }
@@ -17,5 +98,5 @@
 .result-info { border-left: 3px solid #0176d3; }
 .result-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
 .result-setting { font-weight: 600; font-size: 0.8125rem; }
-.result-description { font-size: 0.8125rem; color: #3e3e3c; margin: 0; }
-.result-solution { font-size: 0.75rem; color: #706e6b; margin: 0.25rem 0 0 0; }
+.result-description { display: block; font-size: 0.8125rem; color: #3e3e3c; }
+.result-solution { display: block; font-size: 0.75rem; color: #706e6b; margin-top: 0.25rem; }
