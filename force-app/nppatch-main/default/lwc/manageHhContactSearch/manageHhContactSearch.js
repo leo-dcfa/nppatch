@@ -62,7 +62,7 @@ export default class ManageHhContactSearch extends LightningElement {
 
             const results = await queryObjects({
                 queryValue: this.searchTerm,
-                listCon: contactsForQuery
+                listCon: contactsForQuery,
             });
 
             this.searchResults = results.map((r) => {
@@ -74,7 +74,7 @@ export default class ManageHhContactSearch extends LightningElement {
                     Id: contact.Id,
                     Name: r.displayValue,
                     AccountName: accountName,
-                    record: contact
+                    record: contact,
                 };
             });
             this.isDropdownOpen = true;
@@ -92,7 +92,7 @@ export default class ManageHhContactSearch extends LightningElement {
         if (selected) {
             this.dispatchEvent(
                 new CustomEvent("contactselected", {
-                    detail: { contact: selected.record }
+                    detail: { contact: selected.record },
                 })
             );
         }
@@ -105,7 +105,7 @@ export default class ManageHhContactSearch extends LightningElement {
         const lastName = nameParts.length > 0 ? nameParts[nameParts.length - 1] : "";
         this.dispatchEvent(
             new CustomEvent("newcontact", {
-                detail: { firstName, lastName }
+                detail: { firstName, lastName },
             })
         );
         this._clearSearch();

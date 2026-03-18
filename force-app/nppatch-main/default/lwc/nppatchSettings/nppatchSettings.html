@@ -1,37 +1,42 @@
 <template>
-    <template lwc:if={_isLoading}>
+    <template lwc:if="{_isLoading}">
         <div class="loading-container">
             <lightning-spinner alternative-text="Loading"></lightning-spinner>
         </div>
     </template>
-    <template lwc:if={_isAccessDenied}>
+    <template lwc:if="{_isAccessDenied}">
         <c-util-illustration
-            heading={labels.insufficientPermissions}
-            message={labels.accessDeniedMessage}
+            heading="{labels.insufficientPermissions}"
+            message="{labels.accessDeniedMessage}"
             size="small"
-            variant="no-access">
+            variant="no-access"
+        >
         </c-util-illustration>
     </template>
-    <template lwc:if={isReady}>
+    <template lwc:if="{isReady}">
         <article class="slds-card">
             <div class="card-content">
                 <div class="card-header">
                     <lightning-icon icon-name="custom:custom108" size="small"></lightning-icon>
                     <h2 class="slds-card__header-title">{labels.title}</h2>
                 </div>
-                <template for:each={settingsGroups} for:item="group">
-                    <div key={group.label} class="settings-group">
+                <template for:each="{settingsGroups}" for:item="group">
+                    <div key="{group.label}" class="settings-group">
                         <h2 class="group-heading">{group.label}</h2>
                         <div class="tile-grid">
-                            <template for:each={group.tiles} for:item="tile">
-                                <div key={tile.name} class="tile">
+                            <template for:each="{group.tiles}" for:item="tile">
+                                <div key="{tile.name}" class="tile">
                                     <div class="tile-header">
                                         <h3 class="tile-title">{tile.title}</h3>
                                         <lightning-button-icon
                                             icon-name="utility:settings"
-                                            alternative-text={tile.title}
-                                            data-name={tile.name}
-                                            onclick={handleOpenPanel}
+                                            alternative-text="{tile.title}"
+                                            data-name="{tile.name}"
+                                            onclick="
+                                                {
+                                                    handleOpenPanel;
+                                                }
+                                            "
                                             variant="border-filled"
                                             size="medium"
                                         ></lightning-button-icon>

@@ -1,12 +1,21 @@
 <template>
-    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
-        error-message={_errorMessage} description={sectionDescription}>
-
-        <lightning-input type="number" label={labels.gracePeriod}
-            field-level-help={labels.helpGracePeriod}
-            value={gracePeriodValue}
-            onchange={handleGracePeriodChange}>
+    <c-stg-panel-content
+        is-loading="{isLoading}"
+        has-error="{_hasError}"
+        error-message="{_errorMessage}"
+        description="{sectionDescription}"
+    >
+        <lightning-input
+            type="number"
+            label="{labels.gracePeriod}"
+            field-level-help="{labels.helpGracePeriod}"
+            value="{gracePeriodValue}"
+            onchange="
+                {
+                    handleGracePeriodChange;
+                }
+            "
+        >
         </lightning-input>
-
     </c-stg-panel-content>
 </template>

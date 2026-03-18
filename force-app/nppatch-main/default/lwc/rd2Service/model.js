@@ -219,9 +219,8 @@ const setCustomField = (state, { fieldName, value }) => {
                 ...field,
                 value,
             };
-        } else {
-            return field;
         }
+        return field;
     });
     return {
         ...state,

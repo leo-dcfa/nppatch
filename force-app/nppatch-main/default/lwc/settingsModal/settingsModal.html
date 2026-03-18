@@ -1,83 +1,100 @@
 <template>
-    <lightning-modal-header label={panelTitle}></lightning-modal-header>
+    <lightning-modal-header label="{panelTitle}"></lightning-modal-header>
     <lightning-modal-body>
-        <template lwc:if={isAccountModelPanel}>
+        <template lwc:if="{isAccountModelPanel}">
             <c-stg-panel-account-model></c-stg-panel-account-model>
         </template>
-        <template lwc:if={isLeadsPanel}>
+        <template lwc:if="{isLeadsPanel}">
             <c-stg-panel-leads></c-stg-panel-leads>
         </template>
-        <template lwc:if={isAffiliationsPanel}>
+        <template lwc:if="{isAffiliationsPanel}">
             <c-stg-panel-affiliations></c-stg-panel-affiliations>
         </template>
-        <template lwc:if={isMembershipPanel}>
+        <template lwc:if="{isMembershipPanel}">
             <c-stg-panel-membership></c-stg-panel-membership>
         </template>
-        <template lwc:if={isPaymentsPanel}>
+        <template lwc:if="{isPaymentsPanel}">
             <c-stg-panel-payments></c-stg-panel-payments>
         </template>
-        <template lwc:if={isDonorStatisticsPanel}>
+        <template lwc:if="{isDonorStatisticsPanel}">
             <c-stg-panel-donor-statistics></c-stg-panel-donor-statistics>
         </template>
-        <template lwc:if={isCampaignMembersPanel}>
+        <template lwc:if="{isCampaignMembersPanel}">
             <c-stg-panel-campaign-members></c-stg-panel-campaign-members>
         </template>
-        <template lwc:if={isContactRolesPanel}>
+        <template lwc:if="{isContactRolesPanel}">
             <c-stg-panel-contact-roles></c-stg-panel-contact-roles>
         </template>
-        <template lwc:if={isAllocationsPanel}>
+        <template lwc:if="{isAllocationsPanel}">
             <c-stg-panel-allocations></c-stg-panel-allocations>
         </template>
-        <template lwc:if={isDuplicateRulesPanel}>
+        <template lwc:if="{isDuplicateRulesPanel}">
             <c-stg-panel-duplicate-rules></c-stg-panel-duplicate-rules>
         </template>
-        <template lwc:if={isErrorNotifPanel}>
+        <template lwc:if="{isErrorNotifPanel}">
             <c-stg-panel-error-notif></c-stg-panel-error-notif>
         </template>
-        <template lwc:if={isRelationshipsPanel}>
+        <template lwc:if="{isRelationshipsPanel}">
             <c-stg-panel-relationships></c-stg-panel-relationships>
         </template>
-        <template lwc:if={isHouseholdsPanel}>
+        <template lwc:if="{isHouseholdsPanel}">
             <c-stg-panel-households></c-stg-panel-households>
         </template>
-        <template lwc:if={isSchedulePanel}>
+        <template lwc:if="{isSchedulePanel}">
             <c-stg-panel-schedule></c-stg-panel-schedule>
         </template>
-        <template lwc:if={isRelReciprocalPanel}>
+        <template lwc:if="{isRelReciprocalPanel}">
             <c-stg-panel-rel-reciprocal></c-stg-panel-rel-reciprocal>
         </template>
-        <template lwc:if={isRelAutoCreatePanel}>
+        <template lwc:if="{isRelAutoCreatePanel}">
             <c-stg-panel-rel-auto-create></c-stg-panel-rel-auto-create>
         </template>
-        <template lwc:if={isOppNamingPanel}>
+        <template lwc:if="{isOppNamingPanel}">
             <c-stg-panel-opp-naming></c-stg-panel-opp-naming>
         </template>
-        <template lwc:if={isPaymentMappingPanel}>
+        <template lwc:if="{isPaymentMappingPanel}">
             <c-stg-panel-payment-mapping></c-stg-panel-payment-mapping>
         </template>
-        <template lwc:if={isTdtmPanel}>
+        <template lwc:if="{isTdtmPanel}">
             <c-stg-panel-tdtm></c-stg-panel-tdtm>
         </template>
-        <template lwc:if={isAddressVerificationPanel}>
+        <template lwc:if="{isAddressVerificationPanel}">
             <c-stg-panel-addr-verification></c-stg-panel-addr-verification>
         </template>
-        <template lwc:if={isCustomizableRollupsPanel}>
+        <template lwc:if="{isCustomizableRollupsPanel}">
             <c-stg-panel-customizable-rollups></c-stg-panel-customizable-rollups>
         </template>
-        <template lwc:if={isRd2StatusMappingPanel}>
+        <template lwc:if="{isRd2StatusMappingPanel}">
             <c-stg-panel-rd2-status-mapping></c-stg-panel-rd2-status-mapping>
         </template>
-        <template lwc:if={isRd2StatusAutomationPanel}>
+        <template lwc:if="{isRd2StatusAutomationPanel}">
             <c-stg-panel-rd2-status-automation></c-stg-panel-rd2-status-automation>
         </template>
-        <template lwc:if={isAdvancedMappingPanel}>
+        <template lwc:if="{isAdvancedMappingPanel}">
             <c-stg-panel-advanced-mapping></c-stg-panel-advanced-mapping>
         </template>
     </lightning-modal-body>
-    <template lwc:if={showModalFooter}>
+    <template lwc:if="{showModalFooter}">
         <lightning-modal-footer>
-            <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
-            <lightning-button label="Save" variant="brand" onclick={handleSave} disabled={_isSaving}></lightning-button>
+            <lightning-button
+                label="Cancel"
+                onclick="
+                    {
+                        handleCancel;
+                    }
+                "
+                class="slds-m-right_x-small"
+            ></lightning-button>
+            <lightning-button
+                label="Save"
+                variant="brand"
+                onclick="
+                    {
+                        handleSave;
+                    }
+                "
+                disabled="{_isSaving}"
+            ></lightning-button>
         </lightning-modal-footer>
     </template>
 </template>

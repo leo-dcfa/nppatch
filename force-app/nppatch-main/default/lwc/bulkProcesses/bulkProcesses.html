@@ -6,29 +6,37 @@
                 <h2 class="slds-card__header-title">Bulk Data Processes</h2>
             </div>
             <p class="section-description">
-                Run batch jobs to recalculate rollups, backfill data, and maintain system health.
-                Jobs run in the background — check Setup &gt; Apex Jobs for progress.
+                Run batch jobs to recalculate rollups, backfill data, and maintain system health. Jobs run in the
+                background — check Setup &gt; Apex Jobs for progress.
             </p>
             <div class="tile-grid slds-m-top_medium">
-                <template for:each={processes} for:item="proc">
-                    <div key={proc.name} class="tile">
+                <template for:each="{processes}" for:item="proc">
+                    <div key="{proc.name}" class="tile">
                         <div class="tile-header">
-                            <lightning-icon icon-name={proc.iconName} size="small" class="tile-icon"></lightning-icon>
+                            <lightning-icon icon-name="{proc.iconName}" size="small" class="tile-icon"></lightning-icon>
                             <h3 class="tile-title">{proc.title}</h3>
                         </div>
                         <p class="tile-description">{proc.description}</p>
                         <div class="tile-footer">
-                            <template lwc:if={proc.isRunning}>
-                                <lightning-spinner alternative-text="Running" size="small" class="inline-spinner"></lightning-spinner>
+                            <template lwc:if="{proc.isRunning}">
+                                <lightning-spinner
+                                    alternative-text="Running"
+                                    size="small"
+                                    class="inline-spinner"
+                                ></lightning-spinner>
                                 <span class="running-label">Running...</span>
                             </template>
                             <template lwc:else>
                                 <lightning-button
-                                    label={proc.buttonLabel}
-                                    data-name={proc.name}
-                                    onclick={handleRun}
+                                    label="{proc.buttonLabel}"
+                                    data-name="{proc.name}"
+                                    onclick="
+                                        {
+                                            handleRun;
+                                        }
+                                    "
                                     variant="neutral"
-                                    disabled={proc.isDisabled}
+                                    disabled="{proc.isDisabled}"
                                 ></lightning-button>
                             </template>
                         </div>

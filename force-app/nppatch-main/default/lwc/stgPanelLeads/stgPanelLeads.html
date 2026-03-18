@@ -1,13 +1,23 @@
 <template>
-    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
-        error-message={_errorMessage} description={sectionDescription}>
-
-        <lightning-input type="toggle" label={labels.defaultOppOnConvert}
-            field-level-help={labels.helpLeadConvert}
-            checked={_workingCopy.Default_Opp_on_Convert__c}
-            onchange={handleDefaultOppChange}
-            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+    <c-stg-panel-content
+        is-loading="{isLoading}"
+        has-error="{_hasError}"
+        error-message="{_errorMessage}"
+        description="{sectionDescription}"
+    >
+        <lightning-input
+            type="toggle"
+            label="{labels.defaultOppOnConvert}"
+            field-level-help="{labels.helpLeadConvert}"
+            checked="{_workingCopy.Default_Opp_on_Convert__c}"
+            onchange="
+                {
+                    handleDefaultOppChange;
+                }
+            "
+            message-toggle-active="Enabled"
+            message-toggle-inactive="Disabled"
+        >
         </lightning-input>
-
     </c-stg-panel-content>
 </template>

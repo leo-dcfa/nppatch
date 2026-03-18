@@ -1,115 +1,183 @@
 <template>
-    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
-        error-message={_errorMessage} description={sectionDescription}>
-
+    <c-stg-panel-content
+        is-loading="{isLoading}"
+        has-error="{_hasError}"
+        error-message="{_errorMessage}"
+        description="{sectionDescription}"
+    >
         <!-- Section 1: Opportunity Contact Roles -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_x-small">Opportunity Contact Roles</h3>
 
-        <div class="guidance-toggle slds-m-bottom_small" onclick={toggleOppGuidance}>
-            <lightning-icon icon-name={oppGuidanceIcon} size="xx-small"
-                class="slds-m-right_xx-small"></lightning-icon>
+        <div
+            class="guidance-toggle slds-m-bottom_small"
+            onclick="
+                {
+                    toggleOppGuidance;
+                }
+            "
+        >
+            <lightning-icon
+                icon-name="{oppGuidanceIcon}"
+                size="xx-small"
+                class="slds-m-right_xx-small"
+            ></lightning-icon>
             <span class="slds-text-body_small slds-text-color_weak">How do these roles work?</span>
         </div>
 
-        <template lwc:if={_showOppGuidance}>
+        <template lwc:if="{_showOppGuidance}">
             <div class="guidance-box slds-box slds-box_x-small slds-theme_shade slds-m-bottom_medium">
                 <p class="slds-text-body_small slds-m-bottom_x-small">
-                    When a donation is created, NPPatch automatically adds the Primary Contact
-                    as an Opportunity Contact Role. The role assigned depends on the Account type:
+                    When a donation is created, NPPatch automatically adds the Primary Contact as an Opportunity Contact
+                    Role. The role assigned depends on the Account type:
                 </p>
                 <ul class="slds-list_dotted slds-text-body_small slds-m-bottom_x-small">
-                    <li><strong>Default Contact Role</strong> is used for Household, One-to-One, and Individual Accounts (most common for individual donors).</li>
-                    <li><strong>Organizational Contact Role</strong> is used for all other Account types (e.g., corporate or foundation gifts).</li>
+                    <li>
+                        <strong>Default Contact Role</strong> is used for Household, One-to-One, and Individual Accounts
+                        (most common for individual donors).
+                    </li>
+                    <li>
+                        <strong>Organizational Contact Role</strong> is used for all other Account types (e.g.,
+                        corporate or foundation gifts).
+                    </li>
                 </ul>
                 <p class="slds-text-body_small slds-m-bottom_x-small">
                     <strong>Honoree</strong> and <strong>Notification Recipient</strong> roles apply to tribute gifts,
                     where a donation is made in honor of or on behalf of someone.
                 </p>
                 <p class="slds-text-body_small">
-                    These roles also drive <strong>Soft Credit</strong> rollups. Contacts with matching Contact Roles
-                    on an Opportunity will receive soft credit for the donation amount.
+                    These roles also drive <strong>Soft Credit</strong> rollups. Contacts with matching Contact Roles on
+                    an Opportunity will receive soft credit for the donation amount.
                 </p>
             </div>
         </template>
 
-        <lightning-combobox label={labels.defaultRole}
-            field-level-help={labels.helpOCR}
-            value={_workingCopyCon.Opportunity_Contact_Role_Default_role__c}
-            options={ocrRoleOptionsWithNone}
-            onchange={handleDefaultRoleChange}>
+        <lightning-combobox
+            label="{labels.defaultRole}"
+            field-level-help="{labels.helpOCR}"
+            value="{_workingCopyCon.Opportunity_Contact_Role_Default_role__c}"
+            options="{ocrRoleOptionsWithNone}"
+            onchange="
+                {
+                    handleDefaultRoleChange;
+                }
+            "
+        >
         </lightning-combobox>
 
-        <lightning-combobox label={labels.orgRole}
-            field-level-help={labels.helpOrgRole}
-            value={_workingCopyCon.Contact_Role_for_Organizational_Opps__c}
-            options={ocrRoleOptionsWithNone}
-            onchange={handleOrgRoleChange}>
+        <lightning-combobox
+            label="{labels.orgRole}"
+            field-level-help="{labels.helpOrgRole}"
+            value="{_workingCopyCon.Contact_Role_for_Organizational_Opps__c}"
+            options="{ocrRoleOptionsWithNone}"
+            onchange="
+                {
+                    handleOrgRoleChange;
+                }
+            "
+        >
         </lightning-combobox>
 
-        <lightning-combobox label={labels.honoreeRole}
-            field-level-help={labels.helpHonoreeRole}
-            value={_workingCopyCon.Honoree_Opportunity_Contact_Role__c}
-            options={ocrRoleOptionsWithNone}
-            onchange={handleHonoreeRoleChange}>
+        <lightning-combobox
+            label="{labels.honoreeRole}"
+            field-level-help="{labels.helpHonoreeRole}"
+            value="{_workingCopyCon.Honoree_Opportunity_Contact_Role__c}"
+            options="{ocrRoleOptionsWithNone}"
+            onchange="
+                {
+                    handleHonoreeRoleChange;
+                }
+            "
+        >
         </lightning-combobox>
 
-        <lightning-combobox label={labels.notifRole}
-            field-level-help={labels.helpNotifRole}
-            value={_workingCopyCon.Notification_Recipient_Opp_Contact_Role__c}
-            options={ocrRoleOptionsWithNone}
-            onchange={handleNotifRoleChange}>
+        <lightning-combobox
+            label="{labels.notifRole}"
+            field-level-help="{labels.helpNotifRole}"
+            value="{_workingCopyCon.Notification_Recipient_Opp_Contact_Role__c}"
+            options="{ocrRoleOptionsWithNone}"
+            onchange="
+                {
+                    handleNotifRoleChange;
+                }
+            "
+        >
         </lightning-combobox>
 
         <!-- Section 2: Household Contact Roles -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_x-small">Household Contact Roles</h3>
 
-        <div class="guidance-toggle slds-m-bottom_small" onclick={toggleHHGuidance}>
-            <lightning-icon icon-name={hhGuidanceIcon} size="xx-small"
-                class="slds-m-right_xx-small"></lightning-icon>
+        <div
+            class="guidance-toggle slds-m-bottom_small"
+            onclick="
+                {
+                    toggleHHGuidance;
+                }
+            "
+        >
+            <lightning-icon icon-name="{hhGuidanceIcon}" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
             <span class="slds-text-body_small slds-text-color_weak">How do these roles work?</span>
         </div>
 
-        <template lwc:if={_showHHGuidance}>
+        <template lwc:if="{_showHHGuidance}">
             <div class="guidance-box slds-box slds-box_x-small slds-theme_shade slds-m-bottom_medium">
                 <p class="slds-text-body_small slds-m-bottom_x-small">
                     When enabled, NPPatch automatically creates Opportunity Contact Roles for
-                    <strong>every member</strong> of the donor's Household — not just the Primary Contact.
-                    This provides visibility into which Household members are associated with each donation.
+                    <strong>every member</strong> of the donor's Household — not just the Primary Contact. This provides
+                    visibility into which Household members are associated with each donation.
                 </p>
                 <p class="slds-text-body_small slds-m-bottom_x-small">
-                    <strong>Household Member Role</strong> is assigned to all other Household members
-                    (the Primary Contact gets the Default Contact Role above).
+                    <strong>Household Member Role</strong> is assigned to all other Household members (the Primary
+                    Contact gets the Default Contact Role above).
                 </p>
                 <p class="slds-text-body_small">
-                    Use <strong>Excluded Record Types</strong> to skip Contacts with certain Record Types
-                    (e.g., a "Deceased" Record Type) so they don't receive automatic Contact Roles.
+                    Use <strong>Excluded Record Types</strong> to skip Contacts with certain Record Types (e.g., a
+                    "Deceased" Record Type) so they don't receive automatic Contact Roles.
                 </p>
             </div>
         </template>
 
-        <lightning-input type="toggle" label={labels.hhRolesOn}
-            field-level-help={labels.helpHHOCR}
-            checked={_workingCopyHH.Household_Contact_Roles_On__c}
-            onchange={handleHHRolesOnChange}
-            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
+        <lightning-input
+            type="toggle"
+            label="{labels.hhRolesOn}"
+            field-level-help="{labels.helpHHOCR}"
+            checked="{_workingCopyHH.Household_Contact_Roles_On__c}"
+            onchange="
+                {
+                    handleHHRolesOnChange;
+                }
+            "
+            message-toggle-active="Enabled"
+            message-toggle-inactive="Disabled"
+        >
         </lightning-input>
 
-        <lightning-combobox label={labels.hhMemberRole}
-            value={_workingCopyHH.Household_Member_Contact_Role__c}
-            options={ocrRoleOptionsWithNone}
-            onchange={handleHHMemberRoleChange}
-            disabled={isHHRolesDisabled}>
+        <lightning-combobox
+            label="{labels.hhMemberRole}"
+            value="{_workingCopyHH.Household_Member_Contact_Role__c}"
+            options="{ocrRoleOptionsWithNone}"
+            onchange="
+                {
+                    handleHHMemberRoleChange;
+                }
+            "
+            disabled="{isHHRolesDisabled}"
+        >
         </lightning-combobox>
 
         <lightning-dual-listbox
-            label={labels.hhExcludedRT}
-            field-level-help={labels.helpHHExcludedRT}
-            source-label="Available" selected-label="Excluded"
-            options={_contactRecordTypes}
-            value={selectedHHExcludedRT}
-            onchange={handleHHExcludedRTChange}
-            disabled={isHHRolesDisabled}>
+            label="{labels.hhExcludedRT}"
+            field-level-help="{labels.helpHHExcludedRT}"
+            source-label="Available"
+            selected-label="Excluded"
+            options="{_contactRecordTypes}"
+            value="{selectedHHExcludedRT}"
+            onchange="
+                {
+                    handleHHExcludedRTChange;
+                }
+            "
+            disabled="{isHHRolesDisabled}"
+        >
         </lightning-dual-listbox>
-
     </c-stg-panel-content>
 </template>
