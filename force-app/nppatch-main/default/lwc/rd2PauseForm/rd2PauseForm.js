@@ -210,7 +210,7 @@ export default class Rd2PauseForm extends LightningElement {
      * @description Handles the row selection event fired on
      * both select and deselect of all and individual installments
      */
-    handleRowSelection(event) {
+    handleRowSelection() {
         let selectedRows = this.template.querySelector("lightning-datatable").getSelectedRows();
         if (isNull(selectedRows)) {
             selectedRows = [];
@@ -323,7 +323,7 @@ export default class Rd2PauseForm extends LightningElement {
 
             if (lastSelectedId < this.installments.length) {
                 firstDateAfterPause = this.installments[lastSelectedId].donationDate;
-            } else if (lastSelectedId == this.installments.length) {
+            } else if (lastSelectedId === this.installments.length) {
                 firstDateAfterPause = this.firstDonationDateBoundary;
             }
 
@@ -351,7 +351,7 @@ export default class Rd2PauseForm extends LightningElement {
         this.isSaveDisplayed = !this.isLoading && this.permissions.hasAccess && !this.permissions.isBlocked;
 
         // Disable data display and Save button when installments are not returned
-        if (this.installments == null && this.isSaveDisplayed) {
+        if (this.installments === null && this.isSaveDisplayed) {
             this.isSaveDisplayed = false;
             this.hasAccess = false;
         }
@@ -365,7 +365,7 @@ export default class Rd2PauseForm extends LightningElement {
     refreshSaveButton() {
         if (isNull(this.scheduleId)) {
             this.isSaveDisabled =
-                (this.pausedReason && isNull(this.pausedReason.value)) || this.selectedIds.length == 0;
+                (this.pausedReason && isNull(this.pausedReason.value)) || this.selectedIds.length === 0;
         } else {
             this.isSaveDisabled = false;
         }

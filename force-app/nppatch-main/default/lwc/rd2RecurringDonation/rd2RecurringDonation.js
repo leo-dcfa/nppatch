@@ -97,7 +97,7 @@ export default class RecurringDonationTable extends LightningElement {
     currency = CURRENCY;
 
     @wire(getObjectInfo, { objectApiName: RECURRING_DONATION })
-    oppInfo({ data, error }) {
+    oppInfo({ data }) {
         if (data) {
             this.paymentMethodLabel = data.fields[FIELD_PAYMENT_METHOD.fieldApiName].label;
             this.dayOfMonthFieldLabel = data.fields[FIELD_DAY_OF_MONTH.fieldApiName].label;
@@ -186,7 +186,7 @@ export default class RecurringDonationTable extends LightningElement {
         return DESKTOP_CLASSES_HEAD;
     }
 
-    handlemouseup(e) {
+    handlemouseup() {
         this._tableThColumn = undefined;
         this._tableThInnerDiv = undefined;
         this._pageX = undefined;

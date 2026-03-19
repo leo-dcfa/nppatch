@@ -41,6 +41,6 @@ export default class Rd2ChangeEntryValue extends NavigationMixin(LightningElemen
     }
 
     get isMultiCurrency() {
-        return this.currencyCode != null;
+        return this.currencyCode !== null;
     }
 }

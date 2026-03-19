@@ -24,8 +24,6 @@ import FIELD_STATUS from "@salesforce/schema/Recurring_Donation__c.Status__c";
 import FIELD_STATUS_REASON from "@salesforce/schema/Recurring_Donation__c.ClosedReason__c";
 const FIELD_ACH_LAST4 = { fieldApiName: "ACH_Last_4__c", objectApiName: "Recurring_Donation__c" };
 import FIELD_CARD_LAST4 from "@salesforce/schema/Recurring_Donation__c.CardLast4__c";
-import FIELD_INSTALLMENT_FREQUENCY from "@salesforce/schema/Recurring_Donation__c.InstallmentFrequency__c";
-import FIELD_INSTALLMENT_PERIOD from "@salesforce/schema/Recurring_Donation__c.Installment_Period__c";
 import FIELD_CHANGE_TYPE from "@salesforce/schema/Recurring_Donation__c.ChangeType__c";
 
 import currencyFieldLabel from "@salesforce/label/c.lblCurrency";

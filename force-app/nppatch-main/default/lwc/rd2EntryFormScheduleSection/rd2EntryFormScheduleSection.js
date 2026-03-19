@@ -183,7 +183,10 @@ export default class rd2EntryFormScheduleSection extends LightningElement {
                 inlineHelpText: field.inlineHelpText,
                 dataType: field.dataType,
             };
-        } catch (error) {}
+        } catch (error) {
+            // no-op
+        }
+        return undefined;
     }
 
     /**
@@ -455,6 +458,8 @@ export default class rd2EntryFormScheduleSection extends LightningElement {
                     if (this._isAdvancedMode) {
                         data[this.fields.period.apiName] = input.value;
                     }
+                    break;
+                default:
                     break;
             }
         });

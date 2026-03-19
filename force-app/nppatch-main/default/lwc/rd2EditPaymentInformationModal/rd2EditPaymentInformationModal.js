@@ -181,7 +181,9 @@ export default class rd2EditPaymentInformationModal extends LightningElement {
     handleSaveError(error) {
         try {
             this.error = constructErrorMessage(error);
-        } catch (error) {}
+        } catch (err) {
+            // no-op
+        }
 
         this.setSaveButtonDisabled(false);
     }
@@ -190,7 +192,9 @@ export default class rd2EditPaymentInformationModal extends LightningElement {
      * @description log the error
      */
     handleLogError() {
-        logError({ recordId: this.rdRecord.id, errorMessage: this.error.detail }).catch((error) => {});
+        logError({ recordId: this.rdRecord.id, errorMessage: this.error.detail }).catch(() => {
+            // no-op
+        });
     }
 
     /**

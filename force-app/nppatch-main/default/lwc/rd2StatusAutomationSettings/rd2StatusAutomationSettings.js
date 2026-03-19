@@ -123,7 +123,7 @@ export default class Rd2StatusAutomationSettings extends LightningElement {
 
     handleSave() {
         this.errorMessage = null;
-        this.displayState === STATES.LOADING;
+        this.displayState = STATES.LOADING;
         try {
             saveStatusAutomationSettings({
                 daysForLapsed: this.inputDaysForLapsed,
@@ -174,11 +174,11 @@ export default class Rd2StatusAutomationSettings extends LightningElement {
     assignInputDaysThreshold() {
         this.maximumDaysForLapsed = isNull(this.inputDaysForClosed)
             ? null
-            : this.getMinimumDays(parseInt(this.inputDaysForClosed) - 1);
+            : this.getMinimumDays(parseInt(this.inputDaysForClosed, 10) - 1);
 
         this.minimumDaysForClosed = isNull(this.inputDaysForLapsed)
             ? 0
-            : this.getMinimumDays(parseInt(this.inputDaysForLapsed) + 1);
+            : this.getMinimumDays(parseInt(this.inputDaysForLapsed, 10) + 1);
 
         this.adjustDaysForClosedErrorMessage();
     }
