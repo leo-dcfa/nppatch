@@ -189,13 +189,17 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     }
 
     get contactUndeliverableLabel() {
-        if (!this.fieldLabels) return "";
+        if (!this.fieldLabels) {
+            return "";
+        }
         const key = prefixNamespace("Undeliverable_Address__c");
         return this.fieldLabels[key] || getChildObjectByName(this.fieldLabels, "Undeliverable_Address__c") || "";
     }
 
     get addressUndeliverableLabel() {
-        if (!this.fieldLabels) return "";
+        if (!this.fieldLabels) {
+            return "";
+        }
         const key = prefixNamespace("Undeliverable__c");
         return this.fieldLabels[key] || getChildObjectByName(this.fieldLabels, "Undeliverable__c") || "";
     }
@@ -208,13 +212,17 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     }
 
     get mergeHHPromptText() {
-        if (!this.contactToAdd) return lblMergeHHPrompt;
+        if (!this.contactToAdd) {
+            return lblMergeHHPrompt;
+        }
         const name = `${this.contactToAdd.FirstName || ""} ${this.contactToAdd.LastName || ""}`.trim();
         return lblMergeHHPrompt.replaceAll("{0}", name);
     }
 
     get addContactButtonLabel() {
-        if (!this.contactToAdd) return lblBtnAddContact;
+        if (!this.contactToAdd) {
+            return lblBtnAddContact;
+        }
         const name = `${this.contactToAdd.FirstName || ""} ${this.contactToAdd.LastName || ""}`.trim();
         return lblBtnAddContact.replace("{0}", name);
     }
@@ -249,7 +257,9 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     // ===== Namespace handling =====
 
     _removePrefix(obj) {
-        if (!obj || typeof obj !== "object") return obj;
+        if (!obj || typeof obj !== "object") {
+            return obj;
+        }
         const result = {};
         for (const key of Object.keys(obj)) {
             if (key.startsWith(NAMESPACE_PREFIX)) {
@@ -266,7 +276,9 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     }
 
     _addPrefix(obj) {
-        if (!obj || typeof obj !== "object") return obj;
+        if (!obj || typeof obj !== "object") {
+            return obj;
+        }
         const result = {};
         for (const key of Object.keys(obj)) {
             if (key === "_key" || key === "dtNewContact") {
@@ -290,12 +302,16 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     }
 
     _removeListPrefix(list) {
-        if (!list) return [];
+        if (!list) {
+            return [];
+        }
         return list.map((item) => this._removePrefix(item));
     }
 
     _addListPrefix(list) {
-        if (!list) return [];
+        if (!list) {
+            return [];
+        }
         return list.map((item) => this._addPrefix(item));
     }
 
@@ -349,7 +365,9 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     handleContactReorder(event) {
         const { index, direction } = event.detail;
         const newIndex = direction === "up" ? index - 1 : index + 1;
-        if (newIndex < 0 || newIndex >= this.contacts.length) return;
+        if (newIndex < 0 || newIndex >= this.contacts.length) {
+            return;
+        }
 
         const reordered = [...this.contacts];
         const [moved] = reordered.splice(index, 1);
@@ -625,7 +643,9 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
     }
 
     _updateDefaultAddress(addr) {
-        if (!addr) return;
+        if (!addr) {
+            return;
+        }
 
         // Update household
         const hh = { ...this.household };
@@ -686,16 +706,24 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
         this.household = { ...this.household, [field]: value };
 
         // Turn off auto-naming for the changed field
-        if (field === "Name") this.isAutoName = false;
-        else if (field === "Formal_Greeting__c") this.isAutoFormalGreeting = false;
-        else if (field === "Informal_Greeting__c") this.isAutoInformalGreeting = false;
+        if (field === "Name") {
+            this.isAutoName = false;
+        } else if (field === "Formal_Greeting__c") {
+            this.isAutoFormalGreeting = false;
+        } else if (field === "Informal_Greeting__c") {
+            this.isAutoInformalGreeting = false;
+        }
     }
 
     handleAutoNamingChanged(event) {
         const { field, checked } = event.detail;
-        if (field === "Name") this.isAutoName = checked;
-        else if (field === "Formal_Greeting__c") this.isAutoFormalGreeting = checked;
-        else if (field === "Informal_Greeting__c") this.isAutoInformalGreeting = checked;
+        if (field === "Name") {
+            this.isAutoName = checked;
+        } else if (field === "Formal_Greeting__c") {
+            this.isAutoFormalGreeting = checked;
+        } else if (field === "Informal_Greeting__c") {
+            this.isAutoInformalGreeting = checked;
+        }
 
         if (checked) {
             this._debouncedUpdateNames();
@@ -704,9 +732,15 @@ export default class ManageHousehold extends NavigationMixin(LightningElement) {
 
     _updateNamingExclusions() {
         let exclusions = "";
-        if (!this.isAutoName) exclusions += "Name;";
-        if (!this.isAutoFormalGreeting) exclusions += "Formal_Greeting__c;";
-        if (!this.isAutoInformalGreeting) exclusions += "Informal_Greeting__c;";
+        if (!this.isAutoName) {
+            exclusions += "Name;";
+        }
+        if (!this.isAutoFormalGreeting) {
+            exclusions += "Formal_Greeting__c;";
+        }
+        if (!this.isAutoInformalGreeting) {
+            exclusions += "Informal_Greeting__c;";
+        }
         this.household = {
             ...this.household,
             SYSTEM_CUSTOM_NAMING__c: exclusions,
