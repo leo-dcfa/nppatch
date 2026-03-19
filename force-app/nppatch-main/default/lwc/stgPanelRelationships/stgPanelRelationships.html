@@ -1,49 +1,27 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
         <lightning-combobox
-            label="{labels.reciprocalMethod}"
-            field-level-help="{labels.helpReciprocalMethod}"
-            value="{_workingCopy.Reciprocal_Method__c}"
-            options="{reciprocalMethodOptions}"
-            onchange="
-                {
-                    handleReciprocalMethodChange;
-                }
-            "
-        >
+            label={labels.reciprocalMethod}
+            field-level-help={labels.helpReciprocalMethod}
+            value={_workingCopy.Reciprocal_Method__c}
+            options={reciprocalMethodOptions}
+            onchange={handleReciprocalMethodChange}>
         </lightning-combobox>
 
-        <lightning-input
-            type="text"
-            label="{labels.genderField}"
-            field-level-help="{labels.helpGenderField}"
-            value="{_workingCopy.Gender_Field__c}"
-            onchange="
-                {
-                    handleGenderFieldChange;
-                }
-            "
-        >
+        <lightning-input type="text" label={labels.genderField}
+            field-level-help={labels.helpGenderField}
+            value={_workingCopy.Gender_Field__c}
+            onchange={handleGenderFieldChange}>
         </lightning-input>
 
-        <lightning-input
-            type="toggle"
-            label="{labels.allowDuplicates}"
-            field-level-help="{labels.helpAllowDuplicates}"
-            checked="{_workingCopy.Allow_AutoCreated_Duplicates__c}"
-            onchange="
-                {
-                    handleAllowDuplicatesChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+        <lightning-input type="toggle" label={labels.allowDuplicates}
+            field-level-help={labels.helpAllowDuplicates}
+            checked={_workingCopy.Allow_AutoCreated_Duplicates__c}
+            onchange={handleAllowDuplicatesChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
+
     </c-stg-panel-content>
 </template>

@@ -3,8 +3,8 @@
         <!-- Contact Name and Actions -->
         <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_xx-small">
             <div class="slds-col">
-                <template lwc:if="{isSavedContact}">
-                    <a href="{contactUrl}" class="slds-text-heading_small">{contactName}</a>
+                <template lwc:if={isSavedContact}>
+                    <a href={contactUrl} class="slds-text-heading_small">{contactName}</a>
                 </template>
                 <template lwc:else>
                     <span class="slds-text-heading_small">{contactName}</span>
@@ -16,12 +16,8 @@
                     variant="bare"
                     alternative-text="Move up"
                     size="small"
-                    onclick="
-                        {
-                            handleMoveUp;
-                        }
-                    "
-                    disabled="{isFirst}"
+                    onclick={handleMoveUp}
+                    disabled={isFirst}
                     class="slds-m-right_xx-small"
                 ></lightning-button-icon>
                 <lightning-button-icon
@@ -29,12 +25,8 @@
                     variant="bare"
                     alternative-text="Move down"
                     size="small"
-                    onclick="
-                        {
-                            handleMoveDown;
-                        }
-                    "
-                    disabled="{isLast}"
+                    onclick={handleMoveDown}
+                    disabled={isLast}
                     class="slds-m-right_small"
                 ></lightning-button-icon>
                 <lightning-button-icon
@@ -42,27 +34,28 @@
                     variant="bare"
                     alternative-text="Remove"
                     size="small"
-                    onclick="
-                        {
-                            handleRemove;
-                        }
-                    "
+                    onclick={handleRemove}
                 ></lightning-button-icon>
             </div>
         </div>
 
         <!-- Address -->
-        <template lwc:if="{hasAddress}">
+        <template lwc:if={hasAddress}>
             <div class="slds-text-body_small slds-m-bottom_xx-small">
-                <lightning-formatted-text value="{formattedAddress}"></lightning-formatted-text>
-                <template lwc:if="{isAddressOverride}">
+                <lightning-formatted-text value={formattedAddress}></lightning-formatted-text>
+                <template lwc:if={isAddressOverride}>
                     <span class="slds-badge slds-m-left_xx-small">{addressOverrideLabel}</span>
                 </template>
             </div>
         </template>
-        <template lwc:if="{isUndeliverable}">
+        <template lwc:if={isUndeliverable}>
             <div class="slds-m-bottom_xx-small">
-                <lightning-input type="checkbox" label="{contactUndeliverableLabel}" checked disabled></lightning-input>
+                <lightning-input
+                    type="checkbox"
+                    label={contactUndeliverableLabel}
+                    checked
+                    disabled
+                ></lightning-input>
             </div>
         </template>
 
@@ -72,38 +65,26 @@
             <div class="slds-grid slds-grid_vertical-align-center slds-m-top_xx-small">
                 <lightning-input
                     type="checkbox"
-                    label="{householdNameLabel}"
-                    checked="{excludeFromName}"
+                    label={householdNameLabel}
+                    checked={excludeFromName}
                     data-field="Exclude_from_Household_Name__c"
-                    onchange="
-                        {
-                            handleExclusionChange;
-                        }
-                    "
+                    onchange={handleExclusionChange}
                     class="slds-m-right_large"
                 ></lightning-input>
                 <lightning-input
                     type="checkbox"
-                    label="{formalGreetingLabel}"
-                    checked="{excludeFromFormalGreeting}"
+                    label={formalGreetingLabel}
+                    checked={excludeFromFormalGreeting}
                     data-field="Exclude_from_Household_Formal_Greeting__c"
-                    onchange="
-                        {
-                            handleExclusionChange;
-                        }
-                    "
+                    onchange={handleExclusionChange}
                     class="slds-m-right_large"
                 ></lightning-input>
                 <lightning-input
                     type="checkbox"
-                    label="{informalGreetingLabel}"
-                    checked="{excludeFromInformalGreeting}"
+                    label={informalGreetingLabel}
+                    checked={excludeFromInformalGreeting}
                     data-field="Exclude_from_Household_Informal_Greeting__c"
-                    onchange="
-                        {
-                            handleExclusionChange;
-                        }
-                    "
+                    onchange={handleExclusionChange}
                 ></lightning-input>
             </div>
         </div>

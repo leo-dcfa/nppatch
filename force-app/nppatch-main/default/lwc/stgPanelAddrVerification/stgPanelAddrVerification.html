@@ -1,135 +1,75 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
         <!-- Enable Automatic Verification (toggle) -->
-        <lightning-input
-            type="toggle"
-            label="{labels.enableAutoVerification}"
+        <lightning-input type="toggle" label={labels.enableAutoVerification}
             field-level-help="When enabled, addresses are automatically verified when records are saved."
-            checked="{_workingCopy.Enable_Automatic_Verification__c}"
-            onchange="
-                {
-                    handleEnableAutoChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+            checked={_workingCopy.Enable_Automatic_Verification__c}
+            onchange={handleEnableAutoChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
         <!-- Verification Service (combobox) -->
-        <lightning-combobox
-            label="{labels.verificationClass}"
+        <lightning-combobox label={labels.verificationClass}
             field-level-help="The address verification service to use. Select a built-in service or choose Other to specify a custom Apex class that implements the ADDR_IValidator interface."
-            value="{validatorComboValue}"
-            options="{validatorOptions}"
-            onchange="
-                {
-                    handleValidatorChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-        >
+            value={validatorComboValue}
+            options={validatorOptions}
+            onchange={handleValidatorChange}
+            disabled={isVerificationDisabled}>
         </lightning-combobox>
 
         <!-- Custom class name (shown only when "Other" is selected) -->
-        <template lwc:if="{isCustomClass}">
-            <lightning-input
-                type="text"
-                label="{labels.customClass}"
+        <template lwc:if={isCustomClass}>
+            <lightning-input type="text" label={labels.customClass}
                 field-level-help="The API name of a custom Apex class that implements the ADDR_IValidator interface."
-                value="{_workingCopy.Class__c}"
-                onchange="
-                    {
-                        handleCustomClassChange;
-                    }
-                "
-                disabled="{isVerificationDisabled}"
-            >
+                value={_workingCopy.Class__c}
+                onchange={handleCustomClassChange}
+                disabled={isVerificationDisabled}>
             </lightning-input>
         </template>
 
         <!-- Auth Token (text) -->
-        <lightning-input
-            type="text"
-            label="{labels.authToken}"
+        <lightning-input type="text" label={labels.authToken}
             field-level-help="The authentication token or API key for the verification service."
-            value="{_workingCopy.Auth_Token__c}"
-            onchange="
-                {
-                    handleAuthTokenChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-        >
+            value={_workingCopy.Auth_Token__c}
+            onchange={handleAuthTokenChange}
+            disabled={isVerificationDisabled}>
         </lightning-input>
 
         <!-- Address Verification Endpoint (url) -->
-        <lightning-input
-            type="url"
-            label="{labels.endpoint}"
+        <lightning-input type="url" label={labels.endpoint}
             field-level-help="The URL endpoint for the address verification service API. Auto-populated when selecting a built-in service."
-            value="{_workingCopy.Address_Verification_Endpoint__c}"
-            onchange="
-                {
-                    handleEndpointChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-        >
+            value={_workingCopy.Address_Verification_Endpoint__c}
+            onchange={handleEndpointChange}
+            disabled={isVerificationDisabled}>
         </lightning-input>
 
         <!-- Reject Ambiguous Addresses (toggle) -->
-        <lightning-input
-            type="toggle"
-            label="{labels.rejectAmbiguous}"
+        <lightning-input type="toggle" label={labels.rejectAmbiguous}
             field-level-help="When enabled, addresses that cannot be definitively verified are rejected."
-            checked="{_workingCopy.Reject_Ambiguous_Addresses__c}"
-            onchange="
-                {
-                    handleRejectAmbiguousChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+            checked={_workingCopy.Reject_Ambiguous_Addresses__c}
+            onchange={handleRejectAmbiguousChange}
+            disabled={isVerificationDisabled}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
         <!-- Prevent Address Overwrite (toggle) -->
-        <lightning-input
-            type="toggle"
-            label="{labels.preventOverwrite}"
+        <lightning-input type="toggle" label={labels.preventOverwrite}
             field-level-help="When enabled, verified addresses will not be overwritten with unverified data."
-            checked="{_workingCopy.Prevent_Address_Overwrite__c}"
-            onchange="
-                {
-                    handlePreventOverwriteChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+            checked={_workingCopy.Prevent_Address_Overwrite__c}
+            onchange={handlePreventOverwriteChange}
+            disabled={isVerificationDisabled}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
         <!-- Timeout (number) -->
-        <lightning-input
-            type="number"
-            label="{labels.timeout}"
+        <lightning-input type="number" label={labels.timeout}
             field-level-help="The number of seconds to wait for a response from the verification service before timing out."
-            value="{_workingCopy.Timeout__c}"
-            onchange="
-                {
-                    handleTimeoutChange;
-                }
-            "
-            disabled="{isVerificationDisabled}"
-        >
+            value={_workingCopy.Timeout__c}
+            onchange={handleTimeoutChange}
+            disabled={isVerificationDisabled}>
         </lightning-input>
+
     </c-stg-panel-content>
 </template>

@@ -7,69 +7,45 @@
                     <h2 class="slds-card__header-title">Error Log</h2>
                 </div>
                 <div class="card-header-right">
-                    <lightning-button
-                        label="Refresh"
-                        onclick="
-                            {
-                                handleRefresh;
-                            }
-                        "
-                        variant="neutral"
-                        icon-name="utility:refresh"
-                        class="slds-m-right_x-small"
-                    ></lightning-button>
-                    <lightning-button
-                        label="Clear All"
-                        onclick="
-                            {
-                                handleClear;
-                            }
-                        "
-                        variant="destructive-text"
-                        icon-name="utility:delete"
-                        disabled="{_isClearing}"
-                    ></lightning-button>
+                    <lightning-button label="Refresh" onclick={handleRefresh} variant="neutral" icon-name="utility:refresh" class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Clear All" onclick={handleClear} variant="destructive-text" icon-name="utility:delete" disabled={_isClearing}></lightning-button>
                 </div>
             </div>
 
             <p class="section-description">
-                Errors that occur during NPPatch processing — including trigger handler failures, batch job errors, and
-                scheduled job issues. Errors are logged automatically when Error Notifications are enabled in Settings.
+                Errors that occur during NPPatch processing — including trigger handler failures,
+                batch job errors, and scheduled job issues. Errors are logged automatically when
+                Error Notifications are enabled in Settings.
             </p>
-            <template lwc:if="{_lastRefreshed}">
+            <template lwc:if={_lastRefreshed}>
                 <p class="last-refreshed">Last refreshed: {_lastRefreshed}</p>
             </template>
 
-            <template lwc:if="{isLoading}">
+            <template lwc:if={isLoading}>
                 <div class="loading-container">
                     <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
                 </div>
             </template>
 
-            <template lwc:elseif="{hasRecords}">
+            <template lwc:elseif={hasRecords}>
                 <div class="slds-m-top_medium">
                     <p class="record-count">{errorCount} errors</p>
                     <lightning-datatable
                         key-field="Id"
-                        data="{_errors}"
-                        columns="{columns}"
+                        data={_errors}
+                        columns={columns}
                         hide-checkbox-column
-                        sorted-by="{_sortedBy}"
-                        sorted-direction="{_sortedDirection}"
-                        onsort="{handleSort}"
-                        max-row-selection="0"
-                    >
+                        sorted-by={_sortedBy}
+                        sorted-direction={_sortedDirection}
+                        onsort={handleSort}
+                        max-row-selection="0">
                     </lightning-datatable>
                 </div>
             </template>
 
             <template lwc:else>
                 <div class="empty-state slds-m-top_medium">
-                    <lightning-icon
-                        icon-name="utility:success"
-                        size="small"
-                        class="slds-m-right_x-small"
-                    ></lightning-icon>
+                    <lightning-icon icon-name="utility:success" size="small" class="slds-m-right_x-small"></lightning-icon>
                     <p class="empty-message">No errors recorded. Your system is running clean.</p>
                 </div>
             </template>

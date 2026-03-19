@@ -1,230 +1,134 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{labels.sectionDescription}"
-    >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={labels.sectionDescription}>
+
         <!-- Section 1: Household Naming -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.namingSection}</h3>
 
         <!-- Advanced Household Naming (toggle) -->
-        <lightning-input
-            type="toggle"
-            label="{labels.advancedNaming}"
-            field-level-help="{labels.helpAdvancedNaming}"
-            checked="{_workingCopyNaming.Advanced_Household_Naming__c}"
-            onchange="
-                {
-                    handleAdvancedNamingChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+        <lightning-input type="toggle" label={labels.advancedNaming}
+            field-level-help={labels.helpAdvancedNaming}
+            checked={_workingCopyNaming.Advanced_Household_Naming__c}
+            onchange={handleAdvancedNamingChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
         <!-- Household Name Format (combobox + Other) -->
-        <lightning-combobox
-            label="{labels.nameFormat}"
-            field-level-help="{labels.helpNameFormat}"
-            value="{nameFormatComboValueEdit}"
-            options="{nameFormatOptions}"
-            onchange="
-                {
-                    handleNameFormatChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-combobox label={labels.nameFormat}
+            field-level-help={labels.helpNameFormat}
+            value={nameFormatComboValueEdit}
+            options={nameFormatOptions}
+            onchange={handleNameFormatChange}
+            disabled={isNamingDisabled}>
         </lightning-combobox>
-        <template lwc:if="{isNameFormatOtherEdit}">
+        <template lwc:if={isNameFormatOtherEdit}>
             <div>
-                <lightning-input
-                    type="text"
-                    label="{labels.customNameFormat}"
-                    value="{_workingCopyNaming.Household_Name_Format__c}"
-                    onchange="
-                        {
-                            handleCustomNameFormatChange;
-                        }
-                    "
-                    disabled="{isNamingDisabled}"
-                >
+                <lightning-input type="text" label={labels.customNameFormat}
+                    value={_workingCopyNaming.Household_Name_Format__c}
+                    onchange={handleCustomNameFormatChange}
+                    disabled={isNamingDisabled}>
                 </lightning-input>
             </div>
         </template>
 
         <!-- Formal Greeting Format (combobox + Other) -->
-        <lightning-combobox
-            label="{labels.formalGreeting}"
-            field-level-help="{labels.helpFormalGreeting}"
-            value="{formalGreetingComboValueEdit}"
-            options="{formalGreetingOptions}"
-            onchange="
-                {
-                    handleFormalGreetingChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-combobox label={labels.formalGreeting}
+            field-level-help={labels.helpFormalGreeting}
+            value={formalGreetingComboValueEdit}
+            options={formalGreetingOptions}
+            onchange={handleFormalGreetingChange}
+            disabled={isNamingDisabled}>
         </lightning-combobox>
-        <template lwc:if="{isFormalGreetingOtherEdit}">
+        <template lwc:if={isFormalGreetingOtherEdit}>
             <div>
-                <lightning-input
-                    type="text"
-                    label="{labels.customFormalGreeting}"
-                    value="{_workingCopyNaming.Formal_Greeting_Format__c}"
-                    onchange="
-                        {
-                            handleCustomFormalGreetingChange;
-                        }
-                    "
-                    disabled="{isNamingDisabled}"
-                >
+                <lightning-input type="text" label={labels.customFormalGreeting}
+                    value={_workingCopyNaming.Formal_Greeting_Format__c}
+                    onchange={handleCustomFormalGreetingChange}
+                    disabled={isNamingDisabled}>
                 </lightning-input>
             </div>
         </template>
 
         <!-- Informal Greeting Format (combobox + Other) -->
-        <lightning-combobox
-            label="{labels.informalGreeting}"
-            field-level-help="{labels.helpInformalGreeting}"
-            value="{informalGreetingComboValueEdit}"
-            options="{informalGreetingOptions}"
-            onchange="
-                {
-                    handleInformalGreetingChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-combobox label={labels.informalGreeting}
+            field-level-help={labels.helpInformalGreeting}
+            value={informalGreetingComboValueEdit}
+            options={informalGreetingOptions}
+            onchange={handleInformalGreetingChange}
+            disabled={isNamingDisabled}>
         </lightning-combobox>
-        <template lwc:if="{isInformalGreetingOtherEdit}">
+        <template lwc:if={isInformalGreetingOtherEdit}>
             <div>
-                <lightning-input
-                    type="text"
-                    label="{labels.customInformalGreeting}"
-                    value="{_workingCopyNaming.Informal_Greeting_Format__c}"
-                    onchange="
-                        {
-                            handleCustomInformalGreetingChange;
-                        }
-                    "
-                    disabled="{isNamingDisabled}"
-                >
+                <lightning-input type="text" label={labels.customInformalGreeting}
+                    value={_workingCopyNaming.Informal_Greeting_Format__c}
+                    onchange={handleCustomInformalGreetingChange}
+                    disabled={isNamingDisabled}>
                 </lightning-input>
             </div>
         </template>
 
         <!-- Name Connector (text) -->
-        <lightning-input
-            type="text"
-            label="{labels.nameConnector}"
-            field-level-help="{labels.helpNameConnector}"
-            value="{_workingCopyNaming.Name_Connector__c}"
-            onchange="
-                {
-                    handleNameConnectorChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-input type="text" label={labels.nameConnector}
+            field-level-help={labels.helpNameConnector}
+            value={_workingCopyNaming.Name_Connector__c}
+            onchange={handleNameConnectorChange}
+            disabled={isNamingDisabled}>
         </lightning-input>
 
         <!-- Name Overrun (text) -->
-        <lightning-input
-            type="text"
-            label="{labels.nameOverrun}"
-            field-level-help="{labels.helpNameOverrun}"
-            value="{_workingCopyNaming.Name_Overrun__c}"
-            onchange="
-                {
-                    handleNameOverrunChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-input type="text" label={labels.nameOverrun}
+            field-level-help={labels.helpNameOverrun}
+            value={_workingCopyNaming.Name_Overrun__c}
+            onchange={handleNameOverrunChange}
+            disabled={isNamingDisabled}>
         </lightning-input>
 
         <!-- Contact Overrun Count (number) -->
-        <lightning-input
-            type="number"
-            label="{labels.contactOverrunCount}"
-            field-level-help="{labels.helpContactOverrunCount}"
-            value="{_workingCopyNaming.Contact_Overrun_Count__c}"
-            onchange="
-                {
-                    handleContactOverrunCountChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-input type="number" label={labels.contactOverrunCount}
+            field-level-help={labels.helpContactOverrunCount}
+            value={_workingCopyNaming.Contact_Overrun_Count__c}
+            onchange={handleContactOverrunCountChange}
+            disabled={isNamingDisabled}>
         </lightning-input>
 
         <!-- Implementing Class (text) -->
-        <lightning-input
-            type="text"
-            label="{labels.implementingClass}"
-            field-level-help="{labels.helpImplementingClass}"
-            value="{_workingCopyNaming.Implementing_Class__c}"
-            onchange="
-                {
-                    handleImplementingClassChange;
-                }
-            "
-            disabled="{isNamingDisabled}"
-        >
+        <lightning-input type="text" label={labels.implementingClass}
+            field-level-help={labels.helpImplementingClass}
+            value={_workingCopyNaming.Implementing_Class__c}
+            onchange={handleImplementingClassChange}
+            disabled={isNamingDisabled}>
         </lightning-input>
 
         <!-- Section 2: Household Object -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.objectSection}</h3>
 
         <!-- Household Rules (combobox) -->
-        <lightning-combobox
-            label="{labels.householdRules}"
-            field-level-help="{labels.helpHouseholdRules}"
-            value="{_workingCopyHH.Household_Rules__c}"
-            options="{householdRulesOptions}"
-            onchange="
-                {
-                    handleHouseholdRulesChange;
-                }
-            "
-        >
+        <lightning-combobox label={labels.householdRules}
+            field-level-help={labels.helpHouseholdRules}
+            value={_workingCopyHH.Household_Rules__c}
+            options={householdRulesOptions}
+            onchange={handleHouseholdRulesChange}>
         </lightning-combobox>
 
         <!-- Excluded Record Types (dual-listbox) -->
         <lightning-dual-listbox
-            label="{labels.excludedRecordTypes}"
-            field-level-help="{labels.helpExcludedRecordTypes}"
-            source-label="Available"
-            selected-label="Excluded"
-            options="{_contactRecordTypeOptions}"
-            value="{selectedExcludedRecordTypes}"
-            onchange="
-                {
-                    handleExcludedRecordTypesChange;
-                }
-            "
-        >
+            label={labels.excludedRecordTypes}
+            field-level-help={labels.helpExcludedRecordTypes}
+            source-label="Available" selected-label="Excluded"
+            options={_contactRecordTypeOptions}
+            value={selectedExcludedRecordTypes}
+            onchange={handleExcludedRecordTypesChange}>
         </lightning-dual-listbox>
 
         <!-- Section 3: General -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.generalSection}</h3>
 
         <!-- Household Mailing List Report ID (text) -->
-        <lightning-input
-            type="text"
-            label="{labels.mailingListReport}"
-            field-level-help="{labels.helpMailingListReport}"
-            value="{_workingCopyHH.Household_Mailing_List_ID__c}"
-            onchange="
-                {
-                    handleMailingListReportChange;
-                }
-            "
-        >
+        <lightning-input type="text" label={labels.mailingListReport}
+            field-level-help={labels.helpMailingListReport}
+            value={_workingCopyHH.Household_Mailing_List_ID__c}
+            onchange={handleMailingListReportChange}>
         </lightning-input>
+
     </c-stg-panel-content>
 </template>

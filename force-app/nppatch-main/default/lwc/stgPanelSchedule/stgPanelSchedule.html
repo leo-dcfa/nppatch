@@ -1,213 +1,111 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
         <!-- Section 1: Rollup Batch Job Sizes -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.batchSizesSection}</h3>
 
         <!-- Contact Hard Credit Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.contactBatchSize}"
-            field-level-help="{labels.helpContactBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Contact_Batch_Size__c}"
-            onchange="
-                {
-                    handleContactBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.contactBatchSize}
+            field-level-help={labels.helpContactBatchSize}
+            value={_workingCopyCRLP.Rollups_Contact_Batch_Size__c}
+            onchange={handleContactBatchSizeChange}>
         </lightning-input>
 
         <!-- Account Hard Credit Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.accountBatchSize}"
-            field-level-help="{labels.helpAccountBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Account_Batch_Size__c}"
-            onchange="
-                {
-                    handleAccountBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.accountBatchSize}
+            field-level-help={labels.helpAccountBatchSize}
+            value={_workingCopyCRLP.Rollups_Account_Batch_Size__c}
+            onchange={handleAccountBatchSizeChange}>
         </lightning-input>
 
         <!-- Contact Soft Credit Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.contactSoftCreditBatchSize}"
-            field-level-help="{labels.helpContactSoftCreditBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Contact_Soft_Credit_Batch_Size__c}"
-            onchange="
-                {
-                    handleContactSoftCreditBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.contactSoftCreditBatchSize}
+            field-level-help={labels.helpContactSoftCreditBatchSize}
+            value={_workingCopyCRLP.Rollups_Contact_Soft_Credit_Batch_Size__c}
+            onchange={handleContactSoftCreditBatchSizeChange}>
         </lightning-input>
 
         <!-- Account-Contact Soft Credit Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.acctContactSoftCreditBatchSize}"
-            field-level-help="{labels.helpAcctContactSoftCreditBatchSize}"
-            value="{_workingCopyCRLP.Rollups_AcctContactSoftCredit_Batch_Size__c}"
-            onchange="
-                {
-                    handleAcctContactSoftCreditBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.acctContactSoftCreditBatchSize}
+            field-level-help={labels.helpAcctContactSoftCreditBatchSize}
+            value={_workingCopyCRLP.Rollups_AcctContactSoftCredit_Batch_Size__c}
+            onchange={handleAcctContactSoftCreditBatchSizeChange}>
         </lightning-input>
 
         <!-- Account Soft Credit Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.accountSoftCreditBatchSize}"
-            field-level-help="{labels.helpAccountSoftCreditBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Account_Soft_Credit_Batch_Size__c}"
-            onchange="
-                {
-                    handleAccountSoftCreditBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.accountSoftCreditBatchSize}
+            field-level-help={labels.helpAccountSoftCreditBatchSize}
+            value={_workingCopyCRLP.Rollups_Account_Soft_Credit_Batch_Size__c}
+            onchange={handleAccountSoftCreditBatchSizeChange}>
         </lightning-input>
 
         <!-- GAU Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.gauBatchSize}"
-            field-level-help="{labels.helpGauBatchSize}"
-            value="{_workingCopyCRLP.Rollups_GAU_Batch_Size__c}"
-            onchange="
-                {
-                    handleGauBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.gauBatchSize}
+            field-level-help={labels.helpGauBatchSize}
+            value={_workingCopyCRLP.Rollups_GAU_Batch_Size__c}
+            onchange={handleGauBatchSizeChange}>
         </lightning-input>
 
         <!-- Recurring Donation Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.rdBatchSize}"
-            field-level-help="{labels.helpRdBatchSize}"
-            value="{_workingCopyRD.Recurring_Donation_Batch_Size__c}"
-            onchange="
-                {
-                    handleRdBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.rdBatchSize}
+            field-level-help={labels.helpRdBatchSize}
+            value={_workingCopyRD.Recurring_Donation_Batch_Size__c}
+            onchange={handleRdBatchSizeChange}>
         </lightning-input>
 
         <!-- Level Assignment Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.levelBatchSize}"
-            field-level-help="{labels.helpLevelBatchSize}"
-            value="{_workingCopyLvl.Level_Assignment_Batch_Size__c}"
-            onchange="
-                {
-                    handleLevelBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.levelBatchSize}
+            field-level-help={labels.helpLevelBatchSize}
+            value={_workingCopyLvl.Level_Assignment_Batch_Size__c}
+            onchange={handleLevelBatchSizeChange}>
         </lightning-input>
 
         <!-- Seasonal Addresses Batch Size -->
-        <lightning-input
-            type="number"
-            label="{labels.seasonalAddressBatchSize}"
-            field-level-help="{labels.helpSeasonalAddressBatchSize}"
-            value="{_workingCopyHH.Seasonal_Addresses_Batch_Size__c}"
-            onchange="
-                {
-                    handleSeasonalAddressBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.seasonalAddressBatchSize}
+            field-level-help={labels.helpSeasonalAddressBatchSize}
+            value={_workingCopyHH.Seasonal_Addresses_Batch_Size__c}
+            onchange={handleSeasonalAddressBatchSizeChange}>
         </lightning-input>
 
         <!-- Section 2: Skew Mode Settings -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.skewModeSection}</h3>
 
-        <lightning-input
-            type="number"
-            label="{labels.skewThreshold}"
-            field-level-help="{labels.helpSkewThreshold}"
-            value="{_workingCopyCRLP.Rollups_Limit_on_Attached_Opps_for_Skew__c}"
-            onchange="
-                {
-                    handleSkewThresholdChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.skewThreshold}
+            field-level-help={labels.helpSkewThreshold}
+            value={_workingCopyCRLP.Rollups_Limit_on_Attached_Opps_for_Skew__c}
+            onchange={handleSkewThresholdChange}>
         </lightning-input>
 
-        <lightning-input
-            type="number"
-            label="{labels.contactSkewBatchSize}"
-            field-level-help="{labels.helpContactSkewBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Contact_SkewMode_Batch_Size__c}"
-            onchange="
-                {
-                    handleContactSkewBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.contactSkewBatchSize}
+            field-level-help={labels.helpContactSkewBatchSize}
+            value={_workingCopyCRLP.Rollups_Contact_SkewMode_Batch_Size__c}
+            onchange={handleContactSkewBatchSizeChange}>
         </lightning-input>
 
-        <lightning-input
-            type="number"
-            label="{labels.accountSkewBatchSize}"
-            field-level-help="{labels.helpAccountSkewBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Account_SkewMode_Batch_Size__c}"
-            onchange="
-                {
-                    handleAccountSkewBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.accountSkewBatchSize}
+            field-level-help={labels.helpAccountSkewBatchSize}
+            value={_workingCopyCRLP.Rollups_Account_SkewMode_Batch_Size__c}
+            onchange={handleAccountSkewBatchSizeChange}>
         </lightning-input>
 
-        <lightning-input
-            type="number"
-            label="{labels.skewDispatcherBatchSize}"
-            field-level-help="{labels.helpSkewDispatcherBatchSize}"
-            value="{_workingCopyCRLP.Rollups_Skew_Dispatcher_Batch_Size__c}"
-            onchange="
-                {
-                    handleSkewDispatcherBatchSizeChange;
-                }
-            "
-        >
+        <lightning-input type="number" label={labels.skewDispatcherBatchSize}
+            field-level-help={labels.helpSkewDispatcherBatchSize}
+            value={_workingCopyCRLP.Rollups_Skew_Dispatcher_Batch_Size__c}
+            onchange={handleSkewDispatcherBatchSizeChange}>
         </lightning-input>
 
         <!-- Section 3: Batch Processing Options -->
         <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">{labels.optionsSection}</h3>
 
         <!-- Use Dated Conversion Rates -->
-        <lightning-input
-            type="toggle"
-            label="{labels.useDatedConversionRates}"
-            checked="{_workingCopyHH.Use_Dated_Conversion_Rates__c}"
-            onchange="
-                {
-                    handleUseDatedConversionRatesChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+        <lightning-input type="toggle" label={labels.useDatedConversionRates}
+            checked={_workingCopyHH.Use_Dated_Conversion_Rates__c}
+            onchange={handleUseDatedConversionRatesChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
-        <p class="slds-text-color_weak slds-text-body_small slds-m-top_xx-small slds-m-bottom_small">
-            {labels.helpUseDatedConversionRates}
-        </p>
+        <p class="slds-text-color_weak slds-text-body_small slds-m-top_xx-small slds-m-bottom_small">{labels.helpUseDatedConversionRates}</p>
+
+
     </c-stg-panel-content>
 </template>

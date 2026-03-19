@@ -1,69 +1,40 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
-        <lightning-input
-            type="toggle"
-            label="{labels.paymentsEnabled}"
-            field-level-help="{labels.helpPaymentsEnabled}"
-            checked="{_workingCopy.Payments_Enabled__c}"
-            onchange="
-                {
-                    handlePaymentsEnabledChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
+        <lightning-input type="toggle" label={labels.paymentsEnabled}
+            field-level-help={labels.helpPaymentsEnabled}
+            checked={_workingCopy.Payments_Enabled__c}
+            onchange={handlePaymentsEnabledChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
-        <lightning-input
-            type="number"
-            label="{labels.maxPayments}"
-            field-level-help="{labels.helpMaxPayments}"
-            value="{_workingCopy.Max_Payments__c}"
-            onchange="
-                {
-                    handleMaxPaymentsChange;
-                }
-            "
-            disabled="{isPaymentsDisabled}"
-        >
+        <lightning-input type="number" label={labels.maxPayments}
+            field-level-help={labels.helpMaxPayments}
+            value={_workingCopy.Max_Payments__c}
+            onchange={handleMaxPaymentsChange}
+            disabled={isPaymentsDisabled}>
         </lightning-input>
 
         <lightning-dual-listbox
-            label="{labels.excludedRecordTypes}"
-            field-level-help="{labels.helpExcludedRecTypes}"
-            source-label="Available"
-            selected-label="Excluded"
-            options="{_oppRecordTypes}"
-            value="{selectedExcludedRecTypes}"
-            onchange="
-                {
-                    handleExcludedRecTypesChange;
-                }
-            "
-            disabled="{isPaymentsDisabled}"
-        >
+            label={labels.excludedRecordTypes}
+            field-level-help={labels.helpExcludedRecTypes}
+            source-label="Available" selected-label="Excluded"
+            options={_oppRecordTypes}
+            value={selectedExcludedRecTypes}
+            onchange={handleExcludedRecTypesChange}
+            disabled={isPaymentsDisabled}>
         </lightning-dual-listbox>
 
         <lightning-dual-listbox
-            label="{labels.excludedOppTypes}"
-            field-level-help="{labels.helpExcludedTypes}"
-            source-label="Available"
-            selected-label="Excluded"
-            options="{_oppTypes}"
-            value="{selectedExcludedOppTypes}"
-            onchange="
-                {
-                    handleExcludedOppTypesChange;
-                }
-            "
-            disabled="{isPaymentsDisabled}"
-        >
+            label={labels.excludedOppTypes}
+            field-level-help={labels.helpExcludedTypes}
+            source-label="Available" selected-label="Excluded"
+            options={_oppTypes}
+            value={selectedExcludedOppTypes}
+            onchange={handleExcludedOppTypesChange}
+            disabled={isPaymentsDisabled}>
         </lightning-dual-listbox>
+
     </c-stg-panel-content>
 </template>

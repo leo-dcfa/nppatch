@@ -1,23 +1,13 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
-        <lightning-input
-            type="toggle"
-            label="{labels.autoAffiliation}"
-            field-level-help="{labels.helpAutoAffil}"
-            checked="{_workingCopy.Automatic_Affiliation_Creation_Turned_On__c}"
-            onchange="
-                {
-                    handleAutoAffilChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
+        <lightning-input type="toggle" label={labels.autoAffiliation}
+            field-level-help={labels.helpAutoAffil}
+            checked={_workingCopy.Automatic_Affiliation_Creation_Turned_On__c}
+            onchange={handleAutoAffilChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
+
     </c-stg-panel-content>
 </template>

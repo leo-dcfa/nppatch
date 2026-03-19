@@ -1,36 +1,19 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
-        <lightning-input
-            type="number"
-            label="{labels.nDayValue}"
-            field-level-help="{labels.helpNDayValue}"
-            value="{_workingCopy.Rollup_N_Day_Value__c}"
-            onchange="
-                {
-                    handleNDayChange;
-                }
-            "
-        >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
+        <lightning-input type="number" label={labels.nDayValue}
+            field-level-help={labels.helpNDayValue}
+            value={_workingCopy.Rollup_N_Day_Value__c}
+            onchange={handleNDayChange}>
         </lightning-input>
 
-        <lightning-input
-            type="toggle"
-            label="{labels.fiscalYear}"
-            field-level-help="{labels.helpFiscalYear}"
-            checked="{_workingCopy.Use_Fiscal_Year_for_Rollups__c}"
-            onchange="
-                {
-                    handleFiscalYearChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+        <lightning-input type="toggle" label={labels.fiscalYear}
+            field-level-help={labels.helpFiscalYear}
+            checked={_workingCopy.Use_Fiscal_Year_for_Rollups__c}
+            onchange={handleFiscalYearChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
+
     </c-stg-panel-content>
 </template>

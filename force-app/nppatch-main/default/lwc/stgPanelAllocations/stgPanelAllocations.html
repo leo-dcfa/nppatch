@@ -1,38 +1,22 @@
 <template>
-    <c-stg-panel-content
-        is-loading="{isLoading}"
-        has-error="{_hasError}"
-        error-message="{_errorMessage}"
-        description="{sectionDescription}"
-    >
-        <lightning-input
-            type="toggle"
-            label="{labels.defaultAllocEnabled}"
-            field-level-help="{labels.helpDefaultAllocEnabled}"
-            checked="{_workingCopy.Default_Allocations_Enabled__c}"
-            onchange="
-                {
-                    handleDefaultAllocEnabledChange;
-                }
-            "
-            message-toggle-active="Enabled"
-            message-toggle-inactive="Disabled"
-        >
+    <c-stg-panel-content is-loading={isLoading} has-error={_hasError}
+        error-message={_errorMessage} description={sectionDescription}>
+
+        <lightning-input type="toggle" label={labels.defaultAllocEnabled}
+            field-level-help={labels.helpDefaultAllocEnabled}
+            checked={_workingCopy.Default_Allocations_Enabled__c}
+            onchange={handleDefaultAllocEnabledChange}
+            message-toggle-active="Enabled" message-toggle-inactive="Disabled">
         </lightning-input>
 
-        <lightning-combobox
-            label="{labels.defaultGAU}"
-            field-level-help="{labels.helpDefaultGAU}"
-            value="{_workingCopy.Default__c}"
-            options="{gauComboboxOptions}"
-            placeholder="{gauPlaceholder}"
-            onchange="
-                {
-                    handleDefaultGAUChange;
-                }
-            "
-            disabled="{defaultGAUDisabled}"
-        >
+        <lightning-combobox label={labels.defaultGAU}
+            field-level-help={labels.helpDefaultGAU}
+            value={_workingCopy.Default__c}
+            options={gauComboboxOptions}
+            placeholder={gauPlaceholder}
+            onchange={handleDefaultGAUChange}
+            disabled={defaultGAUDisabled}>
         </lightning-combobox>
+
     </c-stg-panel-content>
 </template>
