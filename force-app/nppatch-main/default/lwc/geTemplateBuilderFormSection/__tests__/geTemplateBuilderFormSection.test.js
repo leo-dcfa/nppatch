@@ -3,7 +3,6 @@ import GeTemplateBuilderFormSection from "c/geTemplateBuilderFormSection";
 import dummyFormSectionData from "./data/formSection.json";
 import { CLICKED_DOWN, CLICKED_UP } from "c/geConstants";
 import * as a11yHelpers from "../geTemplateBuilderFormSectionA11yHelpers";
-import { deepClone } from "../../utilCommon/utilCommon";
 
 jest.useFakeTimers();
 jest.mock("c/geTemplateBuilderService", () => {

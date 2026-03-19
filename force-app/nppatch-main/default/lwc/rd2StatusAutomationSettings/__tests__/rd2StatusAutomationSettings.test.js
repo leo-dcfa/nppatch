@@ -75,8 +75,8 @@ describe("c-rd2-status-automation-settings", () => {
         expect(header.textContent).toBe("c.RD2_StatusAutomationConfigurationSection");
         expect(editButton(component).title).toBe("c.stgBtnEdit");
         expect(allReadOnlyValue(component)).toHaveLength(5);
-        expect(lapsedDaysInput(component)).toBeFalsy;
-        expect(closedDaysInput(component)).toBeFalsy;
+        expect(lapsedDaysInput(component)).toBeFalsy();
+        expect(closedDaysInput(component)).toBeFalsy();
     });
 
     it("After saving, edit button should reappear", async () => {
@@ -97,8 +97,8 @@ describe("c-rd2-status-automation-settings", () => {
         expect(header.textContent).toBe("c.RD2_StatusAutomationConfigurationSection");
         expect(editButton(component).title).toBe("c.stgBtnEdit");
         expect(allReadOnlyValue(component)).toHaveLength(5);
-        expect(lapsedDaysInput(component)).toBeFalsy;
-        expect(closedDaysInput(component)).toBeFalsy;
+        expect(lapsedDaysInput(component)).toBeFalsy();
+        expect(closedDaysInput(component)).toBeFalsy();
     });
 
     it("when rd2 is disabled, renders the disabled state", async () => {

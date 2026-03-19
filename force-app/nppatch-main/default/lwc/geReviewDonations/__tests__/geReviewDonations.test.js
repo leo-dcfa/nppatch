@@ -2,7 +2,8 @@ import { createElement } from "lwc";
 import { getRecord } from "lightning/uiRecordApi";
 
 import GeReviewDonations from "c/geReviewDonations";
-import { registerListener, unregisterListener } from "c/pubsubNoPageRef";
+// pubsubNoPageRef is mocked below; no direct usage needed
+
 
 import getOpenDonationsView from "@salesforce/apex/GE_GiftEntryController.getOpenDonationsView";
 

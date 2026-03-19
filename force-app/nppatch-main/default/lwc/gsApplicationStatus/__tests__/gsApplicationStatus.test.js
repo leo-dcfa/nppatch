@@ -28,12 +28,6 @@ const NOT_APPLIED_EXPIRATION_DATE_15_DAYS = {
     trialExpirationDate: dayIn15Days,
     applicationDate: null,
 };
-// Mock data for a trial org that expires in 15 days and has applied.
-const APPLIED_EXPIRATION_DATE_15_DAYS = {
-    isSandbox: false,
-    trialExpirationDate: dayIn15Days,
-    applicationDate: new Date(),
-};
 
 describe("c-application-status", () => {
     afterEach(() => {

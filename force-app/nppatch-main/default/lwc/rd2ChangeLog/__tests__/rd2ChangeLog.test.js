@@ -2,7 +2,6 @@ import { createElement } from "lwc";
 import Rd2ChangeLog from "c/rd2ChangeLog";
 import getChangeLog from "@salesforce/apex/RD2_ChangeLogController.getChangeLog";
 import commonViewMore from "@salesforce/label/c.commonViewMore";
-import commonError from "@salesforce/label/c.commonError";
 import rdclNoRecords from "@salesforce/label/c.RDCL_No_Records";
 
 import { getNavigateCalledWith } from "lightning/navigation";

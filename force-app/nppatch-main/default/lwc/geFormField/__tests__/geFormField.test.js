@@ -37,6 +37,7 @@ jest.mock("c/geFormService", () => {
             if (targetFieldName === "RecordTypeId") {
                 return require("./data/recordTypeIdFieldMapping.json");
             }
+            return undefined;
         }),
     };
 });
@@ -246,7 +247,7 @@ describe("c-ge-form-field", () => {
  * the shadowRoot property off of
  * @returns {ShadowRoot} The shadow root of the given element
  */
-export const getShadowRoot = (element) => {
+const getShadowRoot = (element) => {
     if (!element || !element.shadowRoot) {
         const tagName = element && element.tagName && element.tagName.toLowerCase();
         throw new Error(
@@ -266,7 +267,7 @@ export const getShadowRoot = (element) => {
  * @param {String} selector The selector used to match the descendant element.
  * @returns {Element}
  */
-export const shadowQuerySelector = (element, selector) => {
+const shadowQuerySelector = (element, selector) => {
     return getShadowRoot(element).querySelector(selector);
 };
 

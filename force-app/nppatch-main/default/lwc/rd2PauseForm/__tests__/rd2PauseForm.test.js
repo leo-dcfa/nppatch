@@ -2,7 +2,6 @@ import { createElement } from "lwc";
 import Rd2PauseForm from "c/rd2PauseForm";
 import { mockGetSelectedRows, getSelectedRowsImpl } from "lightning/datatable";
 import RD2_PausePermissionRequired from "@salesforce/label/c.RD2_PausePermissionRequired";
-import RD2_ElevateNotSupported from "@salesforce/label/c.RD2_ElevateNotSupported";
 
 const mockPauseData = require("./data/getPauseData.json");
 const mockGetInstallments = require("./data/getInstallments.json");
@@ -317,12 +316,14 @@ class PauseFormTestController {
         return this.component.shadowRoot.querySelector("[data-id='blockedReason']").value;
     }
 
+    /* eslint-disable no-await-in-loop -- sequential row selection required for UI state updates */
     async selectRows(rowNumbers) {
         for (const rowNumber of rowNumbers) {
             this.selectRow(mockGetInstallments.dataTable.records[rowNumber].installmentNumber);
             await flushPromises();
         }
     }
+    /* eslint-enable no-await-in-loop */
 
     selectRow(installmentNumber) {
         const dataTable = this.dataTable();

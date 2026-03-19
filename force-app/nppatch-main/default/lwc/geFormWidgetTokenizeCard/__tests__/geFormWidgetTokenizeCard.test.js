@@ -219,7 +219,7 @@ describe("c-ge-form-widget-tokenize-card", () => {
                 doNotEnterPaymentButton(element).click();
             })
             .then(() => {
-                expect(iframe(element)).toBeFalsy;
+                expect(iframe(element)).toBeFalsy();
                 expect(spanDisabledMessage(element).innerHTML).toBe(DISABLED_MESSAGE);
 
                 enterPaymentButton(element).click();

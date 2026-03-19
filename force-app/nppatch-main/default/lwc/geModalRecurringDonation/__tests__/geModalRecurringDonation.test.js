@@ -1,9 +1,6 @@
 import { createElement } from "lwc";
 import GeModalRecurringDonation from "c/geModalRecurringDonation";
-import { Rd2Service } from "c/rd2Service";
 import getInitialView from "@salesforce/apex/RD2_EntryFormController.getInitialView";
-import OPPORTUNITY_IMPORTED from "@salesforce/schema/DataImport__c.DonationImported__c";
-import PAYMENT_IMPORTED from "@salesforce/schema/DataImport__c.PaymentImported__c";
 
 const initialViewResponse = require("../../../../../../tests/__mocks__/apex/data/getInitialView.json");
 
@@ -58,7 +55,6 @@ describe("c-ge-modal-recurring-donation", () => {
         });
 
         it("renders update schedule button", async () => {
-            const rd2Service = new Rd2Service();
             getInitialView.mockResolvedValue(initialViewResponse);
             const modalElement = setup();
             modalElement.schedule = {

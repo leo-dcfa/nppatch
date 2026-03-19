@@ -6,12 +6,11 @@ import * as utilTemplateBuilder from "c/utilTemplateBuilder";
 import retrieveDefaultSGERenderWrapper from "@salesforce/apex/GE_GiftEntryController.retrieveDefaultSGERenderWrapper";
 import getFormRenderWrapper from "@salesforce/apex/GE_GiftEntryController.getFormRenderWrapper";
 import getAllocationsSettings from "@salesforce/apex/GE_GiftEntryController.getAllocationsSettings";
-import checkForElevateCustomer from "@salesforce/apex/GE_GiftEntryController.isElevateCustomer";
+import checkForElevateCustomer from "@salesforce/apex/GE_GiftEntryController.checkForElevateCustomer";
 import upsertDataImport from "@salesforce/apex/GE_GiftEntryController.upsertDataImport";
 import sendPurchaseRequest from "@salesforce/apex/GE_GiftEntryController.sendPurchaseRequest";
 import addGiftTo from "@salesforce/apex/GE_GiftEntryController.addGiftTo";
 import getGiftBatchView from "@salesforce/apex/GE_GiftEntryController.getGiftBatchView";
-import isElevateCustomer from "@salesforce/apex/GE_GiftEntryController.isElevateCustomer";
 import processGiftsFor from "@salesforce/apex/GE_GiftEntryController.processGiftsFor";
 import isGiftBatchAccessible from "@salesforce/apex/GE_GiftEntryController.isGiftBatchAccessible";
 import OPP_PAYMENT_OBJECT from "@salesforce/schema/OppPayment__c";
@@ -56,7 +55,7 @@ const setupForBatchMode = (giftBatchView) => {
     getAllocationsSettings.mockResolvedValue(allocationsSettingsNoDefaultGAU);
 
     getGiftBatchView.mockResolvedValue(giftBatchView);
-    isElevateCustomer.mockResolvedValue(true);
+    checkForElevateCustomer.mockResolvedValue(true);
     isGiftBatchAccessible.mockResolvedValue(true);
 
     const formApp = createGeGiftEntryFormApp();
@@ -538,7 +537,7 @@ describe("c-ge-gift-entry-form-app", () => {
             expect(getFormRenderWrapper).toHaveBeenCalled();
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
 
-            const [donorType, accountLookup, contactLookup] = shadowQuerySelectorAll(
+            const [, , contactLookup] = shadowQuerySelectorAll(
                 geFormSections[0],
                 "c-ge-form-field"
             );
@@ -589,7 +588,7 @@ describe("c-ge-gift-entry-form-app", () => {
             expect(getFormRenderWrapper).toHaveBeenCalled();
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
 
-            const [donorType, accountLookup, contactLookup] = shadowQuerySelectorAll(
+            const [, accountLookup] = shadowQuerySelectorAll(
                 geFormSections[0],
                 "c-ge-form-field"
             );
@@ -655,7 +654,7 @@ describe("c-ge-gift-entry-form-app", () => {
             expect(getFormRenderWrapper).toHaveBeenCalled();
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
 
-            const [donorType, ...rest] = shadowQuerySelectorAll(geFormSections[0], "c-ge-form-field");
+            const [donorType] = shadowQuerySelectorAll(geFormSections[0], "c-ge-form-field");
 
             const donorInput = shadowQuerySelector(donorType, "lightning-combobox");
 
@@ -730,7 +729,7 @@ describe("c-ge-gift-entry-form-app", () => {
             expect(getFormRenderWrapper).toHaveBeenCalled();
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
 
-            const [closeDate, amount, recordType, opportunityType, ...rest] = shadowQuerySelectorAll(
+            const [, , recordType, opportunityType] = shadowQuerySelectorAll(
                 geFormSections[3],
                 "c-ge-form-field"
             );
@@ -937,7 +936,7 @@ describe("c-ge-gift-entry-form-app", () => {
 
             const geFormRenderer = shadowQuerySelector(formApp, "c-ge-form-renderer");
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
-            const [donorType, accountLookup, contactLookup] = shadowQuerySelectorAll(
+            const [donorType] = shadowQuerySelectorAll(
                 geFormSections[0],
                 "c-ge-form-field"
             );
@@ -988,7 +987,7 @@ describe("c-ge-gift-entry-form-app", () => {
 
             const geFormRenderer = shadowQuerySelector(formApp, "c-ge-form-renderer");
             const geFormSections = shadowQuerySelectorAll(geFormRenderer, "c-ge-form-section");
-            const [donorType, accountLookup, contactLookup] = shadowQuerySelectorAll(
+            const [donorType] = shadowQuerySelectorAll(
                 geFormSections[0],
                 "c-ge-form-field"
             );
@@ -1021,7 +1020,7 @@ describe("c-ge-gift-entry-form-app", () => {
     describe("payments in single mode", () => {
         it("returns an error message when purchase call times out", async () => {
             getAllocationsSettings.mockResolvedValue(allocationsSettingsNoDefaultGAU);
-            isElevateCustomer.mockResolvedValue(true);
+            checkForElevateCustomer.mockResolvedValue(true);
             retrieveDefaultSGERenderWrapper.mockResolvedValue(mockWrapperWithNoNames);
             upsertDataImport.mockImplementation((dataImport) => {
                 return { Id: "fakeDataImportId", ...dataImport };
@@ -1038,10 +1037,11 @@ describe("c-ge-gift-entry-form-app", () => {
             const formApp = createGeGiftEntryFormApp();
             document.body.appendChild(formApp);
 
-            mockGetIframeReply.mockImplementation((iframe, message, targetOrigin) => {
+            mockGetIframeReply.mockImplementation((iframe, message) => {
                 if (message.action === "createToken") {
                     return { type: "post__npsp", token: "a_dummy_token" };
                 }
+                return undefined;
             });
             await flushPromises();
 
@@ -1065,12 +1065,12 @@ describe("c-ge-gift-entry-form-app", () => {
             GeGatewaySettings.isValidElevatePaymentMethod = jest.fn(() => true);
             geFormRenderer.GeGatewaySettings = GeGatewaySettings;
 
-            const [firstSection, secondSection, thirdSection, fourthSection] = shadowQuerySelectorAll(
+            const [firstSection, , , fourthSection] = shadowQuerySelectorAll(
                 geFormRenderer,
                 "c-ge-form-section"
             );
-            const [donorType, accountLookup, contactLookup] = shadowQuerySelectorAll(firstSection, "c-ge-form-field");
-            const [donationDate, donationAmount, recordType, opportunityType, campaign, paymentMethod, checkNumber] =
+            const [donorType, , contactLookup] = shadowQuerySelectorAll(firstSection, "c-ge-form-field");
+            const [donationDate, donationAmount, , , , paymentMethod] =
                 shadowQuerySelectorAll(fourthSection, "c-ge-form-field");
 
             runWithFakeTimer(() => {

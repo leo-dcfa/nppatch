@@ -463,13 +463,14 @@ describe("c-ge-form-renderer", () => {
         mockCheckComboboxValidity.mockReturnValue(true); // lightning-comboboxes always report they are valid
         getAllocationsSettings.mockResolvedValue(allocationsSettingsNoDefaultGAU);
 
-        mockGetIframeReply.mockImplementation((iframe, message, targetOrigin) => {
+        mockGetIframeReply.mockImplementation((iframe, message) => {
             // if message action is "createToken", reply with dummy token immediately
             // instead of trying to hook into postMessage
             // see sendIframeMessage in mocked psElevateTokenHandler
             if (message.action === "createToken") {
                 return { type: "post__npsp", token: "a_dummy_token" };
             }
+            return undefined;
         });
 
         upsertDataImport.mockImplementation((dataImport) => {

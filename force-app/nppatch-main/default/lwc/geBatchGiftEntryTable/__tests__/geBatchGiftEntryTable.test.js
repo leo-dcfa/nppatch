@@ -8,7 +8,6 @@ import retrieveDefaultSGERenderWrapper from "@salesforce/apex/GE_GiftEntryContro
 
 const mockRenderWrapper = require("../../../../../../tests/__mocks__/apex/data/retrieveDefaultSGERenderWrapper.json");
 const mockSections = require("./data/sections.json");
-const mockLegacyDataImportModel = require("../../../../../../tests/__mocks__/apex/data/legacyDataImportModel.json");
 const mockDataImportObjectInfo = require("../../../../../../tests/__mocks__/apex/data/dataImportObjectDescribeInfo.json");
 const mockGiftView = require("../../../../../../tests/__mocks__/apex/data/giftView.json");
 
@@ -36,6 +35,7 @@ jest.mock("c/geFormService", () => {
             if (targetFieldName === "RecordTypeId") {
                 return require("./data/recordTypeIdFieldMapping.json");
             }
+            return undefined;
         }),
     };
 });
@@ -50,7 +50,7 @@ describe("ge-batch-gift-entry-table", () => {
         return createElement("c-ge-batch-gift-entry-table", { is: GeBatchGiftEntryTable });
     };
 
-    const setupBatchTableWithData = async (withData = false) => {
+    const setupBatchTableWithData = async () => {
         retrieveDefaultSGERenderWrapper.mockResolvedValue(mockRenderWrapper);
 
         await flushPromises();

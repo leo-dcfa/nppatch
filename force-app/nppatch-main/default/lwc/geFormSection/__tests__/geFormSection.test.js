@@ -69,11 +69,11 @@ const shadowSelector = (element, selector) => {
     return element.shadowRoot.querySelector(selector);
 };
 
-const create = (section) => {
+const create = (sectionData) => {
     const element = createElement("c-ge-form-section", {
         is: GeFormSection,
     });
-    element.section = section;
+    element.section = sectionData;
     element.addEventListener("registerpaymentwidget", mockRegisterPaymentWidgetHandler);
     document.body.appendChild(element);
     return element;

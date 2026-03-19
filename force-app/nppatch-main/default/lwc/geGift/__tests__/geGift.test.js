@@ -1,4 +1,3 @@
-import ScheduleDate from "@salesforce/schema/UserProvisioningRequest.ScheduleDate";
 import Gift from "c/geGift";
 import { deepClone } from "c/utilCommon";
 
@@ -266,7 +265,7 @@ describe("ge-gift", () => {
         gift.removeSchedule();
 
         for (const fieldName of RD_DATAIMPORT_FIELDS) {
-            expect(gift.getFieldValue(fieldName)).toBeNull;
+            expect(gift.getFieldValue(fieldName)).toBeNull();
         }
     });
 
