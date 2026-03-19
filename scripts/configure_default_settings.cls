@@ -40,7 +40,6 @@ public static void initializeDefaultSettings() {
     setRecurringDonationSettings();
     setRelationshipSettings();
     setErrorSettings();
-    setAddressVerificationSettings();
     setDataImportSettings();
     setGiftEntrySettings();
     setLevelsSettings();
@@ -238,19 +237,6 @@ private static void setRelationshipSettings() {
 
     if (settings.Id == null) {
         settings.%%%NAMESPACE%%%Reciprocal_Method__c = 'List Setting';
-        upsert settings;
-    }
-}
-
-/**
- * @description Configure the default Address Verification settings mimicking what is in UTIL_CustomSettingsFacade
- */
-private static void setAddressVerificationSettings() {
-    %%%NAMESPACE%%%Addr_Verification_Settings__c settings = %%%NAMESPACE%%%Addr_Verification_Settings__c.getOrgDefaults();
-
-    if (settings.Id == null) {
-        settings.%%%NAMESPACE%%%Enable_Automatic_Verification__c = false;
-        settings.%%%NAMESPACE%%%Reject_Ambiguous_Addresses__c = false;
         upsert settings;
     }
 }
