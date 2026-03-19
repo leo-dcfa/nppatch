@@ -45,9 +45,9 @@ public static void initializeDefaultSettings() {
     setLevelsSettings();
 
     // Initialize TDTM trigger handler records and schedule default jobs
-    %%%NAMESPACE%%%TDTM_DefaultConfig.insertDefaults(null);
-    %%%NAMESPACE%%%UTIL_MasterSchedulableHelper.abortOldScheduledJobs();
-    %%%NAMESPACE%%%UTIL_MasterSchedulableHelper.setScheduledJobs();
+    TDTM_DefaultConfig.insertDefaults(null);
+    UTIL_MasterSchedulableHelper.abortOldScheduledJobs();
+    UTIL_MasterSchedulableHelper.setScheduledJobs();
 }
 
 // ==============================================================================================================
