@@ -166,6 +166,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>%%%NAMESPACE%%%Manage_Household</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>%%%NAMESPACE%%%GE_Gift_Entry</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
