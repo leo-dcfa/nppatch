@@ -31,6 +31,7 @@ public static void initializeDefaultSettings() {
     // "NAMESPACE__" via the cumulusci task in cumulusci.tasks.apex.anon.AnonymousApexTask.
     // Similarly %%%NAMESPACED_RT%%% will be replaced by "NAMESPACE." for namespaced record type support
 
+    setPackageSettings();
     setAffiliationSettings();
     setAllocationSettings();
     setCustomizableRollupSettings();
@@ -45,14 +46,25 @@ public static void initializeDefaultSettings() {
     setLevelsSettings();
 
     // Initialize TDTM trigger handler records and schedule default jobs
-    %%%NAMESPACE%%%TDTM_DefaultConfig.insertDefaults(null);
-    %%%NAMESPACE%%%UTIL_MasterSchedulableHelper.abortOldScheduledJobs();
-    %%%NAMESPACE%%%UTIL_MasterSchedulableHelper.setScheduledJobs();
+    %%%NAMESPACED_RT%%%SetupApi.resetTriggerHandlers();
+    %%%NAMESPACED_RT%%%SetupApi.rescheduleDefaultJobs();
 }
 
 // ==============================================================================================================
 // SETTINGS METHODS
 // ==============================================================================================================
+
+/**
+ * @description Ensure Package_Settings__c exists with the namespace prefix populated.
+ * In unmanaged orgs the prefix is blank; in managed orgs it includes the trailing __.
+ */
+private static void setPackageSettings() {
+    %%%NAMESPACE%%%Package_Settings__c pkgSettings = %%%NAMESPACE%%%Package_Settings__c.getOrgDefaults();
+    if (pkgSettings.Id == null) {
+        pkgSettings.%%%NAMESPACE%%%Namespace_Prefix__c = %%%NAMESPACED_RT%%%UTIL_Namespace.prefixNamespace('');
+        insert pkgSettings;
+    }
+}
 
 /**
  * @description Configure the default Affiliations settings mimicking what is in UTIL_CustomSettingsFacade
