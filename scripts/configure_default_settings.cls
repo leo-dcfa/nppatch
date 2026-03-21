@@ -45,9 +45,9 @@ public static void initializeDefaultSettings() {
     setGiftEntrySettings();
     setLevelsSettings();
 
-    // Initialize TDTM trigger handler records and schedule default jobs
-    %%%NAMESPACED_RT%%%SetupApi.resetTriggerHandlers();
-    %%%NAMESPACED_RT%%%SetupApi.rescheduleDefaultJobs();
+    // TDTM trigger handlers and scheduled jobs:
+    // - Unmanaged (dev_org): initialized via separate execute_anon step in config_dev
+    // - Managed (beta_org/demo_org): handled by STG_InstallScript (post-install)
 }
 
 // ==============================================================================================================
