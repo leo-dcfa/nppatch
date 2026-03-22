@@ -534,6 +534,12 @@ plans:
         options:
           managed: True
           namespaced: True
+      7.1:
+        task: execute_anon
+        ui_options:
+          name: Initialize Scheduled Jobs
+        options:
+          apex: nppatch.SetupApi.rescheduleDefaultJobs();
       8:
         task: assign_permission_sets
         ui_options:
