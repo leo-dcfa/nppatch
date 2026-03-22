@@ -31,6 +31,7 @@ public static void initializeDefaultSettings() {
     // "NAMESPACE__" via the cumulusci task in cumulusci.tasks.apex.anon.AnonymousApexTask.
     // Similarly %%%NAMESPACED_RT%%% will be replaced by "NAMESPACE." for namespaced record type support
 
+    setPackageSettings();
     setAffiliationSettings();
     setAllocationSettings();
     setCustomizableRollupSettings();
@@ -43,11 +44,27 @@ public static void initializeDefaultSettings() {
     setDataImportSettings();
     setGiftEntrySettings();
     setLevelsSettings();
+
+    // TDTM trigger handlers and scheduled jobs:
+    // - Unmanaged (dev_org): initialized via separate execute_anon step in config_dev
+    // - Managed (beta_org/demo_org): handled by STG_InstallScript (post-install)
 }
 
 // ==============================================================================================================
 // SETTINGS METHODS
 // ==============================================================================================================
+
+/**
+ * @description Ensure Package_Settings__c exists with the namespace prefix populated.
+ * In unmanaged orgs the prefix is blank; in managed orgs it includes the trailing __.
+ */
+private static void setPackageSettings() {
+    %%%NAMESPACE%%%Package_Settings__c pkgSettings = %%%NAMESPACE%%%Package_Settings__c.getOrgDefaults();
+    if (pkgSettings.Id == null) {
+        pkgSettings.%%%NAMESPACE%%%Namespace_Prefix__c = '%%%NAMESPACE%%%';
+        insert pkgSettings;
+    }
+}
 
 /**
  * @description Configure the default Affiliations settings mimicking what is in UTIL_CustomSettingsFacade

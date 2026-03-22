@@ -43,6 +43,14 @@ tasks:
     options:
       path: unpackaged/config/dev
 
+  deploy_demo_config:
+    description: Deploys the post-install profile configuration for a managed demo org
+    class_path: cumulusci.tasks.salesforce.Deploy
+    group: Salesforce Metadata
+    options:
+      path: unpackaged/config/demo
+      unmanaged: False
+
   deploy_dev_config_delete:
     description: Deploys the metadata deletions for the post-install DE org config
     class_path: cumulusci.tasks.salesforce.Deploy
@@ -334,14 +342,33 @@ flows:
     steps:
       2:
         task: default_settings
+      2.1:
+        task: execute_anon
+        options:
+          path: scripts/initialize_tdtm_and_jobs.cls
       3:
         task: deploy_dev_config_delete
       4:
         task: deploy_dev_config
       5:
         task: update_admin_profile
+      5.1:
+        task: assign_permission_sets
+        options:
+          api_names:
+            - NPPatch_Admin
+            - PRGM_Manage
       6:
         task: reorder_app_menu
+  
+  dev_org:
+    steps:
+      99: 
+        task: load_dataset
+        options:
+          mapping: datasets/sample/mapping.yml
+          sql_path: datasets/sample/sample_data.sql
+          drop_missing_schema: True
 
   beta_org:
     description: Install the latest NPPatch beta and configure the org
@@ -367,7 +394,7 @@ flows:
       6:
         task: install_managed_beta
         options:
-          version: "04tal000006BUXBAA4"
+          version: "04tal000006OWL3AAO"
       6.1:
         task: ensure_record_types
         options:
@@ -384,7 +411,11 @@ flows:
         task: default_settings
         options:
           managed: True
-          namespace_inject: $project_config.project__package__namespace
+          namespaced: True
+      8.1:
+        task: execute_anon
+        options:
+          apex: nppatch.SetupApi.rescheduleDefaultJobs();
       9:
         task: assign_permission_sets
         options:
@@ -398,14 +429,17 @@ flows:
 
   demo_org:
     steps:
-      1: 
+      1:
         flow: beta_org
-      2: 
+      2:
+        task: deploy_demo_config
+      3:
         task: load_dataset
         options:
           mapping: datasets/sample/mapping.yml
           sql_path: datasets/sample/sample_data.sql
           drop_missing_schema: True
+          inject_namespaces: True
 
   # =========================================
   # CI Feature 2GP: Override to add test org
@@ -434,7 +468,7 @@ flows:
         task: default_settings
         options:
           managed: True
-          namespace_inject: $project_config.project__package__namespace
+          namespaced: True
 
 orgs:
   scratch:
@@ -499,7 +533,7 @@ plans:
           name: Set Default Settings
         options:
           managed: True
-          namespace_inject: $project_config.project__package__namespace
+          namespaced: True
       8:
         task: assign_permission_sets
         ui_options:
