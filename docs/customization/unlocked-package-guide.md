@@ -8,10 +8,11 @@ NPPatch is distributed as a **namespaced unlocked 2GP package**. The most import
 
 | Aspect | Managed Package (original NPSP) | Unlocked Package (NPPatch) |
 |--------|---|---|
-| **Source Code** | Obfuscated in subscriber orgs; not visible | Visible and auditable in subscriber orgs |
+| **Source Code** | Open source, but obfuscated in subscriber orgs | Open source, and visible in subscriber orgs |
 | **Release Process** | Vendor controls what ships and when | Community controls what ships and when |
 | **Extending** | Limited to configuration and new objects outside the package | Deploy customizations and extensions on top of the package |
 | **Changing Package Code** | Not possible; only vendor can modify | Contributors work from the source repository and ship new versions |
+| **Namespace** | Controlled by vendor | Uses namespace injection — viable to fork and publish under a different namespace |
 | **Upgrades** | Vendor pushes updates on their timeline | Community publishes versions; orgs upgrade when ready |
 | **Dependencies** | Black box; no visibility into dependencies | Full transparency into code dependencies |
 
@@ -19,11 +20,13 @@ NPPatch is distributed as a **namespaced unlocked 2GP package**. The most import
 
 The freedom NPPatch provides is in the **release process**, not in-org editing. Subscribers can view all source code and deploy extensions on top of the package, but cannot directly edit namespaced package components inside their own org instance. To change package code, contributors work from the [source repository](https://github.com/Sundae-Shop-Consulting/nppatch) — the community decides what gets merged and when new versions ship.
 
+NPPatch uses CumulusCI's namespace injection so that the source code contains very few hard-coded namespace references. This makes it viable for consulting firms or organizations that serve multiple clients to fork the repository and publish under their own namespace.
+
 ## What You Can Do
 
 ### 1. View and Audit All Source Code
 
-Unlike managed packages, all trigger handlers, services, selectors, and utility classes are visible in your org and in the source repository:
+NPSP's source code was always available on GitHub, but managed packages obfuscated it in subscriber orgs. With an unlocked package, the code is visible in the org too — you can inspect trigger handlers, services, and utility classes directly:
 
 ```
 force-app/

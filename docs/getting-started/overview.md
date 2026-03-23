@@ -45,7 +45,6 @@ Unlike the original NPSP (which was a managed package), NPPatch is an unlocked p
 
 **Advantages:**
 
-- Source code is visible and auditable — not a black box
 - The community controls the release process: what gets built, what gets fixed, and when new versions ship
 - No dependency on Salesforce for bug fixes — contributors can address issues through the repository without waiting for a vendor roadmap
 - Organizations can deploy customizations and extensions on top of the package (custom fields on package objects, new TDTM trigger handlers, companion packages)
