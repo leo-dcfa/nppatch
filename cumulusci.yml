@@ -112,6 +112,103 @@ tasks:
           closed: false
           won: false
 
+  add_fundraising_stages:
+    description: Add nonprofit fundraising Opportunity stages
+    class_path: cumulusci.tasks.metadata_etl.AddValueSetEntries
+    group: Metadata ETL
+    options:
+      api_names:
+        - OpportunityStage
+      entries:
+        # Donation stages
+        - fullName: Pledged
+          label: Pledged
+          probability: 50
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Posted
+          label: Posted
+          probability: 100
+          forecastCategory: Closed
+          closed: true
+          won: true
+        - fullName: Withdrawn
+          label: Withdrawn
+          probability: 0
+          forecastCategory: Omitted
+          closed: true
+          won: false
+        # Grant stages
+        - fullName: LOI Submitted
+          label: LOI Submitted
+          probability: 10
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Application Submitted
+          label: Application Submitted
+          probability: 25
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Awarded
+          label: Awarded
+          probability: 90
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        # In-Kind stages
+        - fullName: Cultivating
+          label: Cultivating
+          probability: 10
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: In-Kind Not Yet Received
+          label: In-Kind Not Yet Received
+          probability: 50
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: In-Kind Received
+          label: In-Kind Received
+          probability: 100
+          forecastCategory: Closed
+          closed: true
+          won: true
+        # Major Gift stages
+        - fullName: Identification
+          label: Identification
+          probability: 10
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Cultivation
+          label: Cultivation
+          probability: 20
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Solicitation
+          label: Solicitation
+          probability: 50
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Verbal Commitment
+          label: Verbal Commitment
+          probability: 90
+          forecastCategory: Pipeline
+          closed: false
+          won: false
+        - fullName: Declined
+          label: Declined
+          probability: 0
+          forecastCategory: Omitted
+          closed: true
+          won: false
+
   add_ocr_roles:
     description: Add OCR roles required by automated soft credit tests
     class_path: cumulusci.tasks.metadata_etl.AddValueSetEntries
