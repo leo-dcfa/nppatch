@@ -7,7 +7,6 @@
 *.pyc
 __pycache__
 .venv/
-uv.lock
 
 # Robot Framework results
 robot/nppatch/results/
